@@ -20,7 +20,7 @@ def random_forest(x_train, x_test, y_train, y_test):
 class RF(Model):
 
     def __init__(self):
-        super().__init__("RandomForestRegressor", RandomForestRegressor())
+        super().__init__("RandomForestRegressor", RandomForestRegressor(n_estimators=2))
 
     def train(self, x_train, y_train):
         self.model_object.fit(x_train, y_train.values.ravel())
