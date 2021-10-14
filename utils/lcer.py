@@ -31,6 +31,10 @@ def get_dataset_testdata():
     return get_config("datasets", "test_data")
 
 
+def get_dataset_default_location():
+    return get_config("datasets", "default_location")
+
+
 def get_output_images():
     return get_config("output", "images")
 
