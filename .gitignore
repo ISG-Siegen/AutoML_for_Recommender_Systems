@@ -303,3 +303,9 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/pycharm,intellij,jetbrains,windows,macos
+/.idea/.gitignore
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/operation_autorecsys.iml
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/vcs.xml
