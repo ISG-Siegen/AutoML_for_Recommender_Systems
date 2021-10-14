@@ -3,14 +3,12 @@ from sklearn.model_selection import train_test_split
 import numpy as np
 import matplotlib.pyplot as plt
 from auto_scikit_learn import automl
-from preprocessing import preprocessing_100k
-from preprocessing import preprocessing_1m
+from data_processing.preprocessing import preprocessing_1m, preprocessing_100k
 from scikit_learn import random_forest
 from scikit_learn import knn
 from scikit_learn import sgd
 from scikit_learn import svr
 from H2O import H2O
-import lenskit_train
 
 pd.set_option('display.max_columns', None)
 
