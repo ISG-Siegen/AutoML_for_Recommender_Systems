@@ -13,10 +13,11 @@ The comparison is done using the predictive accuracy metric RSME on multiple dat
 * `data_processing`: contains code to preprocess and make data usable for the work
 * `evaluation`: contains code related to evaluation and plotting the error
 * `libraries`: contains code to build models and execute them on datasets 
-* `config.ini`: config file that might be needed to map paths to relevant datasets 
+* `example_config.ini`: example config file that might be needed to map paths to relevant datasets 
 * `main.py`: potential main entry point that can be used to start different parts of the projects
 
-
+## Config File
+Edit the config file to fit your system (e.g. path to datasets) and rename it from `example_config.in` to `config.ini` 
   
 # General Notes
 * Evaluation should be done on 10-fold cross validation 
