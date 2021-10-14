@@ -29,7 +29,10 @@ def start_barplot(data: pd.DataFrame, save_images, horizontal=False):
     fig.tight_layout()
 
     if save_images:
-        plt.savefig(os.path.join(get_output_images(), "error_model_barplot.pdf"))
+        name = "error_model_barplot"
+        if horizontal:
+            name += "_horizontal"
+        plt.savefig(os.path.join(get_output_images(), "{}.pdf".format(name)))
 
     # Show
     plt.show()
@@ -53,6 +56,11 @@ def tableplot(data: pd.DataFrame, save_images, change_perspective):
     ax.axis('tight')
     ax.table(cellText=data.values, colLabels=data.columns, loc='center')
 
+    if save_images:
+        name = "default_table_plot"
+        plt.savefig(os.path.join(get_output_images(), "{}.pdf".format(name)))
+
     fig.tight_layout()
     plt.show()
+
     return data
