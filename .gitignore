@@ -309,3 +309,4 @@ $RECYCLE.BIN/
 /.idea/operation_autorecsys.iml
 /.idea/inspectionProfiles/profiles_settings.xml
 /.idea/vcs.xml
+/config.ini
