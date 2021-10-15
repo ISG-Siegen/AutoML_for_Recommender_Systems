@@ -1,7 +1,7 @@
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 
 
-class Model:
+class Model(ABC):
     @abstractmethod
     def __init__(self, name, model_object):
         self.name = name
@@ -9,8 +9,8 @@ class Model:
 
     @abstractmethod
     def train(self, x_train, y_train):
-        pass
+        raise NotImplementedError("NotImplementedError: Implementation required for train() method")
 
     @abstractmethod
     def predict(self, x_test):
-        pass
+        raise NotImplementedError("NotImplementedError: Implementation required for predict() method")

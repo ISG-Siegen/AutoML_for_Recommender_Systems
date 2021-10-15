@@ -5,6 +5,7 @@ from utils.lcer import get_logger
 
 logger = get_logger("Benchmarker")
 
+
 class Benchmark:
 
     def __init__(self, dataset: dataset_base.Dataset, metric: metrics.Metric, budget, model: model_base.Model):
@@ -14,7 +15,8 @@ class Benchmark:
         self.model = model
 
     def run(self):
-        logger.info("###### Starting benchmark on dataset {} with model {} ######".format(self.dataset.name, self.model.name))
+        logger.info(
+            "###### Starting benchmark on dataset {} with model {} ######".format(self.dataset.name, self.model.name))
 
         # Get required data
         x_train, y_train = self.dataset.train_data
