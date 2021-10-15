@@ -19,7 +19,7 @@ def automl(x_train, x_test, y_train, y_test):
 class AutoSKLearn(Model):
 
     def __init__(self):
-        super().__init__("AutoSKLearn", autosklearn.regression.AutoSklearnRegressor())
+        super().__init__("AutoSKLearn", autosklearn.regression.AutoSklearnRegressor(), "AutoML")
 
     def train(self, x_train, y_train):
         self.model_object.fit(x_train, y_train.values.ravel())

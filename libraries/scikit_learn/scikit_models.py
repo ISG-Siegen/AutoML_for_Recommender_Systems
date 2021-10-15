@@ -10,8 +10,8 @@ from abc import abstractmethod
 class ScikitModel(Model):
 
     @abstractmethod
-    def __init__(self, *args):
-        super().__init__(*args)
+    def __init__(self, name, model):
+        super().__init__(name, model, "ML")
 
     def train(self, x_train, y_train):
         self.model_object.fit(x_train, y_train.values.ravel())

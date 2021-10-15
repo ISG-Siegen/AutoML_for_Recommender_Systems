@@ -25,7 +25,7 @@ class H2OHandler(Model):
     def __init__(self):
         h2o.init()
 
-        super().__init__("H2O", H2OGradientBoostingEstimator())
+        super().__init__("H2O", H2OGradientBoostingEstimator(), "AutoML")
 
     def train(self, x_train, y_train):
         features = list(x_train)
