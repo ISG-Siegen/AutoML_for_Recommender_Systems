@@ -28,13 +28,14 @@ class H2OHandler(Model):
         super().__init__("H2O", H2OGradientBoostingEstimator())
 
     def train(self, x_train, y_train):
-        features = list(X_train)
+        features = list(x_train)
         label = list(y_train)
 
         # Build 1 training frame
         x_train[label] = y_train
         # Split
-        train, valid = dataFrame.split_frame(ratios=[.75])
+        df = h2o.H2OFrame(x_train)
+        train, valid = df.split_frame(ratios=[.75])
 
         self.model_object.train(x=features, y=label[0], training_frame=train, validation_frame=valid)
 

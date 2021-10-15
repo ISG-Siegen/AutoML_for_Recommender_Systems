@@ -1,7 +1,7 @@
 from sklearn.metrics import mean_squared_error
 import autosklearn.regression
 import time
-
+from benchmark_framework.model_base import Model
 
 # ___________________________________________________MODEL_______________________________________________________________
 def automl(x_train, x_test, y_train, y_test):
