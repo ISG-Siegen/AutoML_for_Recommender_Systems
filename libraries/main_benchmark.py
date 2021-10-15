@@ -1,9 +1,9 @@
 import os
 from benchmark_framework import benchmarker, metrics, dataset_base
-from libraries.scikit_learn.scikit_models import RF, SVRegressor, SGD, KNN
+from libraries.ML.scikit_models import RF, SVRegressor, SGD, KNN
 from data_processing.preprocessing.preprocessing_100k import load_ml_100k
-from libraries.H2O.H2O import H2OHandler
-from libraries.auto_scikit_learn.automl import AutoSKLearn
+from libraries.AutoML.H2O_handler import H2OHandler
+from libraries.AutoML.autosklearn_handler import AutoSKLearn
 import pandas as pd
 from utils.lcer import get_logger, get_output_result_data
 from utils.filer import write_data

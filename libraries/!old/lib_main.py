@@ -2,13 +2,12 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 import numpy as np
 import matplotlib.pyplot as plt
-from auto_scikit_learn import automl
+from libraries.AutoML import autosklearn_handler, H2O_handler
 from data_processing.preprocessing import preprocessing_1m, preprocessing_100k
 from scikit_learn import random_forest
 from scikit_learn import knn
 from scikit_learn import sgd
 from scikit_learn import svr
-from H2O import H2O
 
 pd.set_option('display.max_columns', None)
 
@@ -85,12 +84,12 @@ if sklearn_svr_config == True:
 
 if sklearn_automl_config == True:
     print('START AUOSKLEARN')
-    automl_rmse, automl_execTime = automl.automl(x_train, x_test, y_train, y_test)
+    automl_rmse, automl_execTime = autosklearn_handler.automl(x_train, x_test, y_train, y_test)
     print('AUOSKLEARN FINISHED')
 
 if h2o_config == True:
     print('START H2O')
-    h2o_rmse, h2o_execTime = H2O.H2O(rm_df)
+    h2o_rmse, h2o_execTime = H2O_handler.H2O(rm_df)
     print('H2O FINISHED')
 
 #___________________________________________________OUTPUT______________________________________________________________
