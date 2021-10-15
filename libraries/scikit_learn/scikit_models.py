@@ -3,6 +3,7 @@ from sklearn.linear_model import SGDRegressor
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.neighbors import KNeighborsRegressor
 from benchmark_framework.model_base import Model
+from abc import abstractmethod
 
 
 # Default interface for sklearn
