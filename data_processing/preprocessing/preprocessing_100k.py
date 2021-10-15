@@ -20,7 +20,9 @@ def load_ml_100k():
     rm_df = pd.merge(movies_df, ratings_df, left_on='movieId', right_on='itemId')
 
     # Drop useless columns
-    to_drop = ['title', 'releaseDate', 'imdbUrl', 'videoReleaseDate']  # TODO maybe also drop movieid, userid, timeid, unknown and timestamps?
+    to_drop = ['title', 'releaseDate', 'imdbUrl', 'videoReleaseDate']
+    # FIXME testing dropping additional stuff (maybe also drop movieid, userid?)
+    to_drop += ['itemId', 'timestamp']
 
     rm_df = rm_df.drop(to_drop, axis=1)
 

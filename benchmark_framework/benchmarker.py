@@ -28,11 +28,13 @@ class Benchmark:
 
         # TODO add budget wrapper around the code here
         # Hard budget via subprocess, or
-        # Soft budget via model itself
+        # Soft budget via library itself
 
         # Train
+        logger.info("# Train #")  # FIXME For true time benchmark remove this logger?
         self.model.train(x_train, y_train)
         # Predict
+        logger.info("# Predict #")  # FIXME For true time benchmark remove this logger?
         y_pred = self.model.predict(x_test)
 
         # Get time
