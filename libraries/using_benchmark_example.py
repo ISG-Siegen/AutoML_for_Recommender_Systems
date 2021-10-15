@@ -6,6 +6,7 @@ from libraries.H2O.H2O import H2OHandler
 from libraries.auto_scikit_learn.automl import AutoSKLearn
 import pandas as pd
 from utils.lcer import get_logger, get_output_result_data
+from utils.filer import write_data
 
 logger = get_logger("BenchmarkExe")
 
@@ -42,4 +43,4 @@ for dataset in datasets_list:
 # ------------- Output Data as results file
 logger.info("######## Export Result data ########")
 out_df = pd.DataFrame(result_data, columns=["Dataset", "Model", "LibraryCategory", "RSME", "TimeInSeconds"])
-out_df.to_csv(os.path.join("." + get_output_result_data(), "overall_benchmark_results.csv"), index=False)
+write_data(out_df, os.path.join("." + get_output_result_data(), "overall_benchmark_results.csv"))
