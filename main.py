@@ -10,7 +10,7 @@ DATA_PATH = lcer.get_dataset_testdata()
 
 # Code Section
 def placeholder_start():
-    evaler.full_data_eval(DATA_PATH, save_images=True)
+    evaler.example_data_eval(DATA_PATH, save_images=True)
 
 
 if __name__ == "__main__":
