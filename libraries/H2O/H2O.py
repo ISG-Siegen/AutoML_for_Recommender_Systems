@@ -40,4 +40,5 @@ class H2OHandler(Model):
         self.model_object.train(x=features, y=label[0], training_frame=train, validation_frame=valid)
 
     def predict(self, x_test):
-        return self.model_object.predict(x_test)
+        df = h2o.H2OFrame(x_test)
+        return self.model_object.predict(df).as_data_frame()
