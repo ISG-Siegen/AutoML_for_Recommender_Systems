@@ -32,9 +32,10 @@ class H2OHandler(Model):
         label = list(y_train)
 
         # Build 1 training frame
-        x_train[label] = y_train
+        p_x_train = x_train.copy()
+        p_x_train[label] = y_train
         # Split
-        df = h2o.H2OFrame(x_train)
+        df = h2o.H2OFrame(p_x_train)
         train, valid = df.split_frame(ratios=[.75])
 
         self.model_object.train(x=features, y=label[0], training_frame=train, validation_frame=valid)
