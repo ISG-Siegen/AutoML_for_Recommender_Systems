@@ -35,7 +35,7 @@ class SGD(ScikitModel):
 class RF(ScikitModel):
 
     def __init__(self):
-        super().__init__("RandomForestRegressor", RandomForestRegressor(n_estimators=2))  # Fixme remove =2
+        super().__init__("RandomForestRegressor", RandomForestRegressor())
 
 
 class KNN(ScikitModel):
