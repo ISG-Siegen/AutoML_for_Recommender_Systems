@@ -11,7 +11,7 @@ dataset = dataset_base.Dataset("movielens-100k", data, features, label)
 # Setup benchmark for dataset ml100k and the model RF
 
 benchmarks = []
-for model_base in [RF, SGD, SVRegressor, KNN, H2OHandler, AutoSKLearn]:
+for model_base in [KNN, RF, SGD, SVRegressor, H2OHandler, AutoSKLearn]:
     benchmarks.append(benchmarker.Benchmark(dataset, metrics.RSME(), 60, model_base()))
 
 # Execute
