@@ -38,5 +38,6 @@ def eval_overall_results():
         eval_plotter.aggregated_barplot(result_subset[["Model", "LibraryCategory", "RSME"]], True, "LibraryCategory",
                                         prefix=image_name_prefix)
 
+
 if __name__ == "__main__":
     eval_overall_results()

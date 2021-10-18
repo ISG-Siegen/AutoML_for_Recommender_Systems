@@ -10,6 +10,8 @@ from utils.filer import write_data
 
 logger = get_logger("BenchmarkExe")
 
+imported_models = [KNN, RF, SGD, SVRegressor, H2OHandler, AutoSKLearn]
+
 # ------------- Start Variables
 datasets_list = []
 result_data = []
@@ -24,7 +26,7 @@ logger.info("######## Loop over all Datasets and do benchmarks ########")
 for dataset in datasets_list:
     # Build benchmark for this dataset
     benchmarks = []
-    for model_base in [KNN, RF, SGD, SVRegressor, H2OHandler, AutoSKLearn]:
+    for model_base in imported_models:
         benchmarks.append(benchmarker.Benchmark(dataset, metrics.RSME(), 60, model_base()))
 
     # Execute benchmarks for this dataset
