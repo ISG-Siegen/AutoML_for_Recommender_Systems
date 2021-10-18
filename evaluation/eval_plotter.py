@@ -1,12 +1,11 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 import os
-from utils.lcer import get_output_images
-import numpy as np
+from utils.lcer import get_output_images, get_base_path
+
 
 def get_correct_path(file_name):
-    dirname = os.path.dirname("../config.ini")
-    return os.path.join(dirname, os.path.join(get_output_images(), "{}.pdf".format(file_name)))
+    return os.path.join(get_base_path(), get_output_images(), "{}.pdf".format(file_name))
 
 
 def start_barplot(data: pd.DataFrame, save_images, horizontal=False, prefix=""):

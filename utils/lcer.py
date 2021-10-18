@@ -2,6 +2,7 @@
 import logging
 from configparser import ConfigParser
 import os
+import pathlib
 
 local_config = ConfigParser()
 local_config.read(os.path.join(os.path.dirname(__file__), "../config.ini"))
@@ -20,6 +21,11 @@ def get_logger(log_name):
     )
 
     return logging.getLogger(log_name)
+
+
+# --------------- Path management
+def get_base_path():
+    return pathlib.Path(__file__).parent.parent.resolve()
 
 
 # --------------- Config Code

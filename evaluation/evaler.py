@@ -2,7 +2,7 @@
 from utils import filer
 from evaluation import eval_plotter
 import os
-from utils.lcer import get_logger, get_output_result_data
+from utils.lcer import get_logger, get_output_result_data, get_base_path
 
 logger = get_logger("Evaluation")
 
@@ -26,7 +26,7 @@ def get_basic_plots(data, save_images, baseline_model_name, prefix=""):
 
 
 def eval_overall_results():
-    overall_data = filer.read_data(os.path.join("." + get_output_result_data(), "overall_benchmark_results.csv"))
+    overall_data = filer.read_data(os.path.join(get_base_path(), get_output_result_data(), "overall_benchmark_results.csv"))
 
     for dataset in overall_data["Dataset"].unique().tolist():
         logger.info("Get Barplots Evaluation for dataset {}".format(dataset))
