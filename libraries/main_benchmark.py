@@ -5,7 +5,7 @@ from data_processing.preprocessing.preprocessing_100k import load_ml_100k
 from libraries.AutoML.H2O_handler import H2OHandler
 from libraries.AutoML.autosklearn_handler import AutoSKLearn
 import pandas as pd
-from utils.lcer import get_logger, get_output_result_data
+from utils.lcer import get_logger, get_output_result_data, get_base_path
 from utils.filer import write_data
 
 logger = get_logger("BenchmarkExe")
@@ -45,4 +45,4 @@ for dataset in datasets_list:
 # ------------- Output Data as results file
 logger.info("######## Export Result data ########")
 out_df = pd.DataFrame(result_data, columns=["Dataset", "Model", "LibraryCategory", "RSME", "TimeInSeconds"])
-write_data(out_df, os.path.join("." + get_output_result_data(), "overall_benchmark_results.csv"))
+write_data(out_df, os.path.join(get_base_path(), get_output_result_data(), "overall_benchmark_results.csv"))
