@@ -29,6 +29,6 @@ def load_ml_100k():
     features = list(rm_df)
     features.remove(label)  # this means simply all columns are features but the label column
 
-    recsys_propertys = RecSysProperties('userId', 'movieId', 'rating', 1, 5,)
+    recsys_propertys = RecSysProperties('userId', 'movieId', 'rating', 1, 5)
 
     return 'movielens-100k', rm_df, features, label, recsys_propertys

@@ -5,7 +5,7 @@ from benchmark_framework.model_base import Model
 class AutoSKLearn(Model):
 
     def __init__(self):
-        super().__init__("AutoSKLearn", autosklearn.regression.AutoSklearnRegressor(),
+        super().__init__("AutoSKLearn_AutoSklearnRegressor", autosklearn.regression.AutoSklearnRegressor(),
                          "AutoML")
 
     def train(self, dataset):

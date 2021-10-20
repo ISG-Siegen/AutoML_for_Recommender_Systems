@@ -42,10 +42,10 @@ class SurpriseModel(Model):
 class SurpriseKNN(SurpriseModel):
 
     def __init__(self):
-        super().__init__("SingularValueDecompositionAlgorithm", SVD())
+        super().__init__("Surprise_SingularValueDecompositionAlgorithm", SVD())
 
 
 class SurpriseSGD(SurpriseModel):
 
     def __init__(self):
-        super().__init__("KNeighborsNeighbor", KNNBasic())
+        super().__init__("Surprise_KNeighborsNeighbor", KNNBasic())

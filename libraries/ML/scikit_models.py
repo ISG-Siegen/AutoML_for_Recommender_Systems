@@ -26,22 +26,22 @@ class ScikitModel(Model):
 class ScikitSVRegressor(ScikitModel):
 
     def __init__(self):
-        super().__init__("SupportVectorRegression", SVR())
+        super().__init__("SciKit_SupportVectorRegression", SVR())
 
 
 class ScikitSGD(ScikitModel):
 
     def __init__(self):
-        super().__init__("StochasticGradientDescentRegressor", SGDRegressor())
+        super().__init__("SciKit_StochasticGradientDescentRegressor", SGDRegressor())
 
 
 class ScikitRF(ScikitModel):
 
     def __init__(self):
-        super().__init__("RandomForestRegressor", RandomForestRegressor(n_estimators=10))
+        super().__init__("SciKit_RandomForestRegressor", RandomForestRegressor())
 
 
 class ScikitKNN(ScikitModel):
 
     def __init__(self):
-        super().__init__("KNeighborsRegressor", KNeighborsRegressor())
+        super().__init__("SciKit_KNeighborsRegressor", KNeighborsRegressor())
