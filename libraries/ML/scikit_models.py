@@ -11,7 +11,7 @@ class ScikitModel(Model):
 
     @abstractmethod
     def __init__(self, name, model):
-        super().__init__(name, model, "ML")
+        super().__init__("Scikit_" + name, model, "ML")
 
     def train(self, x_train, y_train):
         self.model_object.fit(x_train, y_train.values.ravel())
@@ -36,7 +36,7 @@ class SGD(ScikitModel):
 class RF(ScikitModel):
 
     def __init__(self):
-        super().__init__("RandomForestRegressor", RandomForestRegressor())
+        super().__init__("RandomForestRegressor", RandomForestRegressor(n_estimators=10))
 
 
 class KNN(ScikitModel):

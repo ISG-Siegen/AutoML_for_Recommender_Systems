@@ -36,6 +36,7 @@ Edit the config file to fit your system (e.g. path to datasets) and rename it fr
 ## Docker Setup
 The environment is delivered through docker (as we are using too many libraries, and it is much easier)
 * Details will follow soon 
+* Windows Bug: if you can not bind the volume as the path keeps chaining, use a path outside the `/Users/` directory 
 
 ## OpenML Test Suite for making data public
 * Details will follow soon (maybe)
