@@ -21,8 +21,8 @@ result_data = []
 
 # ------------- Load and collect datasets
 logger.info("######## Load Datasets ########")
-data_ml_100k, features_ml_100k, label_ml_100k = load_ml_100k()
-datasets_list.append(dataset_base.Dataset("movielens-100k", data_ml_100k, features_ml_100k, label_ml_100k))
+name, data, features, label, recsys_properties = load_ml_100k()
+datasets_list.append(dataset_base.Dataset(name, data, features, label, recsys_properties))
 
 # ------------- Loop over all datasets
 logger.info("######## Loop over all Datasets and do benchmarks ########")

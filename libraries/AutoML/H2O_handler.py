@@ -9,7 +9,9 @@ class H2OHandler(Model):
 
         super().__init__("H2O", H2OGradientBoostingEstimator(), "AutoML")
 
-    def train(self, x_train, y_train):
+    def train(self, dataset):
+        x_train, y_train = dataset.train_data
+
         features = list(x_train)
         label = list(y_train)
 
@@ -22,6 +24,7 @@ class H2OHandler(Model):
 
         self.model_object.train(x=features, y=label[0], training_frame=train, validation_frame=valid)
 
-    def predict(self, x_test):
+    def predict(self, dataset):
+        x_test, _ = dataset.test_data
         df = h2o.H2OFrame(x_test)
         return self.model_object.predict(df).as_data_frame()

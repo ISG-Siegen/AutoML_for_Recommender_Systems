@@ -13,10 +13,12 @@ class ScikitModel(Model):
     def __init__(self, name, model):
         super().__init__("Scikit_" + name, model, "ML")
 
-    def train(self, x_train, y_train):
+    def train(self, dataset):
+        x_train, y_train = dataset.train_data
         self.model_object.fit(x_train, y_train.values.ravel())
 
-    def predict(self, x_test):
+    def predict(self, dataset):
+        x_test, _ = dataset.test_data
         return self.model_object.predict(x_test)
 
 

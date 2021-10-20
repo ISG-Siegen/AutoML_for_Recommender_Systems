@@ -11,7 +11,9 @@ class SurpriseModel(Model):
     def __init__(self, name, model):
         super().__init__(name, model, "RecSys")
 
-    def train(self, x_train, y_train):
+    def train(self, dataset):
+        x_train, y_train = dataset.train_data
+
         label = list(y_train)
 
         # Build 1 training frame
@@ -19,14 +21,20 @@ class SurpriseModel(Model):
         p_x_train[label] = y_train
 
         # Adapt custom Dataframe to Surprise Lib requirements
-        reader = Reader(rating_scale=(1, 5))
-        data = Dataset.load_from_df(p_x_train[["userId", "movieId", "rating"]], reader)
+        reader = Reader(rating_scale=(dataset.recsys_properties.rating_lower_bound,
+                                      dataset.recsys_properties.rating_upper_bound))
+        data = Dataset.load_from_df(p_x_train[[dataset.recsys_properties.userId_col,
+                                               dataset.recsys_properties.itemId_col,
+                                               dataset.recsys_properties.rating_col]], reader)
         trainset = data.build_full_trainset()
         self.model_object.fit(trainset)
 
-    def predict(self, x_test):
-        predictions = predict(self.model_object, x_test, usercol='userId', itemcol='movieId', predcol='prediction')
-        predictions.head()
+    def predict(self, dataset):
+        x_test, _ = dataset.test_data
+        predictions = predict(self.model_object, x_test,
+                              usercol=dataset.recsys_properties.userId_col,
+                              itemcol=dataset.recsys_properties.itemId_col,
+                              predcol='prediction')
         return predictions['prediction']
 
 

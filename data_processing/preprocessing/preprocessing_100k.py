@@ -1,7 +1,7 @@
 import pandas as pd
 from utils.lcer import get_dataset_default_location
 import os
-from pathlib import Path
+from benchmark_framework.dataset_base import RecSysProperties
 
 
 def load_ml_100k():
@@ -20,9 +20,7 @@ def load_ml_100k():
     rm_df = pd.merge(movies_df, ratings_df, left_on='movieId', right_on='itemId')
 
     # Drop useless columns
-    to_drop = ['title', 'releaseDate', 'imdbUrl', 'videoReleaseDate']
-    # FIXME testing dropping additional stuff (maybe also drop movieid, userid?)
-    to_drop += ['itemId', 'timestamp']
+    to_drop = ['title', 'releaseDate', 'imdbUrl', 'videoReleaseDate', 'itemId']
 
     rm_df = rm_df.drop(to_drop, axis=1)
 
@@ -31,13 +29,6 @@ def load_ml_100k():
     features = list(rm_df)
     features.remove(label)  # this means simply all columns are features but the label column
 
-    return rm_df, features, label
+    recsys_propertys = RecSysProperties('userId', 'movieId', 'rating', 1, 5,)
 
-
-def preprocess_ml_100k():
-    rm_df, features, label = load_ml_100k()
-
-    features = pd.DataFrame(rm_df[features])
-    label = pd.DataFrame(rm_df[label])
-
-    return rm_df, features, label, rm_df.userId.unique().shape[0], rm_df.movieId.unique().shape[0]
+    return 'movielens-100k', rm_df, features, label, recsys_propertys

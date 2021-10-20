@@ -13,9 +13,9 @@ class Model(ABC):
         self.library_category = category
 
     @abstractmethod
-    def train(self, x_train, y_train):
+    def train(self, dataset):
         raise NotImplementedError("NotImplementedError: Implementation required for train() method")
 
     @abstractmethod
-    def predict(self, x_test):
+    def predict(self, dataset):
         raise NotImplementedError("NotImplementedError: Implementation required for predict() method")
