@@ -16,7 +16,7 @@ def example_data_eval(input_path, save_images=True):
 
 def get_basic_plots(data, save_images, baseline_model_name, prefix=""):
     logger.info("Get Barplots Evaluation")
-    eval_plotter.start_barplot(data, save_images, prefix=prefix)
+    # eval_plotter.start_barplot(data, save_images, prefix=prefix)
     eval_plotter.start_barplot(data, save_images, horizontal=True, prefix=prefix)
 
     logger.info("Get Table")
@@ -28,6 +28,7 @@ def get_basic_plots(data, save_images, baseline_model_name, prefix=""):
 def eval_overall_results():
     overall_data = filer.read_data(os.path.join(get_base_path(), get_output_result_data(), "overall_benchmark_results.csv"))
 
+    # FOr each dataset
     for dataset in overall_data["Dataset"].unique().tolist():
         logger.info("Get Barplots Evaluation for dataset {}".format(dataset))
         image_name_prefix = "{}_".format(dataset)
@@ -37,6 +38,9 @@ def eval_overall_results():
 
         eval_plotter.aggregated_barplot(result_subset[["Model", "LibraryCategory", "RSME"]], True, "LibraryCategory",
                                         prefix=image_name_prefix)
+
+
+    # TODO potentially for all datasets at once
 
 
 if __name__ == "__main__":
