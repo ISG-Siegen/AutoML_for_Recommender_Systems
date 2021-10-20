@@ -8,7 +8,7 @@ class Metric:
         self.name = name
 
     @abstractmethod
-    def evaluate(self, y_true, y_pred):
+    def evaluate(self, dataset, y_pred):
         pass
 
 
@@ -17,5 +17,6 @@ class RSME(Metric):
     def __init__(self):
         super().__init__("RSME")
 
-    def evaluate(self, y_true, y_pred):
+    def evaluate(self, dataset, y_pred):
+        _, y_true = dataset.test_data
         return mean_squared_error(y_true, y_pred, squared=False)

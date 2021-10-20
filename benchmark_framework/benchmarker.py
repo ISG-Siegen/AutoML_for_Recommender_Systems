@@ -18,10 +18,6 @@ class Benchmark:
         logger.info(
             "###### Starting benchmark on dataset {} with model {} ######".format(self.dataset.name, self.model.name))
 
-        # Get required data
-        x_train, y_train = self.dataset.train_data
-        x_test, y_test = self.dataset.test_data
-
         # Run dataset while measuring and being in budget
         logger.info("### Start Training and Prediction with timing ###")
         start_time = time.time()
@@ -31,18 +27,18 @@ class Benchmark:
         # Soft budget via library itself
 
         # Train
-        logger.info("# Train #")  # FIXME For true time benchmark remove this logger?
-        self.model.train(x_train, y_train)
+        logger.info("# Train " + str(self.model.name) + " #")  # FIXME For true time benchmark remove this logger?
+        self.model.train(self.dataset)
         # Predict
-        logger.info("# Predict #")  # FIXME For true time benchmark remove this logger?
-        y_pred = self.model.predict(x_test)
+        logger.info("# Predict " + str(self.model.name) + " #")  # FIXME For true time benchmark remove this logger?
+        y_pred = self.model.predict(self.dataset)
 
         # Get time
         execution_time = time.time() - start_time
 
         # Calc metric
         logger.info("### Calculate benchmark results ###")
-        metric_val = self.metric.evaluate(y_test, y_pred)
+        metric_val = self.metric.evaluate(self.dataset, y_pred)
 
         # Return metric and time
         logger.info("### Finished and return ###")

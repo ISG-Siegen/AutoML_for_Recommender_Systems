@@ -3,6 +3,7 @@ from benchmark_framework import benchmarker, metrics, dataset_base
 from libraries.ML.scikit_models import ScikitRF, ScikitSVRegressor, ScikitSGD, ScikitKNN
 from data_processing.preprocessing.preprocessing_100k import load_ml_100k
 from libraries.AutoML.H2O_handler import H2OHandler
+from libraries.RecSys.surprise import SurpriseKNN, SurpriseSGD
 from libraries.AutoML.autosklearn_handler import AutoSKLearn
 import pandas as pd
 from utils.lcer import get_logger, get_output_result_data, get_base_path
@@ -12,7 +13,7 @@ from datetime import date
 
 logger = get_logger("BenchmarkExe")
 
-imported_models = [ScikitKNN, ScikitRF, ScikitSGD, ScikitSVRegressor, H2OHandler, AutoSKLearn]
+imported_models = [SurpriseKNN, SurpriseSGD, ScikitKNN, ScikitRF, ScikitSGD, ScikitSVRegressor, H2OHandler, AutoSKLearn]
 
 # ------------- Start Variables
 datasets_list = []
@@ -20,8 +21,8 @@ result_data = []
 
 # ------------- Load and collect datasets
 logger.info("######## Load Datasets ########")
-data, features, label = load_ml_100k()
-datasets_list.append(dataset_base.Dataset("movielens-100k", data, features, label))
+name, data, features, label, recsys_properties = load_ml_100k()
+datasets_list.append(dataset_base.Dataset(name, data, features, label, recsys_properties))
 
 # ------------- Loop over all datasets
 logger.info("######## Loop over all Datasets and do benchmarks ########")

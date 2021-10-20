@@ -13,10 +13,12 @@ class ScikitModel(Model):
     def __init__(self, name, model):
         super().__init__("Scikit_" + name, model, "ML")
 
-    def train(self, x_train, y_train):
+    def train(self, dataset):
+        x_train, y_train = dataset.train_data
         self.model_object.fit(x_train, y_train.values.ravel())
 
-    def predict(self, x_test):
+    def predict(self, dataset):
+        x_test, _ = dataset.test_data
         return self.model_object.predict(x_test)
 
 
@@ -24,22 +26,22 @@ class ScikitModel(Model):
 class ScikitSVRegressor(ScikitModel):
 
     def __init__(self):
-        super().__init__("SupportVectorRegression", SVR())
+        super().__init__("SciKit_SupportVectorRegression", SVR())
 
 
 class ScikitSGD(ScikitModel):
 
     def __init__(self):
-        super().__init__("StochasticGradientDescentRegressor", SGDRegressor())
+        super().__init__("SciKit_StochasticGradientDescentRegressor", SGDRegressor())
 
 
 class ScikitRF(ScikitModel):
 
     def __init__(self):
-        super().__init__("RandomForestRegressor", RandomForestRegressor(n_estimators=10))
+        super().__init__("SciKit_RandomForestRegressor", RandomForestRegressor())
 
 
 class ScikitKNN(ScikitModel):
 
     def __init__(self):
-        super().__init__("KNeighborsRegressor", KNeighborsRegressor())
+        super().__init__("SciKit_KNeighborsRegressor", KNeighborsRegressor())
