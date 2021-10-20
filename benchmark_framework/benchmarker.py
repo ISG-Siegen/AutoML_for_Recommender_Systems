@@ -31,10 +31,10 @@ class Benchmark:
         # Soft budget via library itself
 
         # Train
-        logger.info("# Train #")  # FIXME For true time benchmark remove this logger?
+        logger.info("# Train " + str(self.model.name) + " #")  # FIXME For true time benchmark remove this logger?
         self.model.train(x_train, y_train)
         # Predict
-        logger.info("# Predict #")  # FIXME For true time benchmark remove this logger?
+        logger.info("# Predict " + str(self.model.name) + " #")  # FIXME For true time benchmark remove this logger?
         y_pred = self.model.predict(x_test)
 
         # Get time
