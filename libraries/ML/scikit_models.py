@@ -21,25 +21,25 @@ class ScikitModel(Model):
 
 
 # Different Models from the library
-class SVRegressor(ScikitModel):
+class ScikitSVRegressor(ScikitModel):
 
     def __init__(self):
         super().__init__("SupportVectorRegression", SVR())
 
 
-class SGD(ScikitModel):
+class ScikitSGD(ScikitModel):
 
     def __init__(self):
         super().__init__("StochasticGradientDescentRegressor", SGDRegressor())
 
 
-class RF(ScikitModel):
+class ScikitRF(ScikitModel):
 
     def __init__(self):
         super().__init__("RandomForestRegressor", RandomForestRegressor(n_estimators=10))
 
 
-class KNN(ScikitModel):
+class ScikitKNN(ScikitModel):
 
     def __init__(self):
         super().__init__("KNeighborsRegressor", KNeighborsRegressor())
