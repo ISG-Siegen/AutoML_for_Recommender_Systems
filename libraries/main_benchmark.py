@@ -1,6 +1,6 @@
 import os
 from benchmark_framework import benchmarker, metrics, dataset_base
-from libraries.ML.scikit_models import ScikitRF, ScikitSVRegressor, ScikitSGD, ScikitKNN
+from libraries.ML.scikit_models import load_all_scikit_models
 from data_processing.preprocessing.preprocessing_100k import load_ml_100k
 from libraries.AutoML.H2O_handler import H2OHandler
 from libraries.RecSys.surprise import SurpriseKNN, SurpriseSGD
@@ -13,7 +13,7 @@ from datetime import date
 
 logger = get_logger("BenchmarkExe")
 
-imported_models = [SurpriseKNN, SurpriseSGD, ScikitKNN, ScikitRF, ScikitSGD, ScikitSVRegressor, H2OHandler, AutoSKLearn]
+imported_models = [SurpriseKNN, SurpriseSGD, H2OHandler, AutoSKLearn] + load_all_scikit_models()
 
 # ------------- Start Variables
 datasets_list = []
