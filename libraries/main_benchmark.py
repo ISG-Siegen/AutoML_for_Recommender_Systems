@@ -7,6 +7,8 @@ from libraries.AutoML.autosklearn_handler import AutoSKLearn
 import pandas as pd
 from utils.lcer import get_logger, get_output_result_data, get_base_path
 from utils.filer import write_data
+from datetime import date
+
 
 logger = get_logger("BenchmarkExe")
 
@@ -45,4 +47,6 @@ for dataset in datasets_list:
 # ------------- Output Data as results file
 logger.info("######## Export Result data ########")
 out_df = pd.DataFrame(result_data, columns=["Dataset", "Model", "LibraryCategory", "RSME", "TimeInSeconds"])
-write_data(out_df, os.path.join(get_base_path(), get_output_result_data(), "overall_benchmark_results.csv"))
+# Ensuring to generate a new file every day to keep a history of benchmark results
+write_data(out_df, os.path.join(get_base_path(), get_output_result_data(), "{}_overall_benchmark_results.csv".format(
+    date.today())))
