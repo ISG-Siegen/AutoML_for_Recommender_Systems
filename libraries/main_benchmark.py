@@ -5,6 +5,7 @@ from data_processing.preprocessing.preprocessing_100k import load_ml_100k
 from libraries.AutoML.H2O_handler import H2OHandler
 from libraries.RecSys.surprise import SurpriseKNN, SurpriseSGD
 from libraries.AutoML.autosklearn_handler import AutoSKLearn
+from libraries.AutoRecSys.auto_surprise import AutoSurpriseModel
 import pandas as pd
 from utils.lcer import get_logger, get_output_result_data, get_base_path
 from utils.filer import write_data
@@ -13,7 +14,8 @@ from datetime import date
 
 logger = get_logger("BenchmarkExe")
 
-imported_models = [SurpriseKNN, SurpriseSGD, ScikitKNN, ScikitRF, ScikitSGD, ScikitSVRegressor, H2OHandler, AutoSKLearn]
+imported_models = [AutoSurpriseModel, SurpriseKNN, SurpriseSGD, ScikitKNN, ScikitRF, ScikitSGD, ScikitSVRegressor,
+                   H2OHandler, AutoSKLearn]
 
 # ------------- Start Variables
 datasets_list = []
