@@ -39,7 +39,7 @@ class SurpriseModel(Model):
 
 
 # Different Models from the library
-class SurpriseSGD(SurpriseModel):
+class SurpriseSVD(SurpriseModel):
 
     def __init__(self):
         super().__init__("Surprise_SingularValueDecompositionAlgorithm", SVD())
