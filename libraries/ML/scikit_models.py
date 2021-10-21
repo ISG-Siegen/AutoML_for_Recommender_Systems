@@ -1,6 +1,6 @@
 from sklearn.svm import SVR
 from sklearn.ensemble import RandomForestRegressor, AdaBoostRegressor, BaggingRegressor, ExtraTreesRegressor, \
-    GradientBoostingRegressor, HistGradientBoostingRegressor
+    GradientBoostingRegressor #, HistGradientBoostingRegressor
 from sklearn.neighbors import KNeighborsRegressor, RadiusNeighborsRegressor
 from benchmark_framework.model_base import Model
 from abc import abstractmethod
