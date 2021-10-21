@@ -39,13 +39,13 @@ class SurpriseModel(Model):
 
 
 # Different Models from the library
-class SurpriseKNN(SurpriseModel):
+class SurpriseSVD(SurpriseModel):
 
     def __init__(self):
         super().__init__("Surprise_SingularValueDecompositionAlgorithm", SVD())
 
 
-class SurpriseSGD(SurpriseModel):
+class SurpriseKNN(SurpriseModel):
 
     def __init__(self):
         super().__init__("Surprise_KNeighborsNeighbor", KNNBasic())
