@@ -16,12 +16,22 @@ def load_ml_100k():
                          'adventure', 'animation', 'childrens', 'comedy', 'crime', 'documentary', 'drama',
                          'fantasy', 'filmnoir', 'horror', 'musical', 'mystery', 'romance', 'scifi', 'thriller',
                          'war', 'western']
+    user_df = pd.read_csv(os.path.join(get_dataset_default_location(), 'ml-100k/u.user'), sep='|',
+                          encoding="iso-8859-1", header=None)
+    user_df.columns = ['userId', 'age', 'gender', 'occupation', 'zip_code']
 
+    # Merge
     rm_df = pd.merge(movies_df, ratings_df, left_on='movieId', right_on='itemId')
+    rm_df = pd.merge(rm_df, user_df, left_on='userId', right_on='userId')
 
-    # Drop useless columns
-    to_drop = ['title', 'releaseDate', 'imdbUrl', 'videoReleaseDate', 'itemId']
+    # handle categorical column
+    to_encode = ['occupation', 'gender']
+    for col in to_encode:
+        df_dummies = pd.get_dummies(rm_df[col])
+        rm_df = pd.concat([rm_df, df_dummies], axis=1)
 
+    # Drop useless columns, drop zip_code as it has multiple string-based codes which could not be encoded otherwise
+    to_drop = ['title', 'releaseDate', 'imdbUrl', 'videoReleaseDate', 'itemId', 'zip_code'] + to_encode
     rm_df = rm_df.drop(to_drop, axis=1)
 
     # Set labels/features
