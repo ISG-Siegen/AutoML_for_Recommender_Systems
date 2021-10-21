@@ -4,6 +4,9 @@ import os
 from utils.lcer import get_output_images, get_base_path
 import numpy as np
 
+YMIN = 0.65
+YMAX = None
+
 
 def get_correct_path(file_name):
     return os.path.join(get_base_path(), get_output_images(), "{}.pdf".format(file_name))
@@ -30,7 +33,9 @@ def start_barplot(data: pd.DataFrame, save_images, horizontal=False, prefix=""):
         plt.xticks(rotation=70)
         plt.xlabel("Model Name")
         plt.ylabel("PPD-RSME")
+    ax = plt.gca()
 
+    ax.set_xlim([YMIN, YMAX])
     fig.tight_layout()
 
     if save_images:
@@ -68,7 +73,6 @@ def tableplot(data: pd.DataFrame, save_images, change_perspective, prefix=""):
         name += "default_table_plot"
         plt.savefig(get_correct_path(name))
 
-    fig.tight_layout()
     plt.show()
 
     return table_data
@@ -77,7 +81,8 @@ def tableplot(data: pd.DataFrame, save_images, change_perspective, prefix=""):
 def aggregated_barplot(data: pd.DataFrame, save_images, agg_by, prefix=""):
     # Aggregate
     agg_data = data.copy()
-    agg_data = agg_data.groupby(agg_by)[data.columns[-1]].agg([np.min, np.max, np.mean, np.std], as_index=False).rename(columns={"amin": "min", "amax": "max"})
+    agg_data = agg_data.groupby(agg_by)[data.columns[-1]].agg([np.min, np.max, np.mean, np.std], as_index=False).rename(
+        columns={"amin": "min", "amax": "max"})
     # agg_data.reset_index(level=0, inplace=True)
     agg_data = agg_data.sort_values(by=["mean"])  # sort by last column (last column should be error)
 
@@ -90,6 +95,8 @@ def aggregated_barplot(data: pd.DataFrame, save_images, agg_by, prefix=""):
     ax.get_legend().remove()
     plt.ylabel("Model Name")
     plt.xlabel("Mean PPD-RSME")
+
+    ax.set_xlim([YMIN, YMAX])
     fig.tight_layout()
 
     if save_images:
