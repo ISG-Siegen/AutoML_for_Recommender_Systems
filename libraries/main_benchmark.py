@@ -13,7 +13,7 @@ from datetime import date
 
 logger = get_logger("BenchmarkExe")
 
-imported_models = [SurpriseKNN, SurpriseSGD, H2OHandler, AutoSKLearn] + load_all_scikit_models()
+imported_models = [AutoSurpriseModel, SurpriseKNN, SurpriseSGD, H2OHandler, AutoSKLearn] + load_all_scikit_models()
 
 # ------------- Start Variables
 datasets_list = []
