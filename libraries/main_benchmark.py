@@ -3,7 +3,7 @@ from benchmark_framework import benchmarker, metrics, dataset_base
 from libraries.ML.scikit_models import load_all_scikit_models
 from data_processing.preprocessing.preprocessing_100k import load_ml_100k
 from libraries.AutoML.H2O_handler import H2OHandler
-from libraries.RecSys.surprise import SurpriseKNN, SurpriseSVD
+from libraries.RecSys.surprise import load_all_surprise_models
 from libraries.AutoML.autosklearn_handler import AutoSKLearn
 from libraries.AutoRecSys.auto_surprise import AutoSurpriseModel
 import pandas as pd
@@ -14,7 +14,9 @@ from datetime import date
 
 logger = get_logger("BenchmarkExe")
 
-imported_models = [AutoSurpriseModel, SurpriseKNN, SurpriseSVD, H2OHandler, AutoSKLearn] + load_all_scikit_models()
+imported_models = [AutoSurpriseModel, H2OHandler, AutoSKLearn] \
+                  + load_all_scikit_models() \
+                  + load_all_surprise_models()
 
 # ------------- Start Variables
 datasets_list = []
