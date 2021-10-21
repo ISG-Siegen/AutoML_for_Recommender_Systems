@@ -26,16 +26,16 @@ class AutoSurpriseModel(Model):
                                                dataset.recsys_properties.itemId_col,
                                                dataset.recsys_properties.rating_col]], reader)
 
-        engine = Engine(verbose=True)
+        engine = Engine(verbose=False)
         best_algo, best_params, best_score, tasks = engine.train(
             data=data,
             target_metric='test_rmse',
-            cpu_time_limit=60 * 60,
-            max_evals=100
+            cpu_time_limit=60 * 60
         )
-        # 
+        # create best model object
         self.model_object = engine.build_model(best_algo, best_params)
 
+        # train created model
         trainset = data.build_full_trainset()
         self.model_object.fit(trainset)
 
