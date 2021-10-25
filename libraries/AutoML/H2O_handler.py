@@ -1,13 +1,13 @@
 import h2o
-from h2o.estimators import H2OGradientBoostingEstimator
 from benchmark_framework.model_base import Model
+from h2o.automl import H2OAutoML
 
 
 class H2OHandler(Model):
     def __init__(self):
         h2o.init()
 
-        super().__init__("H2O_H2OGradientBoostingEstimator", H2OGradientBoostingEstimator(), "AutoML")
+        super().__init__("H2O_H2OGradientBoostingEstimator", H2OAutoML(), "AutoML")
 
     def train(self, dataset):
         x_train, y_train = dataset.train_data
