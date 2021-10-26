@@ -7,9 +7,9 @@ class Model(ABC):
         self.name = name
         self.model_object = model_object
 
-        if category not in ["ML", "AutoML", "RecSys", "AutoRecSys"]:
+        if category not in ["ML", "AutoML", "RecSys", "AutoRecSys", "Baseline"]:
             raise ValueError(("Category Input value {} is not one of the allowed categories:" +
-                             " ['ML', 'AutoML', 'RecSys', 'AutoRecSys'").format(category))
+                             " ['ML', 'AutoML', 'RecSys', 'AutoRecSys', 'Baseline'").format(category))
         self.library_category = category
 
     @abstractmethod
