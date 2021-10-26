@@ -42,4 +42,5 @@ The environment is delivered through docker (as we are using too many libraries,
 * Details will follow soon (maybe)
 
 # Other Notes and Remarks
-* FLAML automatically creates a log file during/after a run. 
+* FLAML automatically creates a log file during/after a run.
+* GAMA creates a cache directory that it (should) delete after it is finished. If it crashes, the directory usually persists. 
