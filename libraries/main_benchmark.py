@@ -10,13 +10,16 @@ import pandas as pd
 from utils.lcer import get_logger, get_output_result_data, get_base_path
 from utils.filer import write_data
 from datetime import date
-
+from libraries.AutoML.tpot_handler import TPOTHandler
+from libraries.Baselines.constant_predictor import MeanPredictor
+from libraries.ML.xgboosst_model import XGBoostModel
+from libraries.AutoML.flaml_handler import FLAMLHandler
+from libraries.AutoML.gama_handler import GamaHandler
 
 logger = get_logger("BenchmarkExe")
 
-imported_models = [AutoSurpriseModel, H2OHandler, AutoSKLearn] \
-                  + load_all_scikit_models() \
-                  + load_all_surprise_models()
+imported_models = [AutoSurpriseModel, H2OHandler, AutoSKLearn, TPOTHandler, MeanPredictor, XGBoostModel,
+                   FLAMLHandler, GamaHandler] + load_all_scikit_models() + load_all_surprise_models()
 
 # ------------- Start Variables
 datasets_list = []
@@ -46,7 +49,6 @@ for dataset in datasets_list:
 
     # Add result of this dataset to full collection
     result_data.extend(tmp_result_data)
-
 
 # ------------- Output Data as results file
 logger.info("######## Export Result data ########")
