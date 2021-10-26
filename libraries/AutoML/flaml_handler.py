@@ -10,7 +10,7 @@ class FLAMLHandler(Model):
 
     def train(self, dataset):
         x_train, y_train = dataset.train_data
-        self.model_object.fit(x_train, y_train.values.ravel(), task="regression")
+        self.model_object.fit(x_train, y_train.values.ravel(), task="regression", verbose=0)
 
     def predict(self, dataset):
         x_test, _ = dataset.test_data
