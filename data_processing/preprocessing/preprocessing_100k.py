@@ -4,7 +4,7 @@ import os
 from benchmark_framework.dataset_base import RecSysProperties
 
 
-def load_ml_100k():
+def load_ml_100k_from_file():
     """ Method to load ml100k dataset and return data, features (list of strings), and label (string) """
 
     # Load from Disc
@@ -39,6 +39,20 @@ def load_ml_100k():
     features = list(rm_df)
     features.remove(label)  # this means simply all columns are features but the label column
 
-    recsys_propertys = RecSysProperties('userId', 'movieId', 'rating', 1, 5)
+    recsys_properties = RecSysProperties('userId', 'movieId', 'rating', 1, 5)
 
-    return 'movielens-100k', rm_df, features, label, recsys_propertys
+    return 'movielens-100K', rm_df, features, label, recsys_properties
+
+
+def load_ml_100k_from_csv():
+    data = pd.read_table(os.path.join(get_dataset_default_location(), 'csv_files/movielens-100K'), sep=',',
+                         header=True, engine='python')
+
+    # Set labels/features
+    label = 'rating'
+    features = list(data)
+    features.remove(label)  # this means simply all columns are features but the label column
+
+    recsys_properties = RecSysProperties('userId', 'movieId', 'rating', 1, 5)
+
+    return 'movielens-100K', data, features, label, recsys_properties

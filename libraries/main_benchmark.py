@@ -1,7 +1,7 @@
 import os
-from benchmark_framework import benchmarker, metrics, dataset_base
+from benchmark_framework import benchmarker, metrics
+from data_processing.preprocessing.main_preprocessing import load_file_to_csv
 from libraries.ML.scikit_models import load_all_scikit_models
-from data_processing.preprocessing.preprocessing_100k import load_ml_100k
 from libraries.AutoML.H2O_handler import H2OHandler
 from libraries.RecSys.surprise import load_all_surprise_models
 from libraries.AutoML.autosklearn_handler import AutoSKLearn
@@ -22,13 +22,10 @@ imported_models = [AutoSurpriseModel, H2OHandler, AutoSKLearn, TPOTHandler, Mean
                    FLAMLHandler, GamaHandler] + load_all_scikit_models() + load_all_surprise_models()
 
 # ------------- Start Variables
-datasets_list = []
 result_data = []
 
-# ------------- Load and collect datasets
-logger.info("######## Load Datasets ########")
-name, data, features, label, recsys_properties = load_ml_100k()
-datasets_list.append(dataset_base.Dataset(name, data, features, label, recsys_properties))
+# ------------- Load Datasets
+datasets_list = load_file_to_csv(logger)
 
 # ------------- Loop over all datasets
 logger.info("######## Loop over all Datasets and do benchmarks ########")
