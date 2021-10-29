@@ -16,7 +16,7 @@ class Benchmark:
 
     def run(self):
         logger.info(
-            "###### Starting benchmark on dataset {} with model {} ######".format(self.dataset.name, self.model.name))
+            "#### Starting benchmark on dataset {} with model {} ####".format(self.dataset.name, self.model.name))
 
         # Run dataset while measuring and being in budget
         logger.info("### Start Training and Prediction with timing ###")
@@ -37,9 +37,7 @@ class Benchmark:
         execution_time = time.time() - start_time
 
         # Calc metric
-        logger.info("### Calculate benchmark results ###")
         metric_val = self.metric.evaluate(self.dataset, y_pred)
 
         # Return metric and time
-        logger.info("### Finished and return ###")
         return metric_val, execution_time

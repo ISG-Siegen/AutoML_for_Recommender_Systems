@@ -1,5 +1,5 @@
 import pandas as pd
-from utils.lcer import get_dataset_default_location
+from utils.lcer import get_dataset_container_path
 import os
 from benchmark_framework.dataset_base import RecSysProperties
 
@@ -8,15 +8,15 @@ def load_ml_100k():
     """ Method to load ml100k dataset and return data, features (list of strings), and label (string) """
 
     # Load from Disc
-    ratings_df = pd.read_csv(os.path.join(get_dataset_default_location(), 'ml-100k/u.data'), sep='\t',
+    ratings_df = pd.read_csv(os.path.join(get_dataset_container_path(), 'ml-100k/u.data'), sep='\t',
                              encoding='iso-8859-1', names=['userId', 'itemId', 'rating', 'timestamp'])
-    movies_df = pd.read_csv(os.path.join(get_dataset_default_location(), 'ml-100k/u.item'), sep='|',
+    movies_df = pd.read_csv(os.path.join(get_dataset_container_path(), 'ml-100k/u.item'), sep='|',
                             encoding="iso-8859-1", header=None)
     movies_df.columns = ['movieId', 'title', 'releaseDate', 'videoReleaseDate', 'imdbUrl', 'unknown', 'action',
                          'adventure', 'animation', 'childrens', 'comedy', 'crime', 'documentary', 'drama',
                          'fantasy', 'filmnoir', 'horror', 'musical', 'mystery', 'romance', 'scifi', 'thriller',
                          'war', 'western']
-    user_df = pd.read_csv(os.path.join(get_dataset_default_location(), 'ml-100k/u.user'), sep='|',
+    user_df = pd.read_csv(os.path.join(get_dataset_container_path(), 'ml-100k/u.user'), sep='|',
                           encoding="iso-8859-1", header=None)
     user_df.columns = ['userId', 'age', 'gender', 'occupation', 'zip_code']
 

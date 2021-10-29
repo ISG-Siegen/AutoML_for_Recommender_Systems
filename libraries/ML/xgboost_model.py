@@ -1,13 +1,13 @@
 from benchmark_framework.model_base import Model
 
 
-def load_tpot_and_all_models():
-    from tpot import TPOTRegressor
+def load_xgboost_and_all_models():
+    from xgboost import XGBRegressor
 
-    class TPOTHandler(Model):
+    class XGBoostModel(Model):
 
         def __init__(self):
-            super().__init__("TPOT_Regressor", TPOTRegressor(), "AutoML")
+            super().__init__("XGBoostRegressor", XGBRegressor(), "ML")
 
         def train(self, dataset):
             x_train, y_train = dataset.train_data
@@ -17,4 +17,4 @@ def load_tpot_and_all_models():
             x_test, _ = dataset.test_data
             return self.model_object.predict(x_test)
 
-    return [TPOTHandler]
+    return [XGBoostModel]

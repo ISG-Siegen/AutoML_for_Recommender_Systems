@@ -1,30 +1,34 @@
-import h2o
 from benchmark_framework.model_base import Model
-from h2o.automl import H2OAutoML
 
 
-class H2OHandler(Model):
-    def __init__(self):
-        h2o.init()
+def load_h2o_and_all_models():
+    import h2o
+    from h2o.automl import H2OAutoML
 
-        super().__init__("H2O_H2OGradientBoostingEstimator", H2OAutoML(), "AutoML")
+    class H2OHandler(Model):
+        def __init__(self):
+            h2o.init()
 
-    def train(self, dataset):
-        x_train, y_train = dataset.train_data
+            super().__init__("H2O_H2OGradientBoostingEstimator", H2OAutoML(), "AutoML")
 
-        features = list(x_train)
-        label = list(y_train)
+        def train(self, dataset):
+            x_train, y_train = dataset.train_data
 
-        # Build 1 training frame
-        p_x_train = x_train.copy()
-        p_x_train[label] = y_train
-        # Split
-        df = h2o.H2OFrame(p_x_train)
-        train, valid = df.split_frame(ratios=[.75])
+            features = list(x_train)
+            label = list(y_train)
 
-        self.model_object.train(x=features, y=label[0], training_frame=train, validation_frame=valid)
+            # Build 1 training frame
+            p_x_train = x_train.copy()
+            p_x_train[label] = y_train
+            # Split
+            df = h2o.H2OFrame(p_x_train)
+            train, valid = df.split_frame(ratios=[.75])
 
-    def predict(self, dataset):
-        x_test, _ = dataset.test_data
-        df = h2o.H2OFrame(x_test)
-        return self.model_object.predict(df).as_data_frame()
+            self.model_object.train(x=features, y=label[0], training_frame=train, validation_frame=valid)
+
+        def predict(self, dataset):
+            x_test, _ = dataset.test_data
+            df = h2o.H2OFrame(x_test)
+            return self.model_object.predict(df).as_data_frame()
+
+    return [H2OHandler]

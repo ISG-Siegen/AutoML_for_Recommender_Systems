@@ -1,9 +1,12 @@
 # Code to eval given data according to our goals
+import pandas as pd
+
 from utils import filer
 from evaluation import eval_plotter
 import os
 from utils.lcer import get_logger, get_output_result_data, get_base_path
 from datetime import date
+import glob
 
 logger = get_logger("Evaluation")
 
@@ -14,13 +17,27 @@ def get_basic_plots(data, save_images, baseline_model_name, prefix=""):
     eval_plotter.start_barplot(data, save_images, horizontal=True, prefix=prefix)
 
     logger.info("Get Table")
-    table_data = eval_plotter.tableplot(data, save_images, baseline_model_name,prefix=prefix)
+    table_data = eval_plotter.tableplot(data, save_images, baseline_model_name, prefix=prefix)
 
     return table_data
 
 
+def merge_possible_files():
+    full_df = pd.DataFrame({"Dataset": [], "Model": [], "LibraryCategory": [], "RSME": [], "TimeInSeconds": []})
+    for path_to_file in glob.glob(os.path.join(get_base_path(), get_output_result_data(),
+                                               "{}_*_overall_benchmark_results.csv".format(date.today()))):
+        tmp_df = filer.read_data(path_to_file)
+        full_df = pd.concat([full_df, tmp_df])
+
+    # Write full data out
+    filer.write_data(full_df, os.path.join(get_base_path(), get_output_result_data(),
+                                           "{}_overall_benchmark_results.csv".format(date.today())))
+
+    return full_df
+
+
 def eval_overall_results():
-    overall_data = filer.read_data(os.path.join(get_base_path(), get_output_result_data(), "{}_overall_benchmark_results.csv".format(date.today())))
+    overall_data = merge_possible_files()
 
     # ----- Filter too large errors for model that did not converge with default values
     overall_data = overall_data[overall_data["RSME"] <= 2]
@@ -44,7 +61,6 @@ def eval_overall_results():
 
         eval_plotter.aggregated_barplot(result_subset[["Model", "LibraryCategory", "RSME"]], True, "LibraryCategory",
                                         prefix=image_name_prefix)
-
 
     # TODO potentially for all datasets at once
     # handle filtered models differently or mention it at least

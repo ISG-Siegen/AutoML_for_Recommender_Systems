@@ -33,12 +33,12 @@ def get_config(category, entry):
     return local_config[category][entry]
 
 
-def get_dataset_testdata():
-    return get_config("datasets", "test_data")
+def get_dataset_local_path():
+    return get_config("datasets", "local_path")
 
 
-def get_dataset_default_location():
-    return get_config("datasets", "default_location")
+def get_dataset_container_path():
+    return get_config("datasets", "container_path")
 
 
 def get_output_result_data():

@@ -1,0 +1,51 @@
+services:
+  # ---- base & other ----
+  base:
+    build:
+      context: .
+      target: base
+  # ---- Baseline ----
+  constant_predictors:
+    build:
+      context: .
+      target: constant_predictors
+  # ---- ML ----
+  sklearn:
+    build:
+      context: .
+      target: sklearn
+  xgboost:
+    build:
+      context: .
+      target: xgboost
+  # ---- AutoML ----
+  autosklearn:
+    build:
+      context: .
+      target: autosklearn
+  flaml:
+    build:
+      context: .
+      target: flaml
+  gama:
+    build:
+      context: .
+      target: gama
+  h2o:
+    build:
+      context: .
+      target: h2o
+  tpot:
+    build:
+      context: .
+      target: tpot
+  # ---- RecSys ----
+  surprise:
+    build:
+      context: .
+      target: surprise
+  # ---- AutoRecSys ----
+  autosurprise:
+    build:
+      context: .
+      target: autosurprise

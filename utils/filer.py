@@ -8,3 +8,7 @@ def read_data(input_path):
 
 def write_data(df, output_path):
     df.to_csv(output_path, index=False)
+
+
+def append_data(df, output_path):
+    df.to_csv(output_path, mode='a', header=False, index=False)
