@@ -18,6 +18,10 @@ services:
     build:
       context: .
       target: xgboost
+  ktrain:
+    build:
+      context: .
+      target: ktrain
   # ---- AutoML ----
   autosklearn:
     build:

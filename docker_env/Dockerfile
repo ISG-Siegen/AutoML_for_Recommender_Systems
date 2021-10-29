@@ -24,6 +24,10 @@ RUN pip install --no-cache-dir scikit-learn
 FROM base as xgboost
 RUN pip install --no-cache-dir xgboost
 
+# -- ktrain --
+FROM base as ktrain
+RUN pip uninstall --yes pandas && pip uninstall --yes scikit-learn  && pip install --no-cache-dir ktrain  && \
+    pip --no-cache-dir install tensorflow
 
 # ---- AutoML ----
 # -- autosklearn --

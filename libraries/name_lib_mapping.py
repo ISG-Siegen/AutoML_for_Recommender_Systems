@@ -10,6 +10,7 @@ from libraries.AutoRecSys.auto_surprise import load_auto_surprise_and_all_models
 # ML
 from libraries.ML.scikit_models import load_sklearn_and_all_models
 from libraries.ML.xgboost_model import load_xgboost_and_all_models
+from libraries.ML.ktrain_handler import load_ktrain_and_all_models
 
 # AutoML
 from libraries.AutoML.autosklearn_handler import load_auto_sklearn_and_all_models
@@ -31,6 +32,7 @@ NAME_LIB_MAP = {
     # ML
     "sklearn": load_sklearn_and_all_models,
     "xgboost": load_xgboost_and_all_models,
+    "ktrain": load_ktrain_and_all_models,
 
     # AutoML
     "autosklearn": load_auto_sklearn_and_all_models,
