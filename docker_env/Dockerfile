@@ -5,6 +5,8 @@ RUN apt-get update && apt-get install python-dev -y && \
 	apt-get install swig -y && apt install default-jre -y && \
 	pip install --no-cache-dir --upgrade pip
 
+# ---- Base Sklearn ----
+FROM base as base_python
 # Base requriements to run the benchmark framework (will get newest versions)
 RUN pip install --no-cache-dir pandas && pip install --no-cache-dir scikit-learn
 
@@ -12,56 +14,58 @@ RUN pip install --no-cache-dir pandas && pip install --no-cache-dir scikit-learn
 
 # ---- Baselines ----
 # -- constant_predictors --
-FROM base as constant_predictors
+FROM base_python as constant_predictors
 
 
 # ---- ML ----
 # -- scikit-learn --
-FROM base as sklearn
+FROM base_python as sklearn
 RUN pip install --no-cache-dir scikit-learn
 
 # -- xgboost --
-FROM base as xgboost
+FROM base_python as xgboost
 RUN pip install --no-cache-dir xgboost
 
 # -- ktrain --
 FROM base as ktrain
-RUN pip uninstall --yes pandas && pip uninstall --yes scikit-learn  && pip install --no-cache-dir ktrain  && \
-    pip --no-cache-dir install tensorflow
+RUN pip install --no-cache-dir ktrain  && pip --no-cache-dir install tensorflow
 
 # ---- AutoML ----
 # -- autosklearn --
-FROM base as autosklearn
+FROM base_python as autosklearn
 RUN pip install --no-cache-dir auto-sklearn
 
 # -- flaml --
-FROM base as flaml
+FROM base_python as flaml
 RUN pip install --no-cache-dir flaml
 
 # -- gama --
 FROM base as gama
-RUN pip uninstall --yes pandas && pip uninstall --yes scikit-learn  && pip install --no-cache-dir gama
+RUN pip install --no-cache-dir gama
 
 # -- h2o --
-FROM base as h2o
+FROM base_python as h2o
 RUN pip install --no-cache-dir h2o
 
 # -- tpot --
-FROM base as tpot
+FROM base_python as tpot
 RUN pip install --no-cache-dir tpot
 
 
 # ---- RecSys ----
 # -- surprise --
-FROM base as surprise
+FROM base_python as surprise
 RUN pip install --no-cache-dir surprise
 
 
 # ---- AutoRecSys ----
 # -- autosurprise --
-FROM base as autosurprise
+FROM base_python as autosurprise
 RUN pip install --no-cache-dir auto-surprise
 
+## -- AutoRec --
+#FROM base_python as autorec
+#RUN pip install --no-cache-dir autorecsys  && pip --no-cache-dir install tensorflow
 
 
 

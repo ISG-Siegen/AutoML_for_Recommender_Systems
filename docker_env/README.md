@@ -44,7 +44,7 @@ docker exec -it new-container bash
 # Used Libraries 
 
 ## Adding a new library
-Add entry to docker file and docker-compose.yml.
+Add entry to docker file and docker-compose.yml. Use `base` if the library has pandas and sklearn as requirement, else use `base_python`.
 
 Additionally, check using `https://pypi.org/pypi/{}/json` where `{}` is replaced by the library name under `requires_dist`, if the library would have conflicting dependencies with pandas or sklearn (i.e., if the library has both or one of them as a dependency) (See https://stackoverflow.com/a/50424967). IF that is the case, it is generally better to first uninstall both these packages and let it be re-installer automatically. The code used for handling the data by the benchmark framework should generally be backwards compatible enough such that any version of sklearn or pandas suffices to do their job. 
 See for example the dockerfile entry for `gama`. 

@@ -4,6 +4,10 @@ services:
     build:
       context: .
       target: base
+  base_python:
+    build:
+      context: .
+      target: base_python
   # ---- Baseline ----
   constant_predictors:
     build:
@@ -53,3 +57,7 @@ services:
     build:
       context: .
       target: autosurprise
+  autorec:
+    build:
+      context: .
+      target: autorec

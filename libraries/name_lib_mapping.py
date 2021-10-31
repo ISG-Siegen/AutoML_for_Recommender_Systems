@@ -6,6 +6,7 @@ from libraries.RecSys.surprise import load_surprise_and_all_models
 
 # AutoRecSys
 from libraries.AutoRecSys.auto_surprise import load_auto_surprise_and_all_models
+from libraries.AutoRecSys.autorec_handler import load_autorec_and_all_models
 
 # ML
 from libraries.ML.scikit_models import load_sklearn_and_all_models
@@ -28,6 +29,7 @@ NAME_LIB_MAP = {
 
     # AutoRecSys
     "autosurprise": load_auto_surprise_and_all_models,
+    "autorec": load_autorec_and_all_models,
 
     # ML
     "sklearn": load_sklearn_and_all_models,
