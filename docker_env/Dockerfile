@@ -10,6 +10,11 @@ FROM base as base_python
 # Base requriements to run the benchmark framework (will get newest versions)
 RUN pip install --no-cache-dir pandas && pip install --no-cache-dir scikit-learn
 
+# ---- Mgmt Container ----
+FROM base as mgmt
+COPY mgmt_requirements.txt mgmt_requirements.txt
+RUN pip install --no-cache-dir -r mgmt_requirements.txt
+
 # ------ Library Specific Images ------
 
 # ---- Baselines ----
