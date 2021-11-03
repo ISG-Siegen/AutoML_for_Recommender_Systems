@@ -54,9 +54,10 @@ If not, we might need to-reimplement some stuff.
 ## List of Base Libraries for Management (container_env_mgmt.py)
 See `mgmt_requirements.txt`.
 
-* This could also be its own docker container see https://stackoverflow.com/questions/60054378/i-want-to-use-docker-sdk-inside-a-running-docker-container-and-want-to-build-an 
-* The sklearn requirement could be removed by replacing the code for metric calculation. For now, it can be part of the base requirements. Pandas is generally needed. 
-* 
+* This could also be its own docker container
+  see https://stackoverflow.com/questions/60054378/i-want-to-use-docker-sdk-inside-a-running-docker-container-and-want-to-build-an
+* The sklearn requirement could be removed by replacing the code for metric calculation. For now, it can be part of the
+  base requirements. Pandas is generally needed.
 
 
 ## List of Libraries for Tests
