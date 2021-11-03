@@ -41,6 +41,10 @@ def row_to_col_data_format(data):
 def cd_plot_and_stats_tests(data: pd.DataFrame, save_images, prefix=""):
     experiment_results = row_to_col_data_format(data)
 
+    if len(experiment_results) < 5:
+        print("SKIPPED AUTORANK EVAL DUE TO NOT ENOUGH (5) ESTIMATIONS PER MODEL")
+        return
+
     # Do tests and get plot as well as report
     res = autorank(experiment_results)
     create_report(res)
