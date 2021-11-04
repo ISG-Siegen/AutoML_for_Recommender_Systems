@@ -6,7 +6,7 @@ from benchmark_framework.dataset_base import RecSysProperties
 
 def load_ml_1m_from_file():
     data = pd.read_table(os.path.join(get_dataset_default_location(), 'ml-1m/ratings.dat'), sep='::',
-                         header=0, names=['user', 'movieId', 'rating', 'timestamp'], engine='python')
+                         header=0, names=['userId', 'movieId', 'rating', 'timestamp'], engine='python')
 
     # Set labels/features
     label = 'rating'
@@ -20,8 +20,8 @@ def load_ml_1m_from_file():
 
 def load_ml_1m_from_csv():
     data = pd.read_table(os.path.join(get_dataset_default_location(), 'csv_files/movielens-1M.csv'), sep=',',
-                         header=True, engine='python')
-
+                         header=0, engine='python')
+    data = data.iloc[:, 1:]
     # Set labels/features
     label = 'rating'
     features = list(data)

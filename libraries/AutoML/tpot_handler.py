@@ -5,7 +5,7 @@ from benchmark_framework.model_base import Model
 class TPOTHandler(Model):
 
     def __init__(self):
-        super().__init__("TPOT_Regressor", TPOTRegressor(), "AutoML")
+        super().__init__("TPOT_Regressor", TPOTRegressor(max_time_mins=60), "AutoML")
 
     def train(self, dataset):
         x_train, y_train = dataset.train_data

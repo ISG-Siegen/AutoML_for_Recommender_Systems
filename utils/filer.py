@@ -7,4 +7,4 @@ def read_data(input_path):
 
 
 def write_data(df, output_path):
-    df.to_csv(output_path, index=False)
+    df.to_csv(output_path, index=False, mode='a', header=False)

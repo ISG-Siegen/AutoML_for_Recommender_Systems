@@ -23,8 +23,8 @@ def load_amazon_toys_from_file():
 
 def load_amazon_toys_from_csv():
     data = pd.read_table(os.path.join(get_dataset_default_location(), 'csv_files/amazon-toys.csv'), sep=',',
-                         header=True, engine='python')
-
+                         header=0, engine='python')
+    data = data.iloc[:, 1:]
     # Set labels/features
     label = 'rating'
     features = list(data)

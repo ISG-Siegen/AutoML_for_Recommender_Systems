@@ -36,7 +36,7 @@ def load_file_to_csv(logger):
         data.to_csv(path_or_buf='/opt/datasets/csv_files/{}.csv'.format(name), sep=',', header=True)
 
 
-def load_data_from_csv(logger):
+def load_all_data_from_csv(logger):
     datasets_list = []
     logger.info("######## Load Datasets From CSV########")
 
@@ -46,6 +46,12 @@ def load_data_from_csv(logger):
         datasets_list.append(dataset_base.Dataset(name, data, features, label, recsys_properties))
 
     return datasets_list
+
+def load_data_from_csv(load_function):
+    logger.info("Load {} From CSV".format(load_function))
+    name, data, features, label, recsys_properties = load_function()
+    dataset = dataset_base.Dataset(name, data, features, label, recsys_properties)
+    return dataset
 
 
 def load_data_from_files(logger):
@@ -58,6 +64,3 @@ def load_data_from_files(logger):
         datasets_list.append(dataset_base.Dataset(name, data, features, label, recsys_properties))
 
         return datasets_list
-
-
-load_file_to_csv(logger)
