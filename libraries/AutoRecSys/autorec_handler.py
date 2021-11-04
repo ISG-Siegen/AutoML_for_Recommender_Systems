@@ -71,6 +71,9 @@ def load_autorec_and_all_models():
                             y=y_train,
                             x_val=[x_val.values],
                             y_val=y_val,
+                            # Change default value for objective to validation mse,
+                            # otherwise the tuning process would be completely useless
+                            objective="val_mse",
                             # Add early stopping and epochs=100 as default is just non existing (which would be very bad
                             epochs=100,
                             callbacks=[tf.keras.callbacks.EarlyStopping(patience=2, min_delta=0.0001)])

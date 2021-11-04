@@ -22,7 +22,7 @@ class RSME(Metric):
     def evaluate(self, dataset, y_pred):
         _, y_true = dataset.test_data
 
-        # TODO unify this or remove dependence on sklearn in general
+        # TODO unify this or remove dependence on sklearn + packaging in general
         sklearn_version = version.parse(__version__)
         if sklearn_version >= version.parse("0.22"):
             return mean_squared_error(y_true, y_pred, squared=False)

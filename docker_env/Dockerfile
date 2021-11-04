@@ -3,7 +3,7 @@ FROM python:3.9.7 as base
 
 RUN apt-get update && apt-get install python-dev -y && \
 	apt-get install swig -y && apt install default-jre -y && \
-	pip install --no-cache-dir --upgrade pip
+	pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir packaging
 
 # ---- Base Sklearn ----
 FROM base as base_python
