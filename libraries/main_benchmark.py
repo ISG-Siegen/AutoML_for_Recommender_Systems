@@ -8,9 +8,9 @@ from benchmark_framework import benchmarker, metrics, dataset_base
 from utils.lcer import get_logger, get_output_result_data, get_base_path
 from utils.filer import write_data, append_data
 import time
-from data_processing.preprocessing.preprocessing_100k import load_ml_100k
 from libraries.name_lib_mapping import NAME_LIB_MAP
 import pandas as pd
+from data_processing.preprocessing.main_preprocessing import get_dataset_load_functions
 
 # ------------- Start Variables
 datasets_list = []
@@ -25,7 +25,7 @@ fresh_start = False
 lib_algos = NAME_LIB_MAP[lib_name]()
 
 #  Collect dataset loaders
-dataset_load_functions = [load_ml_100k]
+dataset_load_functions = get_dataset_load_functions()
 nr_datasets = len(dataset_load_functions)
 
 # ------------- File management
@@ -40,10 +40,10 @@ if not os.path.isfile(output_filepath) or fresh_start:
 
 # ------------- Loop over all datasets
 logger.info("######## Loop over all Datasets and do benchmarks for library {} ########".format(lib_name))
-for idx, dataset_function in enumerate(dataset_load_functions, 1):
+for idx, dataset_load_function in enumerate(dataset_load_functions, 1):
     # Load dataset and create dataset object
-    logger.info("###### Load Datasets {}/{} ######".format(idx, nr_datasets))
-    dataset = dataset_base.Dataset(*load_ml_100k())
+    logger.info("###### Load Datasets {}, {}/{} ######".format(dataset_load_function, idx, nr_datasets))
+    dataset = dataset_base.Dataset(*dataset_load_function())
     logger.info("###### Start processing Dataset {} ######".format(dataset.name))
 
     # Build benchmark for this dataset
@@ -53,7 +53,7 @@ for idx, dataset_function in enumerate(dataset_load_functions, 1):
 
     # Execute benchmarks for this dataset
     for benchmark in benchmarks:
-        tmp_result_data = [(time.time(),dataset.name, benchmark.model.name, benchmark.model.library_category,
+        tmp_result_data = [(time.time(), dataset.name, benchmark.model.name, benchmark.model.library_category,
                             *benchmark.run())]
         logger.info("###### Intermediate Result Output and Saving Data ######")
         _, _, model_name, _, metric_val, execution_time = tmp_result_data[0]
