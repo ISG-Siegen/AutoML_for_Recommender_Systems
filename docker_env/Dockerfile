@@ -69,8 +69,10 @@ FROM base_python as autosurprise
 RUN pip install --no-cache-dir auto-surprise
 
 ## -- AutoRec --
-#FROM base_python as autorec
-#RUN pip install --no-cache-dir autorecsys  && pip --no-cache-dir install tensorflow
+# -- AutoRec --
+FROM python:3.8 as autorec
+# autorec needs python <3.9 for tensorflow < 2.5
+RUN pip install --no-cache-dir --upgrade pip && pip install Cython && pip install --no-cache-dir autorec==0.0.2
 
 
 

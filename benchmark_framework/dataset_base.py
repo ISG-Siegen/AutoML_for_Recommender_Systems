@@ -2,9 +2,29 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 
 
+class RecSysProperties:
+    def __init__(self, userId_col: str, itemId_col: str, rating_col: str, rating_lower_bound: int,
+                 rating_upper_bound: int):
+        self.itemId_col = itemId_col
+        self.userId_col = userId_col
+        self.rating_col = rating_col
+        self.rating_lower_bound = rating_lower_bound
+        self.rating_upper_bound = rating_upper_bound
+
+        self.user_num = self.item_num = 0
+
+    def set_num_values(self, df):
+        """Function to set the number of users and items for usage of certain libraries"""
+        self.user_num = df[self.userId_col].nunique()
+        self.item_num = df[self.itemId_col].nunique()
+
+    def get_num_values(self):
+        return self.user_num, self.item_num
+
+
 class Dataset:
-    def __init__(self, name, data: pd.DataFrame, features: list, label: str,recsys_properties=None,
-                 random_state=4202021, test_size=0.25,):
+    def __init__(self, name, data: pd.DataFrame, features: list, label: str, recsys_properties: RecSysProperties,
+                 random_state=4202021, test_size=0.25):
         self.name = name
         self.data = data
         self.features = features
@@ -19,14 +39,5 @@ class Dataset:
         self.train_data = (x_train, y_train)
         self.test_data = (x_test, y_test)
 
-
-class RecSysProperties:
-    def __init__(self, userId_col: str, itemId_col: str, rating_col: str, rating_lower_bound: int,
-                 rating_upper_bound: int):
-        self.itemId_col = itemId_col
-        self.userId_col = userId_col
-        self.rating_col = rating_col
-        self.rating_lower_bound = rating_lower_bound
-        self.rating_upper_bound = rating_upper_bound
-
-
+        # Set user/item number
+        self.recsys_properties.set_num_values(self.data)

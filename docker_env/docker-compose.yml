@@ -61,7 +61,7 @@ services:
     build:
       context: .
       target: autosurprise
-#  autorec:
-#    build:
-#      context: .
-#      target: autorec
+  autorec:
+    build:
+      context: .
+      target: autorec

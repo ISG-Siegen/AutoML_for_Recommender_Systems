@@ -22,12 +22,10 @@ The comparison is done using the predictive accuracy metric RSME on multiple dat
 Edit the config file to fit your system (e.g. path to datasets) and rename it from `example_config.in` to `config.ini` 
 
 # Other Notes and Remarks
-* Several AutoML Libraries creat cash files, log directory and stuff like that during their execution. If possible, this was disabled. However, sometimes it was not possible. In these cases, one needs to delete them before running the code again to avoid giving libraries an unfair advantage (i.e. a warm start). 
+* Several AutoML Libraries creat cash files, log directory and stuff like that during their execution. If possible, this
+  was disabled. However, sometimes this was not possible.
 
 # Personal notes / Remove later
-# General Notes
-* Evaluation should be done on 10-fold cross validation 
-* More plots and ideas have been already collected and can be implemented.
 
 ## Potential Test Setting Setup
 * Described here more on the setup and how we compared it - also show example results 
