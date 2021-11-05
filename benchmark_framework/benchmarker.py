@@ -12,7 +12,13 @@ class Benchmark:
         self.dataset = dataset
         self.metric = metric
         self.budget = budget
-        self.model = model
+
+        # Initiate model such that alternative arguments maybe passed
+        if hasattr(model, 'requires_dataset'):
+            # In this case, the model is an object that requires additional input parameters (i.e., the dataset)
+            self.model = model(dataset)
+        else:
+            self.model = model()
 
     def run(self):
         logger.info(

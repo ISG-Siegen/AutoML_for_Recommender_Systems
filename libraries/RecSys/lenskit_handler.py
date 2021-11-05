@@ -9,24 +9,17 @@ def load_lenskit_and_all_models():
     logging.getLogger("lenskit").setLevel(logging.WARNING)
 
     from lenskit.algorithms import Recommender
-
     from lenskit.algorithms.basic import Fallback, Bias
-
     from lenskit.algorithms.user_knn import UserUser
     from lenskit.algorithms.item_knn import ItemItem
-
     from lenskit.algorithms.als import BiasedMF as ALSBiasedMF
     from lenskit.algorithms.funksvd import FunkSVD
-
     from lenskit.algorithms.tf import BiasedMF as TFBiasedMF, BPR, IntegratedBiasMF
-
     from lenskit.algorithms.hpf import HPF
-
     from lenskit.algorithms.svd import BiasedSVD
 
     class LenskitModel(Model):
         no_neighbours = 20  # set to 20 as no default value exist but this is commonly used in tutorials from lenskit
-        no_features = 3  # TODO more features?
 
         @abstractmethod
         def __init__(self, name, model):
@@ -41,10 +34,6 @@ def load_lenskit_and_all_models():
             p_x_train = x_train.copy()
             p_x_train[label] = y_train
 
-            # TODO more features?
-            p_x_train = p_x_train[[dataset.recsys_properties.userId_col, dataset.recsys_properties.itemId_col,
-                                   dataset.recsys_properties.rating_col]]
-            # Rename important RecSys columns which are needed by lenskit
             p_x_train = p_x_train.rename(
                 columns={dataset.recsys_properties.userId_col: "user", dataset.recsys_properties.itemId_col: "item",
                          dataset.recsys_properties.rating_col: "rating"})
@@ -63,11 +52,10 @@ def load_lenskit_and_all_models():
 
             p_x_test = p_x_test.rename(
                 columns={dataset.recsys_properties.userId_col: "user", dataset.recsys_properties.itemId_col: "item"})
-            data = p_x_test[["user", "item"]]
 
             predictor = Fallback(self.model_object, self.base)  # Use bias as base following documentation
 
-            return predictor.predict(data)
+            return predictor.predict(p_x_test)
 
     # Different Models from the library
     # -- Knn algorithms
@@ -88,39 +76,51 @@ def load_lenskit_and_all_models():
 
     # -- matrix factorization
     class ALSBiasedMFAlgorithm(LenskitModel):
-        def __init__(self):
-            super().__init__("ALSBiasedMF", ALSBiasedMF(self.no_features))
+        requires_dataset = True
+
+        def __init__(self, dataset):
+            super().__init__("ALSBiasedMF", ALSBiasedMF(len(dataset.features)))
 
     class SVD_Funk(LenskitModel):
-        def __init__(self):
-            super().__init__("FunkSVD", FunkSVD(self.no_features))
+        requires_dataset = True
+
+        def __init__(self, dataset):
+            super().__init__("FunkSVD", FunkSVD(len(dataset.features)))
 
     class SVD_Biased(LenskitModel):
-        def __init__(self):
-            super().__init__("BiasedSVD", BiasedSVD(self.no_features))
+        requires_dataset = True
+
+        def __init__(self, dataset):
+            super().__init__("BiasedSVD", BiasedSVD(len(dataset.features)))
 
     # Tensorflow
     class TFBiasedMFAlgorithm(LenskitModel):
-        def __init__(self):
-            super().__init__("TFBiasedMF", TFBiasedMF(self.no_features))
+        requires_dataset = True
+
+        def __init__(self, dataset):
+            super().__init__("TFBiasedMF", TFBiasedMF(len(dataset.features)))
 
     class BPRAlgorithm(LenskitModel):
-        def __init__(self):
-            super().__init__("BPR", BPR(self.no_features))
+        requires_dataset = True
+
+        def __init__(self, dataset):
+            super().__init__("BPR", BPR(len(dataset.features)))
 
     class IntegratedBiasMFAlgorithm(LenskitModel):
-        def __init__(self):
-            super().__init__("IntegratedBiasMF", IntegratedBiasMF(self.no_features))
+        requires_dataset = True
+
+        def __init__(self, dataset):
+            super().__init__("IntegratedBiasMF", IntegratedBiasMF(len(dataset.features)))
 
     # External Libraries
     class PredictorHPF(LenskitModel):
-        def __init__(self):
-            super().__init__("HPF", HPF(self.no_features))
+        requires_dataset = True
+
+        def __init__(self, dataset):
+            super().__init__("HPF", HPF(len(dataset.features)))
 
     # Return
-    lenskit_model = [ItemItemKNN, UserUserKNN,
-                     BiasAlgorithm,
-                     ALSBiasedMFAlgorithm, SVD_Funk, SVD_Biased, PredictorHPF,
+    lenskit_model = [ItemItemKNN, UserUserKNN, BiasAlgorithm, ALSBiasedMFAlgorithm, SVD_Funk, SVD_Biased, PredictorHPF,
                      IntegratedBiasMFAlgorithm, BPRAlgorithm, TFBiasedMFAlgorithm]
 
     # -- Notes on missing algorithms

@@ -46,23 +46,24 @@ for idx, dataset_load_function in enumerate(dataset_load_functions, 1):
     dataset = dataset_base.Dataset(*dataset_load_function())
     logger.info("###### Start processing Dataset {} ######".format(dataset.name))
 
-    # Build benchmark for this dataset
-    benchmarks = []
-    for model_base in lib_algos:
-        benchmarks.append(benchmarker.Benchmark(dataset, metrics.RSME(), 60, model_base()))
+    # Build metric once and not in every loop
+    metric = metrics.RSME()
 
-    # Execute benchmarks for this dataset
-    for benchmark in benchmarks:
+    # Execute benchmarks for every algorithm
+    for model_base in lib_algos:
+        #  Build benchmark for this dataset and algorithm
+        benchmark = benchmarker.Benchmark(dataset, metric, 60, model_base)
+        # Execute benchmarks for this dataset
         tmp_result_data = [(time.time(), dataset.name, benchmark.model.name, benchmark.model.library_category,
                             *benchmark.run())]
+
         logger.info("###### Intermediate Result Output and Saving Data ######")
         _, _, model_name, _, metric_val, execution_time = tmp_result_data[0]
         logger.info("{}: RSME of {} | Time take {}".format(model_name, metric_val, execution_time))
 
         # Build tmp df to output data
-        append_data(
-            pd.DataFrame(tmp_result_data, columns=["datetime", "Dataset", "Model", "LibraryCategory", "RSME",
-                                                   "TimeInSeconds"]), output_filepath)
+        append_data(pd.DataFrame(tmp_result_data, columns=["datetime", "Dataset", "Model", "LibraryCategory", "RSME",
+                                                           "TimeInSeconds"]), output_filepath)
 
     logger.info("###### Finished processing Dataset {} ######".format(dataset.name))
 
