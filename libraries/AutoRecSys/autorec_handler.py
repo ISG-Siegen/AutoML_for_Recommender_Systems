@@ -65,8 +65,8 @@ def load_autorec_and_all_models():
             output = RatingPredictionOptimizer()(output4)
             model = RPRecommender(inputs=input, outputs=output)
 
-            # no time limit on searcher, no default max trail number, hence set to 50 for now
-            searcher = Search(model=model, tuner_params={'max_trials': 50, 'overwrite': True})
+            # no time limit on searcher, no default max trail number, hence set to 25 for now
+            searcher = Search(model=model, tuner_params={'max_trials': 25, 'overwrite': True})
             searcher.search(x=[x_train.values],
                             y=y_train,
                             x_val=[x_val.values],
