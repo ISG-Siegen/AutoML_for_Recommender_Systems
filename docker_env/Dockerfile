@@ -33,6 +33,7 @@ RUN pip install --no-cache-dir xgboost
 
 # -- ktrain --
 FROM base as ktrain
+RUN pip install --no-cache-dir scikit-learn==0.23.2
 RUN pip install --no-cache-dir ktrain  && pip --no-cache-dir install tensorflow
 
 # ---- AutoML ----
