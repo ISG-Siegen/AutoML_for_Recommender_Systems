@@ -3,6 +3,7 @@ from libraries.Baselines.constant_predictor import load_constant_predictors_and_
 
 # RecSys
 from libraries.RecSys.surprise import load_surprise_and_all_models
+from libraries.RecSys.lenskit_handler import load_lenskit_and_all_models
 
 # AutoRecSys
 from libraries.AutoRecSys.auto_surprise import load_auto_surprise_and_all_models
@@ -26,6 +27,7 @@ NAME_LIB_MAP = {
 
     # RecSys
     "surprise": load_surprise_and_all_models,
+    "lenskit": load_lenskit_and_all_models,
 
     # AutoRecSys
     "autosurprise": load_auto_surprise_and_all_models,

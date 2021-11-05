@@ -56,6 +56,10 @@ services:
     build:
       context: .
       target: surprise
+  lenskit:
+    build:
+      context: .
+      target: lenskit
   # ---- AutoRecSys ----
   autosurprise:
     build:

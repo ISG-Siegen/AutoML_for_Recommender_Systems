@@ -15,8 +15,8 @@ FROM base as mgmt
 COPY mgmt_requirements.txt mgmt_requirements.txt
 RUN pip install --no-cache-dir -r mgmt_requirements.txt
 
-# ------ Library Specific Images ------
 
+# ------ Library Specific Images ------
 # ---- Baselines ----
 # -- constant_predictors --
 FROM base_python as constant_predictors
@@ -62,6 +62,11 @@ RUN pip install --no-cache-dir tpot
 # -- surprise --
 FROM base_python as surprise
 RUN pip install --no-cache-dir surprise
+
+# -- lenskit --
+FROM base as lenskit
+# Add specific extra depnendices for specific algorithms to use
+RUN pip install --no-cache-dir lenskit[sklearn,hpf,implicit,tf]
 
 
 # ---- AutoRecSys ----
