@@ -18,7 +18,7 @@ def load_autogluon_and_all_models():
             merged_train_data[dataset.label] = y_train
 
             # Build Model and fit
-            # verbosity sets our own output to verbosity = 0, hence have to keep verbosity=2
+            # verbosity sets our own output to verbosity = 0, hence have to keep verbosity=2 (i.e. the default value)
             self.model_object = TabularPredictor(label=dataset.label)
             self.model_object.fit(merged_train_data, time_limit=60 * get_settings_timeoutinmin())
 
