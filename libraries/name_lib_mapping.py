@@ -20,6 +20,7 @@ from libraries.AutoML.flaml_handler import load_flaml_and_all_models
 from libraries.AutoML.gama_handler import load_gama_and_all_models
 from libraries.AutoML.H2O_handler import load_h2o_and_all_models
 from libraries.AutoML.tpot_handler import load_tpot_and_all_models
+from libraries.AutoML.autogluon_handler import load_autogluon_and_all_models
 
 NAME_LIB_MAP = {
     # Baselines
@@ -43,8 +44,8 @@ NAME_LIB_MAP = {
     "flaml": load_flaml_and_all_models,
     "gama": load_gama_and_all_models,
     "h2o": load_h2o_and_all_models,
-    "tpot": load_tpot_and_all_models
-
+    "tpot": load_tpot_and_all_models,
+    "autogluon": load_autogluon_and_all_models,
 }
 
 

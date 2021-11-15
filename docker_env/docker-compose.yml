@@ -51,6 +51,10 @@ services:
     build:
       context: .
       target: tpot
+  autogluon:
+    build:
+      context: .
+      target: autogluon
   # ---- RecSys ----
   surprise:
     build:
