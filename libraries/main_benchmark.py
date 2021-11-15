@@ -25,7 +25,7 @@ fresh_start = False
 lib_algos = NAME_LIB_MAP[lib_name]()
 
 #  Collect dataset loaders
-dataset_load_functions = get_dataset_load_functions()[:1]
+dataset_load_functions = get_dataset_load_functions()
 nr_datasets = len(dataset_load_functions)
 
 # ------------- File management
