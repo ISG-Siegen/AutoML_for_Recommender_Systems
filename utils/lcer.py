@@ -49,5 +49,5 @@ def get_output_images():
     return get_config("output", "images")
 
 
-def get_settings_timeoutinmin():
-    return get_config("settings", "timeout_in_min")
+def get_timeout_in_min():
+    return int(get_config("settings", "timeout_in_min"))

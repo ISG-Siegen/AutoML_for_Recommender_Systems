@@ -1,4 +1,5 @@
 from benchmark_framework.model_base import Model
+from utils.lcer import get_timeout_in_min
 
 
 def load_flaml_and_all_models():
@@ -7,7 +8,7 @@ def load_flaml_and_all_models():
     class FLAMLHandler(Model):
 
         def __init__(self):
-            super().__init__("FLAML_Regressor", AutoML(),
+            super().__init__("FLAML_Regressor", AutoML(time_budget=get_timeout_in_min() * 60),
                              "AutoML")
 
         def train(self, dataset):

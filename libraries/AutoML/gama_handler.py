@@ -1,4 +1,5 @@
 from benchmark_framework.model_base import Model
+from utils.lcer import get_timeout_in_min
 
 
 def load_gama_and_all_models():
@@ -7,7 +8,8 @@ def load_gama_and_all_models():
     class GamaHandler(Model):
 
         def __init__(self):
-            super().__init__("GAMA_Regressor", GamaRegressor(store="nothing"),  # nothing to reduce logs
+            super().__init__("GAMA_Regressor", GamaRegressor(max_total_time=get_timeout_in_min() * 60,
+                                                             store="nothing"),  # nothing to reduce logs
                              "AutoML")
 
         def train(self, dataset):

@@ -59,10 +59,10 @@ for idx, dataset_load_function in enumerate(dataset_load_functions, 1):
 
         logger.info("###### Intermediate Result Output and Saving Data ######")
         _, _, model_name, _, metric_val, execution_time = tmp_result_data[0]
-        logger.info("{}: RSME of {} | Time take {}".format(model_name, metric_val, execution_time))
+        logger.info("{}: RSME of {} | Time taken {}".format(model_name, metric_val, execution_time))
 
         # Build tmp df to output data
-        append_data(pd.DataFrame(tmp_result_data, columns=["datetime", "Dataset", "Model", "LibraryCategory", "RSME",
+        append_data(pd.DataFrame(tmp_result_data, columns=["timestamp", "Dataset", "Model", "LibraryCategory", "RSME",
                                                            "TimeInSeconds"]), output_filepath)
 
     logger.info("###### Finished processing Dataset {} ######".format(dataset.name))
