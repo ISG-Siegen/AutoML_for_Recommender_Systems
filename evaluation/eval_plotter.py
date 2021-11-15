@@ -3,8 +3,11 @@ import pandas as pd
 import os
 from utils.lcer import get_output_images, get_base_path
 import numpy as np
+import seaborn as sns
+from autorank import autorank, create_report, plot_stats
+from utils.catheat import heatmap
 
-YMIN = 0.65
+YMIN = 0
 YMAX = None
 
 
@@ -12,97 +15,108 @@ def get_correct_path(file_name):
     return os.path.join(get_base_path(), get_output_images(), "{}.pdf".format(file_name))
 
 
-def start_barplot(data: pd.DataFrame, save_images, horizontal=False, prefix=""):
-    # Preprocess
-    data = data.sort_values(by=[data.columns[-1]])  # sort by last column (last column should be error)
-
-    # Plot
-    fig, ax = plt.subplots()
-    if horizontal:
-        data.plot.barh(x=data.columns[0], y=data.columns[-1], ax=ax)
-    else:
-        data.plot.bar(x=data.columns[0], y=data.columns[-1], ax=ax)
-
-    # Plot Style
-    ax.set_title("PPD-RSME Results for different Models")
-    ax.get_legend().remove()
-    if horizontal:
-        plt.ylabel("Model Name")
-        plt.xlabel("PPD-RSME")
-    else:
-        plt.xticks(rotation=70)
-        plt.xlabel("Model Name")
-        plt.ylabel("PPD-RSME")
-    ax = plt.gca()
-
-    ax.set_xlim([YMIN, YMAX])
-    fig.tight_layout()
+def boxplots_per_datasets(data: pd.DataFrame, save_images, prefix=""):
+    sns.catplot(x="LibraryCategory", y="RSME", col="Dataset", data=data, kind="box")
 
     if save_images:
         name = prefix
-        name += "error_model_barplot"
-        if horizontal:
-            name += "_horizontal"
+        name += "boxplots_per_datasets"
         plt.savefig(get_correct_path(name))
-
-    # Show
     plt.show()
 
 
-def tableplot(data: pd.DataFrame, save_images, change_perspective, prefix=""):
-    # Idea from: https://stackoverflow.com/a/45936469
+def row_to_col_data_format(data):
+    dataset_names = data["Dataset"].unique().tolist()
+    clf_names = data["Model"].unique().tolist()
+    experiment_results = pd.DataFrame(index=dataset_names, columns=clf_names)
 
-    table_data = data.copy()
-    # Add Change column
-    col_rsme = table_data.columns[-1]
-    value_cpov = table_data[table_data[table_data.columns[0]] == change_perspective][col_rsme].values[0]
-    table_data["Reduction in PPD-RSME"] = (value_cpov - table_data[col_rsme]) / value_cpov * 100
-    table_data = table_data.sort_values(by=["Reduction in PPD-RSME"])
-    table_data["Reduction in PPD-RSME"] = table_data["Reduction in PPD-RSME"].apply(lambda x: '{:.2f}%'.format(x))
-    table_data[col_rsme] = table_data[col_rsme].apply(lambda x: '{:.3f}'.format(x))
+    # Fill results df
+    for index, row in data.iterrows():
+        experiment_results.at[row["Dataset"], row["Model"]] = float(row["RSME"])
+    experiment_results = experiment_results.apply(pd.to_numeric)
 
-    fig, ax = plt.subplots()
-    # hide axes
-    fig.patch.set_visible(False)
-    ax.axis('off')
-    ax.axis('tight')
-    ax.table(cellText=table_data.values, colLabels=table_data.columns, loc='center')
+    return experiment_results
 
+
+def cd_plot_and_stats_tests(data: pd.DataFrame, save_images, prefix=""):
+    experiment_results = row_to_col_data_format(data)
+
+    if len(experiment_results) < 5:
+        print("SKIPPED AUTORANK EVAL DUE TO NOT ENOUGH (5) ESTIMATIONS PER MODEL")
+        return
+
+    # Do tests and get plot as well as report
+    res = autorank(experiment_results)
+    create_report(res)
+    plot_stats(res)
     if save_images:
         name = prefix
-        name += "default_table_plot"
+        name += "autorank_plot_all_data"
         plt.savefig(get_correct_path(name))
-
     plt.show()
 
-    return table_data
+    # For more see: https://github.com/sherbold/autorank
+    # Other nice-to-have features
+    # latex_table(res)
 
 
-def aggregated_barplot(data: pd.DataFrame, save_images, agg_by, prefix=""):
-    # Aggregate
-    agg_data = data.copy()
-    agg_data = agg_data.groupby(agg_by)[data.columns[-1]].agg([np.min, np.max, np.mean, np.std], as_index=False).rename(
-        columns={"amin": "min", "amax": "max"})
-    # agg_data.reset_index(level=0, inplace=True)
-    agg_data = agg_data.sort_values(by=["mean"])  # sort by last column (last column should be error)
+def ranking_eval(data: pd.DataFrame, save_images, prefix=""):
+    # Rank Input Data per Dataset
+    for dataset_name in data["Dataset"].unique().tolist():
+        tmp_df = data[data["Dataset"] == dataset_name]
+        tmp_ranked = tmp_df["RSME"].rank()
+        data.loc[data["Dataset"] == dataset_name, "RSME_RANK"] = tmp_ranked
 
-    # Plot
-    fig, ax = plt.subplots()
-    agg_data.plot(kind="barh", y="mean", ax=ax, xerr="std")
+    # -- Print Top-Average Ranked
+    # Per Model
+    print("######### Models Ranked - Top / bottom 10  (Average RSME, Time, Average Rank - over datasets) #########")
+    rank_per_model = data.groupby(by="Model").mean()
+    print(rank_per_model.sort_values(by="RSME_RANK").head(10))
 
-    # Plot Style
-    ax.set_title("Mean PPD-RSME Results for different categories")
-    ax.get_legend().remove()
-    plt.ylabel("Model Name")
-    plt.xlabel("Mean PPD-RSME")
+    # Per Category
+    print("\n ######### Categories Ranked (Average RSME, Time, Rank - over datasets and categories) #########")
+    rank_per_cat = data.groupby(by="LibraryCategory").mean()
+    # Get Count of model for a category (normalize by number of datasets to get true number)
+    rank_per_cat["models_in_category"] = data.groupby(by="LibraryCategory").size() / data["Dataset"].nunique()
+    print(rank_per_cat.sort_values(by="RSME_RANK").head(10))
 
-    ax.set_xlim([YMIN, YMAX])
-    fig.tight_layout()
+    # --- Rank Plots
 
+    # Reformat and Build data
+    top_5_model_per_dataset = {}
+    libcat_ranking_per_dataset = {}
+    for dataset_name in data["Dataset"].unique().tolist():
+        tmp_df = data[data["Dataset"] == dataset_name]
+        tmp_df = tmp_df.sort_values(by="RSME_RANK")
+
+        top_5_model_per_dataset[dataset_name] = tmp_df["LibraryCategory"].iloc[0:5].to_list()
+
+        x = tmp_df["LibraryCategory"].to_list()
+        libcat_ranking_per_dataset[dataset_name] = sorted(set(x), key=x.index)
+
+    data_for_rank_plot_models = pd.DataFrame.from_dict(top_5_model_per_dataset, orient="index",
+                                                       columns=["1", "2", "3", "4", "5"])
+    data_for_rank_plot_libcat = pd.DataFrame.from_dict(libcat_ranking_per_dataset, orient="index",
+                                                       columns=["1", "2", "3", "4", "5"])
+
+    # Top 5 Models per Dataset color coded for LibraryCategory - includes only categories in the top 5
+    heatmap(data_for_rank_plot_models, leg_pos="top")
+    plt.xlabel("Rank")
+    plt.yticks(rotation=0)
+    plt.tight_layout()
     if save_images:
         name = prefix
-        name += "agg_error_model_barplot"
+        name += "ranking_models_per_dataset_with_categories"
         plt.savefig(get_correct_path(name))
+    plt.show()
 
-    # Show
+    # LibraryCategory Ranking per Dataset - includes all categories
+    heatmap(data_for_rank_plot_libcat, leg_pos="top")
+    plt.xlabel("Rank")
+    plt.yticks(rotation=0)
+    plt.tight_layout()
+    if save_images:
+        name = prefix
+        name += "ranking_categories_per_dataset"
+        plt.savefig(get_correct_path(name))
     plt.show()

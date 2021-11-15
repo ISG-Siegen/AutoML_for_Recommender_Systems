@@ -1,22 +1,22 @@
 import pandas as pd
-from utils.lcer import get_dataset_default_location
+from utils.lcer import get_dataset_container_path
 import os
 from benchmark_framework.dataset_base import RecSysProperties
 
 
-def load_ml_100k():
+def load_ml_100k_from_file():
     """ Method to load ml100k dataset and return data, features (list of strings), and label (string) """
 
     # Load from Disc
-    ratings_df = pd.read_csv(os.path.join(get_dataset_default_location(), 'ml-100k/u.data'), sep='\t',
+    ratings_df = pd.read_csv(os.path.join(get_dataset_container_path(), 'ml-100k/u.data'), sep='\t',
                              encoding='iso-8859-1', names=['userId', 'itemId', 'rating', 'timestamp'])
-    movies_df = pd.read_csv(os.path.join(get_dataset_default_location(), 'ml-100k/u.item'), sep='|',
+    movies_df = pd.read_csv(os.path.join(get_dataset_container_path(), 'ml-100k/u.item'), sep='|',
                             encoding="iso-8859-1", header=None)
     movies_df.columns = ['movieId', 'title', 'releaseDate', 'videoReleaseDate', 'imdbUrl', 'unknown', 'action',
                          'adventure', 'animation', 'childrens', 'comedy', 'crime', 'documentary', 'drama',
                          'fantasy', 'filmnoir', 'horror', 'musical', 'mystery', 'romance', 'scifi', 'thriller',
                          'war', 'western']
-    user_df = pd.read_csv(os.path.join(get_dataset_default_location(), 'ml-100k/u.user'), sep='|',
+    user_df = pd.read_csv(os.path.join(get_dataset_container_path(), 'ml-100k/u.user'), sep='|',
                           encoding="iso-8859-1", header=None)
     user_df.columns = ['userId', 'age', 'gender', 'occupation', 'zip_code']
 
@@ -39,6 +39,20 @@ def load_ml_100k():
     features = list(rm_df)
     features.remove(label)  # this means simply all columns are features but the label column
 
-    recsys_propertys = RecSysProperties('userId', 'movieId', 'rating', 1, 5)
+    recsys_properties = RecSysProperties('userId', 'movieId', 'rating', 1, 5)
 
-    return 'movielens-100k', rm_df, features, label, recsys_propertys
+    return 'movielens-100K', rm_df, features, label, recsys_properties
+
+
+def load_ml_100k_from_csv():
+    data = pd.read_table(os.path.join(get_dataset_container_path(), 'csv_files/movielens-100K.csv'), sep=',',
+                         header=0, engine='python')
+    data = data.iloc[:, 1:]
+    # Set labels/features
+    label = 'rating'
+    features = list(data)
+    features.remove(label)  # this means simply all columns are features but the label column
+
+    recsys_properties = RecSysProperties('userId', 'movieId', 'rating', 1, 5)
+
+    return 'movielens-100K', data, features, label, recsys_properties

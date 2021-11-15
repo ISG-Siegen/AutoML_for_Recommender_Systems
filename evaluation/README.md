@@ -1,9 +1,5 @@
 # Evaler Notes
+The evaler merges generates plots, table dataframes, and other illustrations for evaluation.
 
 ## Data Format
-The input data for the evaler should contain the model names as first column and the respective error as last column. 
-Rows represent different models. 
-
-
-## More Plots and illustrations
-* Ask Lennart for details or wait until Implementation
+Columns: Dataset,Model,LibraryCategory,RSME,TimeInSeconds

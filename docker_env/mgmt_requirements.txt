@@ -1,0 +1,7 @@
+docker
+pandas
+matplotlib
+numpy
+sklearn
+seaborn
+autorank

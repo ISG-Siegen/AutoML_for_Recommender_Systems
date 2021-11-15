@@ -1,53 +1,68 @@
 # Code to eval given data according to our goals
+import pandas as pd
 from utils import filer
 from evaluation import eval_plotter
 import os
 from utils.lcer import get_logger, get_output_result_data, get_base_path
-from datetime import date
+import numpy as np
+from collections import defaultdict
 
 logger = get_logger("Evaluation")
+pd.set_option("display.max_rows", None, "display.max_columns", None)
 
 
-def get_basic_plots(data, save_images, baseline_model_name, prefix=""):
-    logger.info("Get Barplots Evaluation")
-    # eval_plotter.start_barplot(data, save_images, prefix=prefix)
-    eval_plotter.start_barplot(data, save_images, horizontal=True, prefix=prefix)
+def filter_too_large_errors(df, dataset_names):
+    for dataset in dataset_names:
+        tmp_df = df[df["Dataset"] == dataset]["RSME"]
+        # Code adapted from https://datascience.stackexchange.com/a/57199
+        Q1 = tmp_df.quantile(0.25)
+        Q3 = tmp_df.quantile(0.75)
+        IQR = Q3 - Q1
 
-    logger.info("Get Table")
-    table_data = eval_plotter.tableplot(data, save_images, baseline_model_name,prefix=prefix)
+        # Set all values lower than the upper whisker to nan and then drop them
+        df.loc[(df["Dataset"] == dataset) & (df["RSME"] > Q3 + 1.5 * IQR), "RSME"] = np.nan
 
-    return table_data
+    return df.dropna()
+
+
+def select_newest_subset(data):
+    # Filter all older runs of models on datasets
+    check_dict = defaultdict(lambda: [0, None])
+    index_to_drop = []
+
+    for index, row in data.iterrows():
+        # Check if the loop already iterated over a newer model+dataset result
+        if check_dict[row["Dataset"]+row["Model"]][0] > row["timestamp"]:
+            # If yes, mark the row to be dropped
+            index_to_drop.append(index)
+        else:
+            # if no, mark last row checked for this to be dropped (if not None, i.e., initial value)
+            old_index = check_dict[row["Dataset"]+row["Model"]][1]
+            if old_index is not None:
+                index_to_drop.append(old_index)
+
+            # and set new timestamp, index value for checklist
+            check_dict[row["Dataset"] + row["Model"]] = [row["timestamp"], index]
+
+    # Drop and return
+    return data.drop(index_to_drop).drop(columns=["timestamp"])
 
 
 def eval_overall_results():
-    overall_data = filer.read_data(os.path.join(get_base_path(), get_output_result_data(), "{}_overall_benchmark_results.csv".format(date.today())))
+    # overall_data = merge_possible_files()
+    overall_data = filer.read_data(os.path.join(get_base_path(), get_output_result_data(),
+                                                "overall_benchmark_results.csv"))
+    overall_data = select_newest_subset(overall_data)
 
     # ----- Filter too large errors for model that did not converge with default values
-    overall_data = overall_data[overall_data["RSME"] <= 2]
+    dataset_names = overall_data["Dataset"].unique().tolist()
 
-    # ----- Set baseline model
-    # Get list of all model names
-    models_in_data = overall_data["Model"].tolist()
-    # Check if RF is in model list of current data, if not select another model
-    if "SciKit_RandomForestRegressor" in models_in_data:
-        table_baseline_model = "SciKit_RandomForestRegressor"
-    else:
-        table_baseline_model = models_in_data[0]
+    overall_data_filtered = filter_too_large_errors(overall_data, dataset_names)
 
-    # ----- For each dataset
-    for dataset in overall_data["Dataset"].unique().tolist():
-        logger.info("Get Barplots Evaluation for dataset {}".format(dataset))
-        image_name_prefix = "{}_".format(dataset)
-
-        result_subset = overall_data[overall_data["Dataset"] == dataset]
-        get_basic_plots(result_subset[["Model", "RSME"]], True, table_baseline_model, prefix=image_name_prefix)
-
-        eval_plotter.aggregated_barplot(result_subset[["Model", "LibraryCategory", "RSME"]], True, "LibraryCategory",
-                                        prefix=image_name_prefix)
-
-
-    # TODO potentially for all datasets at once
-    # handle filtered models differently or mention it at least
+    # Some Plots over all Datasets
+    eval_plotter.boxplots_per_datasets(overall_data_filtered[["Dataset", "LibraryCategory", "RSME"]], True)
+    eval_plotter.cd_plot_and_stats_tests(overall_data_filtered, True)
+    eval_plotter.ranking_eval(overall_data_filtered, True)
 
 
 if __name__ == "__main__":

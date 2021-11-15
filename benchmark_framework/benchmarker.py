@@ -12,11 +12,17 @@ class Benchmark:
         self.dataset = dataset
         self.metric = metric
         self.budget = budget
-        self.model = model
+
+        # Initiate model such that alternative arguments maybe passed
+        if hasattr(model, 'requires_dataset'):
+            # In this case, the model is an object that requires additional input parameters (i.e., the dataset)
+            self.model = model(dataset)
+        else:
+            self.model = model()
 
     def run(self):
         logger.info(
-            "###### Starting benchmark on dataset {} with model {} ######".format(self.dataset.name, self.model.name))
+            "#### Starting benchmark on dataset {} with model {} ####".format(self.dataset.name, self.model.name))
 
         # Run dataset while measuring and being in budget
         logger.info("### Start Training and Prediction with timing ###")
@@ -37,9 +43,7 @@ class Benchmark:
         execution_time = time.time() - start_time
 
         # Calc metric
-        logger.info("### Calculate benchmark results ###")
         metric_val = self.metric.evaluate(self.dataset, y_pred)
 
         # Return metric and time
-        logger.info("### Finished and return ###")
         return metric_val, execution_time
