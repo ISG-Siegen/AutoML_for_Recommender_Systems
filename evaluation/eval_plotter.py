@@ -69,12 +69,12 @@ def ranking_eval(data: pd.DataFrame, save_images, prefix=""):
 
     # -- Print Top-Average Ranked
     # Per Model
-    print("######### Models Ranked - Top / bottom 5  (Average RSME, Time, Average Rank - over datasets) #########")
+    print("######### Models Ranked - Top / bottom 10  (Average RSME, Time, Average Rank - over datasets) #########")
     rank_per_model = data.groupby(by="Model").mean()
     print(rank_per_model.sort_values(by="RSME_RANK").head(10))
 
     # Per Category
-    print("######### Categories Ranked (Average RSME, Time, Rank - over datasets and categories) #########")
+    print("\n ######### Categories Ranked (Average RSME, Time, Rank - over datasets and categories) #########")
     rank_per_cat = data.groupby(by="LibraryCategory").mean()
     # Get Count of model for a category (normalize by number of datasets to get true number)
     rank_per_cat["models_in_category"] = data.groupby(by="LibraryCategory").size() / data["Dataset"].nunique()
@@ -99,7 +99,7 @@ def ranking_eval(data: pd.DataFrame, save_images, prefix=""):
     data_for_rank_plot_libcat = pd.DataFrame.from_dict(libcat_ranking_per_dataset, orient="index",
                                                        columns=["1", "2", "3", "4", "5"])
 
-    # Top 5 Models per Dataset color coded for LibraryCategory
+    # Top 5 Models per Dataset color coded for LibraryCategory - includes only categories in the top 5
     heatmap(data_for_rank_plot_models, leg_pos="top")
     plt.xlabel("Rank")
     plt.yticks(rotation=0)
@@ -110,7 +110,7 @@ def ranking_eval(data: pd.DataFrame, save_images, prefix=""):
         plt.savefig(get_correct_path(name))
     plt.show()
 
-    # LibraryCategory Ranking per Dataset
+    # LibraryCategory Ranking per Dataset - includes all categories
     heatmap(data_for_rank_plot_libcat, leg_pos="top")
     plt.xlabel("Rank")
     plt.yticks(rotation=0)
