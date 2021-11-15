@@ -18,7 +18,8 @@ def load_autogluon_and_all_models():
             merged_train_data[dataset.label] = y_train
 
             # Build Model and fit
-            self.model_object = TabularPredictor(label=dataset.label, verbosity=0)  # verbosity = 0 to reduce output
+            # verbosity sets our own output to verbosity = 0, hence have to keep verbosity=2
+            self.model_object = TabularPredictor(label=dataset.label)
             self.model_object.fit(merged_train_data, time_limit=60 * get_settings_timeoutinmin())
 
         def predict(self, dataset):

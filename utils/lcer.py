@@ -50,4 +50,4 @@ def get_output_images():
 
 
 def get_settings_timeoutinmin():
-    return get_config("settings", "timeout_in_min")
+    return int(get_config("settings", "timeout_in_min"))
