@@ -1,5 +1,5 @@
 from benchmark_framework.model_base import Model
-from utils.lcer import get_settings_timeoutinmin
+from utils.lcer import get_timeout_in_min
 
 
 def load_autogluon_and_all_models():
@@ -20,7 +20,7 @@ def load_autogluon_and_all_models():
             # Build Model and fit
             # verbosity sets our own output to verbosity = 0, hence have to keep verbosity=2 (i.e. the default value)
             self.model_object = TabularPredictor(label=dataset.label)
-            self.model_object.fit(merged_train_data, time_limit=60 * get_settings_timeoutinmin())
+            self.model_object.fit(merged_train_data, time_limit=60 * get_timeout_in_min())
 
         def predict(self, dataset):
             x_test, _ = dataset.test_data

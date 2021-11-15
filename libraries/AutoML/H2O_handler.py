@@ -1,5 +1,5 @@
 from benchmark_framework.model_base import Model
-from utils.lcer import get_settings_timeoutinmin
+from utils.lcer import get_timeout_in_min
 
 
 def load_h2o_and_all_models():
@@ -11,7 +11,7 @@ def load_h2o_and_all_models():
             h2o.init()
 
             super().__init__("H2O_H2OGradientBoostingEstimator",
-                             H2OAutoML(max_runtime_secs=60 * get_settings_timeoutinmin()), "AutoML")
+                             H2OAutoML(max_runtime_secs=60 * get_timeout_in_min()), "AutoML")
 
         def train(self, dataset):
             x_train, y_train = dataset.train_data

@@ -1,5 +1,5 @@
 from benchmark_framework.model_base import Model
-from utils.lcer import get_settings_timeoutinmin
+from utils.lcer import get_timeout_in_min
 
 
 def load_auto_surprise_and_all_models():
@@ -30,7 +30,7 @@ def load_auto_surprise_and_all_models():
             best_algo, best_params, best_score, tasks = engine.train(
                 data=data,
                 target_metric='test_rmse',
-                cpu_time_limit=60 * get_settings_timeoutinmin()
+                cpu_time_limit=60 * get_timeout_in_min()
             )
             # create best model object
             self.model_object = engine.build_model(best_algo, best_params)
