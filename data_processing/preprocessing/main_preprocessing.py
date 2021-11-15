@@ -27,10 +27,11 @@ LOAD_FILE_FUNCTIONS = [load_ml_100k_from_file, load_ml_1m_from_file, load_ml_10m
                        load_amazon_instantvideo_from_file, load_amazon_music_from_file, load_amazon_toys_from_file,
                        load_netflix_from_file, load_yelp_from_file]
 
-LOAD_CSV_FUNCTIONS = [load_ml_100k_from_csv, load_ml_1m_from_csv, load_ml_10m_from_csv, load_ml_20m_from_csv,
+LOAD_CSV_FUNCTIONS = [load_ml_100k_from_csv, load_ml_1m_from_csv, load_ml_10m_from_csv,
                       load_ml_latest_small_from_csv, load_amazon_books_from_csv, load_amazon_electronics_from_csv,
                       load_amazon_instantvideo_from_csv, load_amazon_music_from_csv, load_amazon_toys_from_csv,
-                      load_netflix_from_csv, load_yelp_from_csv]
+                      load_netflix_from_csv, load_yelp_from_csv
+                      ]  # Remove because too big: load_ml_20m_from_csv
 
 
 def load_file_to_csv():
