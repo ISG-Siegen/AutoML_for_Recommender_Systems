@@ -205,6 +205,8 @@ def load_sklearn_and_all_models():
         #       -> Could not import for some reason
         #   3. VotingRegressor and StackingRegressor
         #       -> Both require estimators as input
+        #   4. ScikitDecisionTreeRegressor
+        #       -> already use more sophisticated tree regression
 
         return rest + ensembles + linear_models
 
