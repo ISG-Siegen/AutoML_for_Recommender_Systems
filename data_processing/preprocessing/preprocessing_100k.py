@@ -3,6 +3,8 @@ from utils.lcer import get_dataset_container_path
 import os
 from benchmark_framework.dataset_base import RecSysProperties
 
+ML_100k_NAME = 'movielens-100K'
+
 
 def load_ml_100k_from_file():
     """ Method to load ml100k dataset and return data, features (list of strings), and label (string) """
@@ -41,7 +43,7 @@ def load_ml_100k_from_file():
 
     recsys_properties = RecSysProperties('userId', 'movieId', 'rating', 1, 5)
 
-    return 'movielens-100K', rm_df, features, label, recsys_properties
+    return ML_100k_NAME, rm_df, features, label, recsys_properties
 
 
 def load_ml_100k_from_csv():
@@ -55,4 +57,4 @@ def load_ml_100k_from_csv():
 
     recsys_properties = RecSysProperties('userId', 'movieId', 'rating', 1, 5)
 
-    return 'movielens-100K', data, features, label, recsys_properties
+    return ML_100k_NAME, data, features, label, recsys_properties

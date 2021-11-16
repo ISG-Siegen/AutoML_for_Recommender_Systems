@@ -22,10 +22,10 @@ volumes_dir = {
 
 
 # ---- Code ----
-def start_code_in_container_handler(library_to_run):
+def start_code_in_container_handler(library_to_run, script_to_run="libraries/main_benchmark.py"):
     # Some required variables
     container_name = CONTAINER_PREFIX + library_to_run
-    container_cmd = ["libraries/main_benchmark.py", library_to_run]
+    container_cmd = [script_to_run, library_to_run]
 
     logger.info("Start Container: {} for library {}".format(container_name, library_to_run))
     container = docker_client.containers.run("{}:latest".format(container_name), container_cmd, detach=True,
@@ -84,8 +84,14 @@ def start_code_in_container_handler(library_to_run):
 
 
 if __name__ == "__main__":
-
+    # Preprocessing to figure out which libraries have run so far and which not
+    # (takes some time as it requires to start each container)
     for lib_name in get_all_lib_names():
-        start_code_in_container_handler(lib_name)
+        start_code_in_container_handler(lib_name, script_to_run="evaluation/run_overhead_mgmt.py")
+
+    # Do benchmarks
+    # only runs code for dataset-algorithm combinations that have not been collected so far (change in benchmark main)
+    for lib_name in get_all_lib_names():
+        start_code_in_container_handler(lib_name, script_to_run="libraries/main_benchmark.py")
 
     logger.info("Finished all libraries")

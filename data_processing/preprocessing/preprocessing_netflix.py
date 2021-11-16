@@ -3,6 +3,8 @@ import os
 from utils.lcer import get_dataset_container_path
 from benchmark_framework.dataset_base import RecSysProperties
 
+NETFLIX_NAME = 'netflix'
+
 
 def load_netflix_from_file():
     data = pd.read_table(os.path.join(get_dataset_container_path(), 'NetflixRatings.csv'), sep=',',
@@ -16,7 +18,7 @@ def load_netflix_from_file():
 
     recsys_properties = RecSysProperties('userId', 'itemId', 'rating', 1, 5)
 
-    return 'netflix', data, features, label, recsys_properties
+    return NETFLIX_NAME, data, features, label, recsys_properties
 
 
 def load_netflix_from_csv():
@@ -30,4 +32,4 @@ def load_netflix_from_csv():
 
     recsys_properties = RecSysProperties('userId', 'itemId', 'rating', 1, 5)
 
-    return 'netflix', data, features, label, recsys_properties
+    return NETFLIX_NAME, data, features, label, recsys_properties

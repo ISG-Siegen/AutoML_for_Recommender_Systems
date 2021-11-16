@@ -3,6 +3,8 @@ import os
 from utils.lcer import get_dataset_container_path
 from benchmark_framework.dataset_base import RecSysProperties
 
+AMAZON_INSTANTVIDEO_NAME = 'amazon-instantvideo'
+
 
 def load_amazon_instantvideo_from_file():
     data = pd.read_table(os.path.join(get_dataset_container_path(), 'ratings_Amazon_Instant_Video.csv'), sep=',',
@@ -18,7 +20,7 @@ def load_amazon_instantvideo_from_file():
 
     recsys_properties = RecSysProperties('userId', 'instantvideoId', 'rating', 1, 5)
 
-    return 'amazon-instantvideo', data, features, label, recsys_properties
+    return AMAZON_INSTANTVIDEO_NAME, data, features, label, recsys_properties
 
 
 def load_amazon_instantvideo_from_csv():
@@ -32,4 +34,4 @@ def load_amazon_instantvideo_from_csv():
 
     recsys_properties = RecSysProperties('userId', 'instantvideoId', 'rating', 1, 5)
 
-    return 'amazon-instantvideo', data, features, label, recsys_properties
+    return AMAZON_INSTANTVIDEO_NAME, data, features, label, recsys_properties

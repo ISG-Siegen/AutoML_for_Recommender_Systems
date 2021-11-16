@@ -6,7 +6,7 @@ sys.path.insert(1, os.path.join(sys.path[0], '..'))
 # Rest of imports
 from benchmark_framework import benchmarker, metrics, dataset_base
 from utils.lcer import get_logger, get_output_result_data, get_base_path
-from utils.filer import write_data, append_data
+from utils import filer
 import time
 from libraries.name_lib_mapping import NAME_LIB_MAP
 import pandas as pd
@@ -20,6 +20,7 @@ logger = get_logger("BenchmarkExe")
 # Read Input (the lib name to run)
 lib_name = str(sys.argv[1])
 fresh_start = False
+only_new_benchmarks = True
 
 # Load algos from lib name
 lib_algos = NAME_LIB_MAP[lib_name]()
@@ -35,8 +36,18 @@ if fresh_start and os.path.isfile(output_filepath):
     os.remove(output_filepath)
 
 if not os.path.isfile(output_filepath) or fresh_start:
-    write_data(pd.DataFrame([], columns=["timestamp", "Dataset", "Model", "LibraryCategory", "RSME", "TimeInSeconds"]),
-               output_filepath)
+    filer.write_data(
+        pd.DataFrame([], columns=["timestamp", "Dataset", "Model", "LibraryCategory", "RSME", "TimeInSeconds"]),
+        output_filepath)
+
+if only_new_benchmarks:
+    run_so_far = filer.read_data_json(os.path.join(get_base_path(), get_output_result_data(), "run_overhead_data.json"))
+    # Only select subset of data relevant to the current run
+    run_so_far_lib = run_so_far[lib_name]
+
+    if run_so_far_lib["all_benchmarks_done_at_least_once"]:
+        logger.info("### Library already fully benchmarked - Exit Script ###")
+        exit(0)
 
 # ------------- Loop over all datasets
 logger.info("######## Loop over all Datasets and do benchmarks for library {} ########".format(lib_name))
@@ -53,6 +64,13 @@ for idx, dataset_load_function in enumerate(dataset_load_functions, 1):
     for model_base in lib_algos:
         #  Build benchmark for this dataset and algorithm
         benchmark = benchmarker.Benchmark(dataset, metric, 60, model_base)
+
+        # Check if the model has to be run at all
+        if only_new_benchmarks and benchmark.model.name not in run_so_far_lib[dataset.name]:
+            # Skip
+            logger.info("###### Skip {} as it has been run before ######".format(benchmark.model.name))
+            continue
+
         # Execute benchmarks for this dataset
         tmp_result_data = [(time.time(), dataset.name, benchmark.model.name, benchmark.model.library_category,
                             *benchmark.run())]
@@ -62,8 +80,9 @@ for idx, dataset_load_function in enumerate(dataset_load_functions, 1):
         logger.info("{}: RSME of {} | Time taken {}".format(model_name, metric_val, execution_time))
 
         # Build tmp df to output data
-        append_data(pd.DataFrame(tmp_result_data, columns=["timestamp", "Dataset", "Model", "LibraryCategory", "RSME",
-                                                           "TimeInSeconds"]), output_filepath)
+        filer.append_data(
+            pd.DataFrame(tmp_result_data, columns=["timestamp", "Dataset", "Model", "LibraryCategory", "RSME",
+                                                   "TimeInSeconds"]), output_filepath)
 
     logger.info("###### Finished processing Dataset {} ######".format(dataset.name))
 

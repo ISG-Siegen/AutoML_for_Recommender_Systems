@@ -3,6 +3,8 @@ import os
 from utils.lcer import get_dataset_container_path
 from benchmark_framework.dataset_base import RecSysProperties
 
+AMAZON_TOYS_NAME = 'amazon-toys'
+
 
 def load_amazon_toys_from_file():
     data = pd.read_table(os.path.join(get_dataset_container_path(), 'ratings_Toys_and_Games.csv'), sep=',',
@@ -18,7 +20,7 @@ def load_amazon_toys_from_file():
 
     recsys_properties = RecSysProperties('userId', 'toysId', 'rating', 1, 5)
 
-    return 'amazon-toys', data, features, label, recsys_properties
+    return AMAZON_TOYS_NAME, data, features, label, recsys_properties
 
 
 def load_amazon_toys_from_csv():
@@ -32,4 +34,4 @@ def load_amazon_toys_from_csv():
 
     recsys_properties = RecSysProperties('userId', 'toysId', 'rating', 1, 5)
 
-    return 'amazon-toys', data, features, label, recsys_properties
+    return AMAZON_TOYS_NAME, data, features, label, recsys_properties
