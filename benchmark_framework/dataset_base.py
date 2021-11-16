@@ -41,3 +41,8 @@ class Dataset:
 
         # Set user/item number
         self.recsys_properties.set_num_values(self.data)
+
+
+class DummyDataset:
+    def __init__(self):
+        self.features = ["dummy_feature"]

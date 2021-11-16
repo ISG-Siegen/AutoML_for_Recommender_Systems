@@ -30,18 +30,18 @@ LOAD_FILE_FUNCTIONS = [load_ml_100k_from_file, load_ml_1m_from_file, load_ml_10m
 
 # ------------ Relevant Dicts for Data Processing
 LOAD_CSV_FUNCTIONS = [
-    load_ml_100k_from_csv, load_ml_1m_from_csv, load_ml_10m_from_csv,
+    load_ml_100k_from_csv, load_ml_1m_from_csv,
     load_ml_latest_small_from_csv, load_amazon_instantvideo_from_csv, load_amazon_music_from_csv,
     load_amazon_toys_from_csv, load_yelp_from_csv
 
-    # Removed because too big: load_ml_20m_from_csv, load_netflix_from_csv
+    # Removed because too big for now: load_ml_20m_from_csv, load_netflix_from_csv, load_ml_10m_from_csv
     # load_amazon_books_from_csv, load_amazon_electronics_from_csv
 ]
-DATA_NAMES = [
-    ML_100k_NAME, ML_1M_NAME, ML_10M100k_NAME, ML_LATESTSMALL_NAME, AMAZON_INSTANTVIDEO_NAME, AMAZON_MUSIC_NAME,
+DATASET_NAMES = [
+    ML_100k_NAME, ML_1M_NAME, ML_LATESTSMALL_NAME, AMAZON_INSTANTVIDEO_NAME, AMAZON_MUSIC_NAME,
     AMAZON_TOYS_NAME, YELP_NAME
 
-    # Not used as above: ML_20M_NAME, NETFLIX_NAME, AMAZON_BOOKS_NAME, AMAZON_ELECTRONICS_NAME
+    # Not used as above: ML_20M_NAME, NETFLIX_NAME, AMAZON_BOOKS_NAME, AMAZON_ELECTRONICS_NAME, ML_10M100k_NAME
 ]
 
 
