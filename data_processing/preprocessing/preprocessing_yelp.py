@@ -3,6 +3,8 @@ import os
 from utils.lcer import get_dataset_container_path
 from benchmark_framework.dataset_base import RecSysProperties
 
+YELP_NAME = 'yelp'
+
 
 def load_yelp_from_file():
     data = pd.read_json(os.path.join(get_dataset_container_path(), 'yelp_training_set_review.json'), lines=True)
@@ -21,7 +23,7 @@ def load_yelp_from_file():
 
     recsys_propertys = RecSysProperties('userId', 'itemId', 'rating', 1, 5)
 
-    return 'yelp', data, features, label, recsys_propertys
+    return YELP_NAME, data, features, label, recsys_propertys
 
 
 def load_yelp_from_csv():
@@ -35,4 +37,4 @@ def load_yelp_from_csv():
 
     recsys_propertys = RecSysProperties('userId', 'itemId', 'rating', 1, 5)
 
-    return 'yelp', data, features, label, recsys_propertys
+    return YELP_NAME, data, features, label, recsys_propertys

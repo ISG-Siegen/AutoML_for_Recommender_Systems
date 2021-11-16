@@ -3,6 +3,8 @@ import os
 from utils.lcer import get_dataset_container_path
 from benchmark_framework.dataset_base import RecSysProperties
 
+AMAZON_ELECTRONICS_NAME = 'amazon-electronics'
+
 
 def load_amazon_electronics_from_file():
     data = pd.read_table(os.path.join(get_dataset_container_path(), 'ratings_Electronics.csv'), sep=',',
@@ -18,7 +20,7 @@ def load_amazon_electronics_from_file():
 
     recsys_properties = RecSysProperties('userId', 'electronicsId', 'rating', 1, 5)
 
-    return 'amazon-electronics', data, features, label, recsys_properties
+    return AMAZON_ELECTRONICS_NAME, data, features, label, recsys_properties
 
 
 def load_amazon_electronics_from_csv():
@@ -32,4 +34,4 @@ def load_amazon_electronics_from_csv():
 
     recsys_properties = RecSysProperties('userId', 'electronicsId', 'rating', 1, 5)
 
-    return 'amazon-electronics', data, features, label, recsys_properties
+    return AMAZON_ELECTRONICS_NAME, data, features, label, recsys_properties
