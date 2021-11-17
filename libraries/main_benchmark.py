@@ -37,7 +37,7 @@ if fresh_start and os.path.isfile(output_filepath):
 
 if not os.path.isfile(output_filepath) or fresh_start:
     filer.write_data(
-        pd.DataFrame([], columns=["timestamp", "Dataset", "Model", "LibraryCategory", "RSME", "TimeInSeconds"]),
+        pd.DataFrame([], columns=["Dataset", "Model", "LibraryCategory", "RSME", "TimeInSeconds", "timestamp"]),
         output_filepath)
 
 if only_new_benchmarks:
@@ -72,17 +72,17 @@ for idx, dataset_load_function in enumerate(dataset_load_functions, 1):
             continue
 
         # Execute benchmarks for this dataset
-        tmp_result_data = [(time.time(), dataset.name, benchmark.model.name, benchmark.model.library_category,
-                            *benchmark.run())]
+        tmp_result_data = [(dataset.name, benchmark.model.name, benchmark.model.library_category,
+                            *benchmark.run(), time.time())]
 
         logger.info("###### Intermediate Result Output and Saving Data ######")
-        _, _, model_name, _, metric_val, execution_time = tmp_result_data[0]
+        _, model_name, _, metric_val, execution_time, _ = tmp_result_data[0]
         logger.info("{}: RSME of {} | Time taken {}".format(model_name, metric_val, execution_time))
 
         # Build tmp df to output data
         filer.append_data(
-            pd.DataFrame(tmp_result_data, columns=["timestamp", "Dataset", "Model", "LibraryCategory", "RSME",
-                                                   "TimeInSeconds"]), output_filepath)
+            pd.DataFrame(tmp_result_data, columns=["Dataset", "Model", "LibraryCategory", "RSME",
+                                                   "TimeInSeconds", "timestamp"]), output_filepath)
 
     logger.info("###### Finished processing Dataset {} ######".format(dataset.name))
 

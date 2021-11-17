@@ -99,7 +99,8 @@ def load_surprise_and_all_models():
             super().__init__("Surprise_NormalPredictor", NormalPredictor())
 
     # Return
-    surprise_models = [SurpriseSVD, SurpriseSVDpp, SurpriseKNNBasic, SurpriseKNNBaseline, SurpriseKNNWithZScore,
-                       SurpriseKNNWithMeans, SurpriseCoClustering, SurpriseBaselineOnly, SurpriseSlopeOne,
+    surprise_models = [SurpriseSVD, SurpriseSVDpp, SurpriseCoClustering, SurpriseBaselineOnly,
                        SurpriseNMF, SurpriseNormalPredictor]
+
+    # Removed because knn: SurpriseKNNWithMeans, SurpriseKNNBaseline, SurpriseKNNBasic, SurpriseKNNWithZScore, SurpriseSlopeOne
     return surprise_models
