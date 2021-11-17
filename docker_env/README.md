@@ -31,6 +31,14 @@ Windows:
 Linux:
 `docker-compose build && docker image prune -f`
 
+## Run Benchmarks
+
+Run `container_env_mgmt.py` using a Python environment with the required packages (see mgmt_requirements.txt and below)
+
+Windows: make sure Docker Desktop (or the docker daemon is running)
+
+Linux: make sure the docker daemon is running and usee sudo
+
 ## Run by Hand
 
 Start Container + Code by entering the following command. This command is essentially what `container_env_mgmt.py` is
@@ -89,7 +97,6 @@ See `mgmt_requirements.txt`.
   see https://stackoverflow.com/questions/60054378/i-want-to-use-docker-sdk-inside-a-running-docker-container-and-want-to-build-an
 * The sklearn requirement could be removed by replacing the code for metric calculation. For now, it can be part of the
   base requirements. Pandas is generally needed.
-
 
 # Bugs and Other Stuff
 
