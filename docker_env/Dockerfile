@@ -78,7 +78,7 @@ RUN pip install --no-cache-dir lenskit[sklearn,hpf,implicit,tf]
 
 # ---- AutoRecSys ----
 # -- autosurprise --
-FROM base_python as autosurprise
+FROM base as autosurprise
 RUN pip install py4j
 RUN pip install --no-cache-dir auto-surprise
 
