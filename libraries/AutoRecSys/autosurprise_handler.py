@@ -26,7 +26,7 @@ def load_auto_surprise_and_all_models():
                                                    dataset.recsys_properties.itemId_col,
                                                    dataset.recsys_properties.rating_col]], reader)
 
-            engine = Engine(verbose=False)
+            engine = Engine(verbose=False, random_state=None)
             best_algo, best_params, best_score, tasks = engine.train(
                 data=data,
                 target_metric='test_rmse',

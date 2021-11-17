@@ -78,12 +78,17 @@ RUN pip install --no-cache-dir lenskit[sklearn,hpf,implicit,tf]
 
 # ---- AutoRecSys ----
 # -- autosurprise --
-FROM base as autosurprise
-RUN pip install --no-cache-dir auto-surprise && pip install --no-cache-dir py4j && pip install --no-cache-dir pandas
+FROM base_python as autosurprise
+RUN pip install --no-cache-dir auto-surprise
 
 ## -- AutoRec --
 # -- AutoRec --
 FROM python:3.8 as autorec
 # autorec needs python <3.9 for tensorflow < 2.5
 RUN pip install --no-cache-dir --upgrade pip && pip install Cython && pip install --no-cache-dir autorec==0.0.2
+
+
+
+
+
 
