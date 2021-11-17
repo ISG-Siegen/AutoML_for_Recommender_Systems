@@ -1,6 +1,7 @@
 # Code to eval given data according to our goals
 import os
 import sys
+import itertools
 
 # ------------- Ensure that base path is found
 sys.path.insert(1, os.path.join(sys.path[0], '..'))
@@ -61,7 +62,19 @@ def select_newest_subset(data):
             check_dict[row["Dataset"] + row["Model"]] = [row["timestamp"], index]
 
     # Drop and return
-    return data.drop(index_to_drop).drop(columns=["timestamp"])
+    dropped_data = data.drop(index_to_drop).drop(columns=["timestamp"])
+
+    # Check for how many values are still missing
+    valid_pairs = set(itertools.product(valid_models, valid_datasets))
+    print("Total amount of evaluation pairs: {}".format(len(valid_pairs)))
+
+    for index, row in dropped_data[["Dataset", "Model"]].iterrows():
+        tmp_pair = (row["Model"], row["Dataset"])
+        valid_pairs.remove(tmp_pair)
+
+    print("Amount of evaluation pairs left to do: {}".format(len(valid_pairs)))
+
+    return dropped_data
 
 
 def eval_overall_results():
