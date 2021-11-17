@@ -1,8 +1,13 @@
 # Code to eval given data according to our goals
+import os
+import sys
+
+# ------------- Ensure that base path is found
+sys.path.insert(1, os.path.join(sys.path[0], '..'))
+# Default imports
 import pandas as pd
 from utils import filer
 from evaluation import eval_plotter
-import os
 from utils.lcer import get_logger, get_output_result_data, get_base_path
 import numpy as np
 from collections import defaultdict
@@ -30,14 +35,25 @@ def select_newest_subset(data):
     check_dict = defaultdict(lambda: [0, None])
     index_to_drop = []
 
+    # Get list of model and dataset names that are valid (depending on our current run overhead data)
+    run_overhead_data = filer.read_data_json(os.path.join(get_base_path(), get_output_result_data(),
+                                                          "run_overhead_data.json"))
+    valid_datasets = set(run_overhead_data["used_dataset_names"])
+    valid_models = set([model_name for lib in run_overhead_data["used_libraries_names"]
+                        for model_name in run_overhead_data[lib]["model_names"]])
+
     for index, row in data.iterrows():
         # Check if the loop already iterated over a newer model+dataset result
-        if check_dict[row["Dataset"]+row["Model"]][0] > row["timestamp"]:
+        dataset_name = row["Dataset"]
+        model_name = row["Model"]
+
+        if (dataset_name not in valid_datasets) or (model_name not in valid_models) \
+                or (check_dict[dataset_name + model_name][0] > row["timestamp"]):
             # If yes, mark the row to be dropped
             index_to_drop.append(index)
         else:
             # if no, mark last row checked for this to be dropped (if not None, i.e., initial value)
-            old_index = check_dict[row["Dataset"]+row["Model"]][1]
+            old_index = check_dict[dataset_name + model_name][1]
             if old_index is not None:
                 index_to_drop.append(old_index)
 
@@ -49,7 +65,6 @@ def select_newest_subset(data):
 
 
 def eval_overall_results():
-    # overall_data = merge_possible_files()
     overall_data = filer.read_data(os.path.join(get_base_path(), get_output_result_data(),
                                                 "overall_benchmark_results.csv"))
     overall_data = select_newest_subset(overall_data)
