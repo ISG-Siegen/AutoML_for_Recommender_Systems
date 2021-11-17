@@ -1,1 +1,506 @@
-{"used_dataset_names": ["movielens-100K", "movielens-1M", "movielens-10M100K", "movielens-latest-small", "amazon-instantvideo", "amazon-music", "amazon-toys", "yelp"], "used_libraries_names": ["constant_predictors", "surprise", "lenskit", "autosurprise", "autorec", "sklearn", "xgboost", "ktrain", "autosklearn", "flaml", "gama", "h2o", "tpot", "autogluon"], "lenskit": {"movielens-100K": [], "movielens-1M": [], "movielens-latest-small": [], "amazon-instantvideo": [], "amazon-music": [], "amazon-toys": [], "yelp": [], "model_names": ["lenskit_ItemItem", "lenskit_UserUser", "lenskit_Bias", "lenskit_ALSBiasedMF", "lenskit_FunkSVD", "lenskit_BiasedSVD", "lenskit_HPF", "lenskit_IntegratedBiasMF", "lenskit_BPR", "lenskit_TFBiasedMF"], "all_benchmarks_done_at_least_once": true}, "autosurprise": {"movielens-100K": [], "movielens-1M": [], "movielens-latest-small": [], "amazon-instantvideo": [], "amazon-music": ["AutoSurprise"], "amazon-toys": ["AutoSurprise"], "yelp": ["AutoSurprise"], "model_names": ["AutoSurprise"], "all_benchmarks_done_at_least_once": false}, "autorec": {"movielens-100K": ["AutoRec"], "movielens-1M": ["AutoRec"], "movielens-latest-small": ["AutoRec"], "amazon-instantvideo": ["AutoRec"], "amazon-music": ["AutoRec"], "amazon-toys": ["AutoRec"], "yelp": ["AutoRec"], "model_names": ["AutoRec"], "all_benchmarks_done_at_least_once": false}, "sklearn": {"movielens-100K": [], "movielens-1M": [], "movielens-latest-small": ["SciKit_AdaBoostRegressor", "SciKit_BayesianRidge", "SciKit_KNeighborsRegressor", "SciKit_MLPRegressor", "SciKit_GradientBoostingRegressor", "SciKit_BaggingRegressor", "SciKit_StochasticGradientDescentRegressor", "SciKit_Ridge", "SciKit_ElasticNet", "SciKit_ARDRegression", "SciKit_RandomForestRegressor", "SciKit_HuberRegressor", "SciKit_RANSACRegressor", "SciKit_OrthogonalMatchingPursuit", "SciKit_TweedieRegressor", "SciKit_Lars", "SciKit_RadiusNeighborsRegressor", "SciKit_LinearRegressor", "SciKit_GammaRegressor", "SciKit_PoissonRegressor", "SciKit_TheilSenRegressor", "SciKit_LassoLars", "SciKit_DummyRegressor", "SciKit_SupportVectorRegression", "SciKit_ExtraTreesRegressor", "SciKit_Lasso"], "amazon-instantvideo": ["SciKit_AdaBoostRegressor", "SciKit_BayesianRidge", "SciKit_KNeighborsRegressor", "SciKit_MLPRegressor", "SciKit_GradientBoostingRegressor", "SciKit_BaggingRegressor", "SciKit_StochasticGradientDescentRegressor", "SciKit_Ridge", "SciKit_ElasticNet", "SciKit_ARDRegression", "SciKit_RandomForestRegressor", "SciKit_HuberRegressor", "SciKit_RANSACRegressor", "SciKit_OrthogonalMatchingPursuit", "SciKit_TweedieRegressor", "SciKit_Lars", "SciKit_RadiusNeighborsRegressor", "SciKit_LinearRegressor", "SciKit_GammaRegressor", "SciKit_PoissonRegressor", "SciKit_TheilSenRegressor", "SciKit_LassoLars", "SciKit_DummyRegressor", "SciKit_SupportVectorRegression", "SciKit_ExtraTreesRegressor", "SciKit_Lasso"], "amazon-music": ["SciKit_AdaBoostRegressor", "SciKit_BayesianRidge", "SciKit_KNeighborsRegressor", "SciKit_MLPRegressor", "SciKit_GradientBoostingRegressor", "SciKit_BaggingRegressor", "SciKit_StochasticGradientDescentRegressor", "SciKit_Ridge", "SciKit_ElasticNet", "SciKit_ARDRegression", "SciKit_RandomForestRegressor", "SciKit_HuberRegressor", "SciKit_RANSACRegressor", "SciKit_OrthogonalMatchingPursuit", "SciKit_TweedieRegressor", "SciKit_Lars", "SciKit_RadiusNeighborsRegressor", "SciKit_LinearRegressor", "SciKit_GammaRegressor", "SciKit_PoissonRegressor", "SciKit_TheilSenRegressor", "SciKit_LassoLars", "SciKit_DummyRegressor", "SciKit_SupportVectorRegression", "SciKit_ExtraTreesRegressor", "SciKit_Lasso"], "amazon-toys": ["SciKit_AdaBoostRegressor", "SciKit_BayesianRidge", "SciKit_KNeighborsRegressor", "SciKit_MLPRegressor", "SciKit_GradientBoostingRegressor", "SciKit_BaggingRegressor", "SciKit_StochasticGradientDescentRegressor", "SciKit_Ridge", "SciKit_ElasticNet", "SciKit_ARDRegression", "SciKit_RandomForestRegressor", "SciKit_HuberRegressor", "SciKit_RANSACRegressor", "SciKit_OrthogonalMatchingPursuit", "SciKit_TweedieRegressor", "SciKit_Lars", "SciKit_RadiusNeighborsRegressor", "SciKit_LinearRegressor", "SciKit_GammaRegressor", "SciKit_PoissonRegressor", "SciKit_TheilSenRegressor", "SciKit_LassoLars", "SciKit_DummyRegressor", "SciKit_SupportVectorRegression", "SciKit_ExtraTreesRegressor", "SciKit_Lasso"], "yelp": ["SciKit_AdaBoostRegressor", "SciKit_BayesianRidge", "SciKit_KNeighborsRegressor", "SciKit_MLPRegressor", "SciKit_GradientBoostingRegressor", "SciKit_BaggingRegressor", "SciKit_StochasticGradientDescentRegressor", "SciKit_Ridge", "SciKit_ElasticNet", "SciKit_ARDRegression", "SciKit_RandomForestRegressor", "SciKit_HuberRegressor", "SciKit_RANSACRegressor", "SciKit_OrthogonalMatchingPursuit", "SciKit_TweedieRegressor", "SciKit_Lars", "SciKit_RadiusNeighborsRegressor", "SciKit_LinearRegressor", "SciKit_GammaRegressor", "SciKit_PoissonRegressor", "SciKit_TheilSenRegressor", "SciKit_LassoLars", "SciKit_DummyRegressor", "SciKit_SupportVectorRegression", "SciKit_ExtraTreesRegressor", "SciKit_Lasso"], "model_names": ["SciKit_KNeighborsRegressor", "SciKit_RadiusNeighborsRegressor", "SciKit_SupportVectorRegression", "SciKit_DummyRegressor", "SciKit_MLPRegressor", "SciKit_RandomForestRegressor", "SciKit_AdaBoostRegressor", "SciKit_BaggingRegressor", "SciKit_ExtraTreesRegressor", "SciKit_GradientBoostingRegressor", "SciKit_LinearRegressor", "SciKit_Ridge", "SciKit_ElasticNet", "SciKit_LassoLars", "SciKit_Lars", "SciKit_Lasso", "SciKit_OrthogonalMatchingPursuit", "SciKit_StochasticGradientDescentRegressor", "SciKit_ARDRegression", "SciKit_BayesianRidge", "SciKit_HuberRegressor", "SciKit_TheilSenRegressor", "SciKit_GammaRegressor", "SciKit_PoissonRegressor", "SciKit_TweedieRegressor", "SciKit_RANSACRegressor"], "all_benchmarks_done_at_least_once": false}, "xgboost": {"movielens-100K": [], "movielens-1M": [], "movielens-latest-small": ["XGBoostRegressor"], "amazon-instantvideo": ["XGBoostRegressor"], "amazon-music": ["XGBoostRegressor"], "amazon-toys": ["XGBoostRegressor"], "yelp": ["XGBoostRegressor"], "model_names": ["XGBoostRegressor"], "all_benchmarks_done_at_least_once": false}, "ktrain": {"movielens-100K": ["ktrainRegressor"], "movielens-1M": ["ktrainRegressor"], "movielens-latest-small": ["ktrainRegressor"], "amazon-instantvideo": ["ktrainRegressor"], "amazon-music": ["ktrainRegressor"], "amazon-toys": ["ktrainRegressor"], "yelp": ["ktrainRegressor"], "model_names": ["ktrainRegressor"], "all_benchmarks_done_at_least_once": false}, "autosklearn": {"movielens-100K": ["AutoSKLearn_AutoSklearnRegressor"], "movielens-1M": ["AutoSKLearn_AutoSklearnRegressor"], "movielens-latest-small": ["AutoSKLearn_AutoSklearnRegressor"], "amazon-instantvideo": ["AutoSKLearn_AutoSklearnRegressor"], "amazon-music": ["AutoSKLearn_AutoSklearnRegressor"], "amazon-toys": ["AutoSKLearn_AutoSklearnRegressor"], "yelp": ["AutoSKLearn_AutoSklearnRegressor"], "model_names": ["AutoSKLearn_AutoSklearnRegressor"], "all_benchmarks_done_at_least_once": false}, "flaml": {"movielens-100K": [], "movielens-1M": [], "movielens-latest-small": ["FLAML_Regressor"], "amazon-instantvideo": ["FLAML_Regressor"], "amazon-music": ["FLAML_Regressor"], "amazon-toys": ["FLAML_Regressor"], "yelp": ["FLAML_Regressor"], "model_names": ["FLAML_Regressor"], "all_benchmarks_done_at_least_once": false}, "gama": {"movielens-100K": [], "movielens-1M": [], "movielens-latest-small": ["GAMA_Regressor"], "amazon-instantvideo": ["GAMA_Regressor"], "amazon-music": ["GAMA_Regressor"], "amazon-toys": ["GAMA_Regressor"], "yelp": ["GAMA_Regressor"], "model_names": ["GAMA_Regressor"], "all_benchmarks_done_at_least_once": false}, "h2o": {"movielens-100K": [], "movielens-1M": ["H2O_H2OGradientBoostingEstimator"], "movielens-latest-small": ["H2O_H2OGradientBoostingEstimator"], "amazon-instantvideo": ["H2O_H2OGradientBoostingEstimator"], "amazon-music": ["H2O_H2OGradientBoostingEstimator"], "amazon-toys": ["H2O_H2OGradientBoostingEstimator"], "yelp": ["H2O_H2OGradientBoostingEstimator"], "model_names": ["H2O_H2OGradientBoostingEstimator"], "all_benchmarks_done_at_least_once": false}, "tpot": {"movielens-100K": [], "movielens-1M": [], "movielens-latest-small": ["TPOT_Regressor"], "amazon-instantvideo": ["TPOT_Regressor"], "amazon-music": ["TPOT_Regressor"], "amazon-toys": ["TPOT_Regressor"], "yelp": ["TPOT_Regressor"], "model_names": ["TPOT_Regressor"], "all_benchmarks_done_at_least_once": false}, "autogluon": {"movielens-100K": ["AutoGluon_Regressor"], "movielens-1M": ["AutoGluon_Regressor"], "movielens-latest-small": ["AutoGluon_Regressor"], "amazon-instantvideo": ["AutoGluon_Regressor"], "amazon-music": ["AutoGluon_Regressor"], "amazon-toys": ["AutoGluon_Regressor"], "yelp": ["AutoGluon_Regressor"], "model_names": ["AutoGluon_Regressor"], "all_benchmarks_done_at_least_once": false}, "constant_predictors": {"movielens-100K": [], "movielens-1M": [], "movielens-latest-small": [], "amazon-instantvideo": [], "amazon-music": [], "amazon-toys": [], "yelp": [], "model_names": ["ConstantPredictor_Mean"], "all_benchmarks_done_at_least_once": true}, "surprise": {"movielens-100K": [], "movielens-1M": [], "movielens-latest-small": [], "amazon-instantvideo": [], "amazon-music": [], "amazon-toys": [], "yelp": [], "model_names": ["Surprise_SingularValueDecompositionAlgorithm", "Surprise_SVDpp", "Surprise_CoClustering", "Surprise_BaselineOnly", "Surprise_NMF", "Surprise_NormalPredictor"], "all_benchmarks_done_at_least_once": true}}
+{
+  "used_dataset_names": [
+    "movielens-100K",
+    "movielens-1M",
+    "movielens-10M100K",
+    "movielens-latest-small",
+    "amazon-instantvideo",
+    "amazon-music",
+    "amazon-toys",
+    "yelp"
+  ],
+  "used_libraries_names": [
+    "constant_predictors",
+    "surprise",
+    "lenskit",
+    "autosurprise",
+    "autorec",
+    "sklearn",
+    "xgboost",
+    "ktrain",
+    "autosklearn",
+    "flaml",
+    "gama",
+    "h2o",
+    "tpot",
+    "autogluon"
+  ],
+  "lenskit": {
+    "movielens-100K": [],
+    "movielens-1M": [],
+    "movielens-latest-small": [],
+    "amazon-instantvideo": [],
+    "amazon-music": [],
+    "amazon-toys": [],
+    "yelp": [],
+    "model_names": [
+      "lenskit_ItemItem",
+      "lenskit_UserUser",
+      "lenskit_Bias",
+      "lenskit_ALSBiasedMF",
+      "lenskit_FunkSVD",
+      "lenskit_BiasedSVD",
+      "lenskit_HPF",
+      "lenskit_IntegratedBiasMF",
+      "lenskit_BPR",
+      "lenskit_TFBiasedMF"
+    ],
+    "all_benchmarks_done_at_least_once": true
+  },
+  "autosurprise": {
+    "movielens-100K": [
+      "AutoSurprise"
+    ],
+    "movielens-1M": [
+      "AutoSurprise"
+    ],
+    "movielens-latest-small": [
+      "AutoSurprise"
+    ],
+    "amazon-instantvideo": [
+      "AutoSurprise"
+    ],
+    "amazon-music": [
+      "AutoSurprise"
+    ],
+    "amazon-toys": [
+      "AutoSurprise"
+    ],
+    "yelp": [
+      "AutoSurprise"
+    ],
+    "model_names": [
+      "AutoSurprise"
+    ],
+    "all_benchmarks_done_at_least_once": false
+  },
+  "autorec": {
+    "movielens-100K": [
+      "AutoRec"
+    ],
+    "movielens-1M": [
+      "AutoRec"
+    ],
+    "movielens-latest-small": [
+      "AutoRec"
+    ],
+    "amazon-instantvideo": [
+      "AutoRec"
+    ],
+    "amazon-music": [
+      "AutoRec"
+    ],
+    "amazon-toys": [
+      "AutoRec"
+    ],
+    "yelp": [
+      "AutoRec"
+    ],
+    "model_names": [
+      "AutoRec"
+    ],
+    "all_benchmarks_done_at_least_once": false
+  },
+  "sklearn": {
+    "movielens-100K": [],
+    "movielens-1M": [],
+    "movielens-latest-small": [
+      "SciKit_AdaBoostRegressor",
+      "SciKit_BayesianRidge",
+      "SciKit_KNeighborsRegressor",
+      "SciKit_MLPRegressor",
+      "SciKit_GradientBoostingRegressor",
+      "SciKit_BaggingRegressor",
+      "SciKit_StochasticGradientDescentRegressor",
+      "SciKit_Ridge",
+      "SciKit_ElasticNet",
+      "SciKit_ARDRegression",
+      "SciKit_RandomForestRegressor",
+      "SciKit_HuberRegressor",
+      "SciKit_RANSACRegressor",
+      "SciKit_OrthogonalMatchingPursuit",
+      "SciKit_TweedieRegressor",
+      "SciKit_Lars",
+      "SciKit_RadiusNeighborsRegressor",
+      "SciKit_LinearRegressor",
+      "SciKit_GammaRegressor",
+      "SciKit_PoissonRegressor",
+      "SciKit_TheilSenRegressor",
+      "SciKit_LassoLars",
+      "SciKit_DummyRegressor",
+      "SciKit_SupportVectorRegression",
+      "SciKit_ExtraTreesRegressor",
+      "SciKit_Lasso"
+    ],
+    "amazon-instantvideo": [
+      "SciKit_AdaBoostRegressor",
+      "SciKit_BayesianRidge",
+      "SciKit_KNeighborsRegressor",
+      "SciKit_MLPRegressor",
+      "SciKit_GradientBoostingRegressor",
+      "SciKit_BaggingRegressor",
+      "SciKit_StochasticGradientDescentRegressor",
+      "SciKit_Ridge",
+      "SciKit_ElasticNet",
+      "SciKit_ARDRegression",
+      "SciKit_RandomForestRegressor",
+      "SciKit_HuberRegressor",
+      "SciKit_RANSACRegressor",
+      "SciKit_OrthogonalMatchingPursuit",
+      "SciKit_TweedieRegressor",
+      "SciKit_Lars",
+      "SciKit_RadiusNeighborsRegressor",
+      "SciKit_LinearRegressor",
+      "SciKit_GammaRegressor",
+      "SciKit_PoissonRegressor",
+      "SciKit_TheilSenRegressor",
+      "SciKit_LassoLars",
+      "SciKit_DummyRegressor",
+      "SciKit_SupportVectorRegression",
+      "SciKit_ExtraTreesRegressor",
+      "SciKit_Lasso"
+    ],
+    "amazon-music": [
+      "SciKit_AdaBoostRegressor",
+      "SciKit_BayesianRidge",
+      "SciKit_KNeighborsRegressor",
+      "SciKit_MLPRegressor",
+      "SciKit_GradientBoostingRegressor",
+      "SciKit_BaggingRegressor",
+      "SciKit_StochasticGradientDescentRegressor",
+      "SciKit_Ridge",
+      "SciKit_ElasticNet",
+      "SciKit_ARDRegression",
+      "SciKit_RandomForestRegressor",
+      "SciKit_HuberRegressor",
+      "SciKit_RANSACRegressor",
+      "SciKit_OrthogonalMatchingPursuit",
+      "SciKit_TweedieRegressor",
+      "SciKit_Lars",
+      "SciKit_RadiusNeighborsRegressor",
+      "SciKit_LinearRegressor",
+      "SciKit_GammaRegressor",
+      "SciKit_PoissonRegressor",
+      "SciKit_TheilSenRegressor",
+      "SciKit_LassoLars",
+      "SciKit_DummyRegressor",
+      "SciKit_SupportVectorRegression",
+      "SciKit_ExtraTreesRegressor",
+      "SciKit_Lasso"
+    ],
+    "amazon-toys": [
+      "SciKit_AdaBoostRegressor",
+      "SciKit_BayesianRidge",
+      "SciKit_KNeighborsRegressor",
+      "SciKit_MLPRegressor",
+      "SciKit_GradientBoostingRegressor",
+      "SciKit_BaggingRegressor",
+      "SciKit_StochasticGradientDescentRegressor",
+      "SciKit_Ridge",
+      "SciKit_ElasticNet",
+      "SciKit_ARDRegression",
+      "SciKit_RandomForestRegressor",
+      "SciKit_HuberRegressor",
+      "SciKit_RANSACRegressor",
+      "SciKit_OrthogonalMatchingPursuit",
+      "SciKit_TweedieRegressor",
+      "SciKit_Lars",
+      "SciKit_RadiusNeighborsRegressor",
+      "SciKit_LinearRegressor",
+      "SciKit_GammaRegressor",
+      "SciKit_PoissonRegressor",
+      "SciKit_TheilSenRegressor",
+      "SciKit_LassoLars",
+      "SciKit_DummyRegressor",
+      "SciKit_SupportVectorRegression",
+      "SciKit_ExtraTreesRegressor",
+      "SciKit_Lasso"
+    ],
+    "yelp": [
+      "SciKit_AdaBoostRegressor",
+      "SciKit_BayesianRidge",
+      "SciKit_KNeighborsRegressor",
+      "SciKit_MLPRegressor",
+      "SciKit_GradientBoostingRegressor",
+      "SciKit_BaggingRegressor",
+      "SciKit_StochasticGradientDescentRegressor",
+      "SciKit_Ridge",
+      "SciKit_ElasticNet",
+      "SciKit_ARDRegression",
+      "SciKit_RandomForestRegressor",
+      "SciKit_HuberRegressor",
+      "SciKit_RANSACRegressor",
+      "SciKit_OrthogonalMatchingPursuit",
+      "SciKit_TweedieRegressor",
+      "SciKit_Lars",
+      "SciKit_RadiusNeighborsRegressor",
+      "SciKit_LinearRegressor",
+      "SciKit_GammaRegressor",
+      "SciKit_PoissonRegressor",
+      "SciKit_TheilSenRegressor",
+      "SciKit_LassoLars",
+      "SciKit_DummyRegressor",
+      "SciKit_SupportVectorRegression",
+      "SciKit_ExtraTreesRegressor",
+      "SciKit_Lasso"
+    ],
+    "model_names": [
+      "SciKit_KNeighborsRegressor",
+      "SciKit_RadiusNeighborsRegressor",
+      "SciKit_SupportVectorRegression",
+      "SciKit_DummyRegressor",
+      "SciKit_MLPRegressor",
+      "SciKit_RandomForestRegressor",
+      "SciKit_AdaBoostRegressor",
+      "SciKit_BaggingRegressor",
+      "SciKit_ExtraTreesRegressor",
+      "SciKit_GradientBoostingRegressor",
+      "SciKit_LinearRegressor",
+      "SciKit_Ridge",
+      "SciKit_ElasticNet",
+      "SciKit_LassoLars",
+      "SciKit_Lars",
+      "SciKit_Lasso",
+      "SciKit_OrthogonalMatchingPursuit",
+      "SciKit_StochasticGradientDescentRegressor",
+      "SciKit_ARDRegression",
+      "SciKit_BayesianRidge",
+      "SciKit_HuberRegressor",
+      "SciKit_TheilSenRegressor",
+      "SciKit_GammaRegressor",
+      "SciKit_PoissonRegressor",
+      "SciKit_TweedieRegressor",
+      "SciKit_RANSACRegressor"
+    ],
+    "all_benchmarks_done_at_least_once": false
+  },
+  "xgboost": {
+    "movielens-100K": [],
+    "movielens-1M": [],
+    "movielens-latest-small": [
+      "XGBoostRegressor"
+    ],
+    "amazon-instantvideo": [
+      "XGBoostRegressor"
+    ],
+    "amazon-music": [
+      "XGBoostRegressor"
+    ],
+    "amazon-toys": [
+      "XGBoostRegressor"
+    ],
+    "yelp": [
+      "XGBoostRegressor"
+    ],
+    "model_names": [
+      "XGBoostRegressor"
+    ],
+    "all_benchmarks_done_at_least_once": false
+  },
+  "ktrain": {
+    "movielens-100K": [
+      "ktrainRegressor"
+    ],
+    "movielens-1M": [
+      "ktrainRegressor"
+    ],
+    "movielens-latest-small": [
+      "ktrainRegressor"
+    ],
+    "amazon-instantvideo": [
+      "ktrainRegressor"
+    ],
+    "amazon-music": [
+      "ktrainRegressor"
+    ],
+    "amazon-toys": [
+      "ktrainRegressor"
+    ],
+    "yelp": [
+      "ktrainRegressor"
+    ],
+    "model_names": [
+      "ktrainRegressor"
+    ],
+    "all_benchmarks_done_at_least_once": false
+  },
+  "autosklearn": {
+    "movielens-100K": [
+      "AutoSKLearn_AutoSklearnRegressor"
+    ],
+    "movielens-1M": [
+      "AutoSKLearn_AutoSklearnRegressor"
+    ],
+    "movielens-latest-small": [
+      "AutoSKLearn_AutoSklearnRegressor"
+    ],
+    "amazon-instantvideo": [
+      "AutoSKLearn_AutoSklearnRegressor"
+    ],
+    "amazon-music": [
+      "AutoSKLearn_AutoSklearnRegressor"
+    ],
+    "amazon-toys": [
+      "AutoSKLearn_AutoSklearnRegressor"
+    ],
+    "yelp": [
+      "AutoSKLearn_AutoSklearnRegressor"
+    ],
+    "model_names": [
+      "AutoSKLearn_AutoSklearnRegressor"
+    ],
+    "all_benchmarks_done_at_least_once": false
+  },
+  "flaml": {
+    "movielens-100K": [],
+    "movielens-1M": [],
+    "movielens-latest-small": [
+      "FLAML_Regressor"
+    ],
+    "amazon-instantvideo": [
+      "FLAML_Regressor"
+    ],
+    "amazon-music": [
+      "FLAML_Regressor"
+    ],
+    "amazon-toys": [
+      "FLAML_Regressor"
+    ],
+    "yelp": [
+      "FLAML_Regressor"
+    ],
+    "model_names": [
+      "FLAML_Regressor"
+    ],
+    "all_benchmarks_done_at_least_once": false
+  },
+  "gama": {
+    "movielens-100K": [],
+    "movielens-1M": [],
+    "movielens-latest-small": [
+      "GAMA_Regressor"
+    ],
+    "amazon-instantvideo": [
+      "GAMA_Regressor"
+    ],
+    "amazon-music": [
+      "GAMA_Regressor"
+    ],
+    "amazon-toys": [
+      "GAMA_Regressor"
+    ],
+    "yelp": [
+      "GAMA_Regressor"
+    ],
+    "model_names": [
+      "GAMA_Regressor"
+    ],
+    "all_benchmarks_done_at_least_once": false
+  },
+  "h2o": {
+    "movielens-100K": [],
+    "movielens-1M": [
+      "H2O_AutoML"
+    ],
+    "movielens-latest-small": [
+      "H2O_AutoML"
+    ],
+    "amazon-instantvideo": [
+      "H2O_AutoML"
+    ],
+    "amazon-music": [
+      "H2O_AutoML"
+    ],
+    "amazon-toys": [
+      "H2O_AutoML"
+    ],
+    "yelp": [
+      "H2O_AutoML"
+    ],
+    "model_names": [
+      "H2O_AutoML"
+    ],
+    "all_benchmarks_done_at_least_once": false
+  },
+  "tpot": {
+    "movielens-100K": [],
+    "movielens-1M": [],
+    "movielens-latest-small": [
+      "TPOT_Regressor"
+    ],
+    "amazon-instantvideo": [
+      "TPOT_Regressor"
+    ],
+    "amazon-music": [
+      "TPOT_Regressor"
+    ],
+    "amazon-toys": [
+      "TPOT_Regressor"
+    ],
+    "yelp": [
+      "TPOT_Regressor"
+    ],
+    "model_names": [
+      "TPOT_Regressor"
+    ],
+    "all_benchmarks_done_at_least_once": false
+  },
+  "autogluon": {
+    "movielens-100K": [
+      "AutoGluon_Regressor"
+    ],
+    "movielens-1M": [
+      "AutoGluon_Regressor"
+    ],
+    "movielens-latest-small": [
+      "AutoGluon_Regressor"
+    ],
+    "amazon-instantvideo": [
+      "AutoGluon_Regressor"
+    ],
+    "amazon-music": [
+      "AutoGluon_Regressor"
+    ],
+    "amazon-toys": [
+      "AutoGluon_Regressor"
+    ],
+    "yelp": [
+      "AutoGluon_Regressor"
+    ],
+    "model_names": [
+      "AutoGluon_Regressor"
+    ],
+    "all_benchmarks_done_at_least_once": false
+  },
+  "constant_predictors": {
+    "movielens-100K": [],
+    "movielens-1M": [],
+    "movielens-latest-small": [],
+    "amazon-instantvideo": [],
+    "amazon-music": [],
+    "amazon-toys": [],
+    "yelp": [],
+    "model_names": [
+      "ConstantPredictor_Mean"
+    ],
+    "all_benchmarks_done_at_least_once": true
+  },
+  "surprise": {
+    "movielens-100K": [],
+    "movielens-1M": [],
+    "movielens-latest-small": [],
+    "amazon-instantvideo": [],
+    "amazon-music": [],
+    "amazon-toys": [],
+    "yelp": [],
+    "model_names": [
+      "Surprise_SingularValueDecompositionAlgorithm",
+      "Surprise_SVDpp",
+      "Surprise_CoClustering",
+      "Surprise_BaselineOnly",
+      "Surprise_NMF",
+      "Surprise_NormalPredictor"
+    ],
+    "all_benchmarks_done_at_least_once": true
+  }
+}

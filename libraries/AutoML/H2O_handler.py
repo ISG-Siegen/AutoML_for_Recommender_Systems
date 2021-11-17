@@ -10,7 +10,7 @@ def load_h2o_and_all_models():
         def __init__(self):
             h2o.init()
 
-            super().__init__("H2O_H2OGradientBoostingEstimator",
+            super().__init__("H2O_AutoML",
                              H2OAutoML(max_runtime_secs=60 * get_timeout_in_min()), "AutoML")
 
         def train(self, dataset):

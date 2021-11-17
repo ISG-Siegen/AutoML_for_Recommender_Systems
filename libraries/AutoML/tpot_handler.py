@@ -8,7 +8,8 @@ def load_tpot_and_all_models():
     class TPOTHandler(Model):
 
         def __init__(self):
-            super().__init__("TPOT_Regressor", TPOTRegressor(max_time_mins=get_timeout_in_min()), "AutoML")
+            super().__init__("TPOT_Regressor", TPOTRegressor(generations=None,
+                                                             max_time_mins=get_timeout_in_min()), "AutoML")
 
         def train(self, dataset):
             x_train, y_train = dataset.train_data

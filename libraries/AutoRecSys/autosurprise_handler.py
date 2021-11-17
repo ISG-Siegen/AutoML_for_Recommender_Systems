@@ -30,7 +30,8 @@ def load_auto_surprise_and_all_models():
             best_algo, best_params, best_score, tasks = engine.train(
                 data=data,
                 target_metric='test_rmse',
-                cpu_time_limit=60 * get_timeout_in_min()
+                cpu_time_limit=60 * get_timeout_in_min(),
+                max_evals=10e10  # setting it to a high number to avoid timeout by to few evals
             )
             # create best model object
             self.model_object = engine.build_model(best_algo, best_params)
