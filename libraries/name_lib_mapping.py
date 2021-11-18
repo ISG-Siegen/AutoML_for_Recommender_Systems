@@ -32,7 +32,7 @@ NAME_LIB_MAP = {
 
     # AutoRecSys
     "autosurprise": load_auto_surprise_and_all_models,
-    "autorec": load_autorec_and_all_models,
+    # "autorec": load_autorec_and_all_models, # remove for now as taking to long and not controllable, not auto enough
 
     # ML
     "sklearn": load_sklearn_and_all_models,

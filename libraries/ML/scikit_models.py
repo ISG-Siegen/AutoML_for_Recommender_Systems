@@ -196,7 +196,7 @@ def load_sklearn_and_all_models():
         ensembles = [ScikitRF, ScikitAdaBoostRegressor, ScikitBaggingRegressor, ScikitExtraTreesRegressor,
                      ScikitGradientBoostingRegressor]
 
-        rest = [ScikitKNN, ScikitRadiusNN, ScikitSVRegressor, ScikitDummyRegressor, ScikitMLPRegressor]
+        rest = [ScikitKNN, ScikitSVRegressor, ScikitMLPRegressor, ScikitDecisionTreeRegressor]
 
         # Informal Docu: Not usable Models
         #   1. ScikitKernelRidge, ScikitGaussianProcessRegressor
@@ -205,8 +205,11 @@ def load_sklearn_and_all_models():
         #       -> Could not import for some reason
         #   3. VotingRegressor and StackingRegressor
         #       -> Both require estimators as input
-        #   4. ScikitDecisionTreeRegressor
-        #       -> already use more sophisticated tree regression
+        #   4. ScikitDummyRegressor
+        #       -> not a real regressor
+        #   5. ScikitRadiusNN
+        #       -> might predict nan if no value within radius and is general not more usable than normal nn
+
 
         return rest + ensembles + linear_models
 

@@ -19,7 +19,6 @@ logger = get_logger("BenchmarkExe")
 
 # Read Input (the lib name to run)
 lib_name = str(sys.argv[1])
-fresh_start = False
 only_new_benchmarks = True
 
 # Load algos from lib name
@@ -31,14 +30,6 @@ nr_datasets = len(dataset_load_functions)
 
 # ------------- File management
 output_filepath = os.path.join(get_base_path(), get_output_result_data(), "overall_benchmark_results.csv")
-
-if fresh_start and os.path.isfile(output_filepath):
-    os.remove(output_filepath)
-
-if not os.path.isfile(output_filepath) or fresh_start:
-    filer.write_data(
-        pd.DataFrame([], columns=["Dataset", "Model", "LibraryCategory", "RSME", "TimeInSeconds", "timestamp"]),
-        output_filepath)
 
 if only_new_benchmarks:
     run_so_far = filer.read_data_json(os.path.join(get_base_path(), get_output_result_data(), "run_overhead_data.json"))

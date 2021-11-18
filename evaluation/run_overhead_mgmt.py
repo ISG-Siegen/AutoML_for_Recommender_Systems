@@ -20,8 +20,17 @@ logger = get_logger("OverheadMgmt")
 
 # ------------- File management
 output_filepath = os.path.join(get_base_path(), get_output_result_data(), "run_overhead_data.json")
-so_far_benchmark_data = filer.read_data(os.path.join(get_base_path(), get_output_result_data(),
-                                                     "overall_benchmark_results.csv"))
+output_filepath_benchmark_data = os.path.join(get_base_path(), get_output_result_data(), "overall_benchmark_results.csv")
+
+if fresh_start and os.path.isfile(output_filepath_benchmark_data):
+    os.remove(output_filepath_benchmark_data)
+
+if not os.path.isfile(output_filepath_benchmark_data) or fresh_start:
+    filer.write_data(
+        pd.DataFrame([], columns=["Dataset", "Model", "LibraryCategory", "RSME", "TimeInSeconds", "timestamp"]),
+        output_filepath_benchmark_data)
+
+so_far_benchmark_data = filer.read_data(output_filepath_benchmark_data)
 
 if fresh_start and os.path.isfile(output_filepath):
     os.remove(output_filepath)
@@ -59,5 +68,7 @@ stats_dict_for_lib["all_benchmarks_done_at_least_once"] = not any([bool(stats_di
 
 # Read dict, update dict, write dict
 current_data = filer.read_data_json(output_filepath)
+# Update names to make sure correct state is maintained
+current_data.update({"used_dataset_names": DATASET_NAMES, "used_libraries_names": list(NAME_LIB_MAP.keys())})
 current_data.update({lib_name: stats_dict_for_lib})
 filer.write_data_json(current_data, output_filepath)
