@@ -11,7 +11,9 @@ def load_h2o_and_all_models():
             h2o.init()
 
             super().__init__("H2O_AutoML",
-                             H2OAutoML(max_runtime_secs=60 * get_timeout_in_min()), "AutoML")
+                             H2OAutoML(max_runtime_secs=60 * get_timeout_in_min(),
+                                       sort_metric="RMSE"
+                                       ), "AutoML")
 
         def train(self, dataset):
             x_train, y_train = dataset.train_data

@@ -37,7 +37,7 @@ NAME_LIB_MAP = {
     # ML
     "sklearn": load_sklearn_and_all_models,
     "xgboost": load_xgboost_and_all_models,
-    "ktrain": load_ktrain_and_all_models,
+    # "ktrain": load_ktrain_and_all_models,  # time to fit uncontrollable which therefore takes ages in the nn setting
 
     # AutoML
     "autosklearn": load_auto_sklearn_and_all_models,

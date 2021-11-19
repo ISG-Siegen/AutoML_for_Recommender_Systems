@@ -19,7 +19,8 @@ def load_autogluon_and_all_models():
 
             # Build Model and fit
             # verbosity sets our own output to verbosity = 0, hence have to keep verbosity=2 (i.e. the default value)
-            self.model_object = TabularPredictor(label=dataset.label)
+            self.model_object = TabularPredictor(label=dataset.label, eval_metric="root_mean_squared_error")
+            # not able to set memory limit or jobs count, takes by default all available
             self.model_object.fit(merged_train_data, time_limit=60 * get_timeout_in_min())
 
         def predict(self, dataset):

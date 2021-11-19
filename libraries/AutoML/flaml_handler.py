@@ -14,7 +14,11 @@ def load_flaml_and_all_models():
         def train(self, dataset):
             x_train, y_train = dataset.train_data
             self.model_object.fit(x_train, y_train.values.ravel(), task="regression", verbose=0,
-                                  time_budget=get_timeout_in_min() * 60)
+                                  time_budget=get_timeout_in_min() * 60,
+                                  n_jobs=-1,
+                                  mem_thres=float("inf"),
+                                  metric="mse"  # does not support rsme
+                                  )
 
         def predict(self, dataset):
             x_test, _ = dataset.test_data

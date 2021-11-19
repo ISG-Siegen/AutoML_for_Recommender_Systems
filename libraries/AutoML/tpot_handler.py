@@ -9,7 +9,14 @@ def load_tpot_and_all_models():
 
         def __init__(self):
             super().__init__("TPOT_Regressor", TPOTRegressor(generations=None,
-                                                             max_time_mins=get_timeout_in_min()), "AutoML")
+                                                             max_time_mins=get_timeout_in_min(),
+                                                             n_jobs=-1,
+                                                             scoring='neg_mean_squared_error',  # RSME not available
+                                                             # no function for memory limitation exists
+                                                             )
+
+                             , "AutoML"
+                             )
 
         def train(self, dataset):
             x_train, y_train = dataset.train_data

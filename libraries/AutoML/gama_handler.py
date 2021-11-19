@@ -9,7 +9,11 @@ def load_gama_and_all_models():
 
         def __init__(self):
             super().__init__("GAMA_Regressor", GamaRegressor(max_total_time=get_timeout_in_min() * 60,
-                                                             store="nothing"),  # nothing to reduce logs
+                                                             store="nothing",
+                                                             n_jobs=-1,
+                                                             max_memory_mb=None,
+                                                             scoring="neg_root_mean_squared_error"
+                             ),  # nothing to reduce logs
                              "AutoML")
 
         def train(self, dataset):

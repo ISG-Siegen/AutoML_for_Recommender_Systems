@@ -196,7 +196,7 @@ def load_sklearn_and_all_models():
         ensembles = [ScikitRF, ScikitAdaBoostRegressor, ScikitBaggingRegressor, ScikitExtraTreesRegressor,
                      ScikitGradientBoostingRegressor]
 
-        rest = [ScikitKNN, ScikitSVRegressor, ScikitMLPRegressor, ScikitDecisionTreeRegressor]
+        rest = [ScikitKNN, ScikitMLPRegressor, ScikitDecisionTreeRegressor]
 
         # Informal Docu: Not usable Models
         #   1. ScikitKernelRidge, ScikitGaussianProcessRegressor
@@ -209,6 +209,8 @@ def load_sklearn_and_all_models():
         #       -> not a real regressor
         #   5. ScikitRadiusNN
         #       -> might predict nan if no value within radius and is general not more usable than normal nn
+        #   6. ScikitSVRegressor,
+        #       -> takes too long due to not iteration limit but epislon limit until convergence
 
 
         return rest + ensembles + linear_models
