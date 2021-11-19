@@ -4,13 +4,14 @@ from utils.lcer import get_timeout_in_min
 
 def load_gama_and_all_models():
     from gama import GamaRegressor
+    import multiprocessing
 
     class GamaHandler(Model):
 
         def __init__(self):
             super().__init__("GAMA_Regressor", GamaRegressor(max_total_time=get_timeout_in_min() * 60,
                                                              store="nothing",  # nothing to reduce logs
-                                                             n_jobs=-1,
+                                                             n_jobs=multiprocessing.cpu_count(),
                                                              max_memory_mb=None,
                                                              scoring="neg_mean_squared_error"  # does not support rsme
                                                              ),

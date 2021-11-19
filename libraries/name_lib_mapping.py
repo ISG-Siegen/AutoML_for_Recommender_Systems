@@ -42,10 +42,11 @@ NAME_LIB_MAP = {
     # AutoML
     "autosklearn": load_auto_sklearn_and_all_models,
     "flaml": load_flaml_and_all_models,
-    "gama": load_gama_and_all_models,
     "h2o": load_h2o_and_all_models,
-    "tpot": load_tpot_and_all_models,
     "autogluon": load_autogluon_and_all_models,
+    "gama": load_gama_and_all_models,
+    "tpot": load_tpot_and_all_models,
+
 }
 
 
