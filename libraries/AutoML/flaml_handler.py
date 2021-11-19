@@ -17,7 +17,7 @@ def load_flaml_and_all_models():
                                   time_budget=get_timeout_in_min() * 60,
                                   n_jobs=-1,
                                   mem_thres=float("inf"),
-                                  metric="mse"  # does not support rsme
+                                  metric="rmse"
                                   )
 
         def predict(self, dataset):

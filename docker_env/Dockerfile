@@ -51,11 +51,11 @@ RUN pip install --no-cache-dir gama
 
 # -- h2o --
 FROM base_python as h2o
-RUN pip install --no-cache-dir h2o
+RUN pip install --no-cache-dir h2o && pip install --no-cache-dir psutil
 
 # -- tpot --
 FROM base_python as tpot
-RUN pip install --no-cache-dir tpot
+RUN pip install --no-cache-dir tpot && pip install --no-cache-dir torch
 
 # -- tpot --
 FROM python:3.7  as autogluon

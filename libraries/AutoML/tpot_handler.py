@@ -14,7 +14,6 @@ def load_tpot_and_all_models():
                                                              scoring='neg_mean_squared_error',  # RSME not available
                                                              # no function for memory limitation exists
                                                              )
-
                              , "AutoML"
                              )
 
