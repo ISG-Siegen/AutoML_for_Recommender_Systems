@@ -6,6 +6,8 @@ def load_h2o_and_all_models():
     import h2o
     from h2o.automl import H2OAutoML
     import psutil
+    import logging
+    logging.getLogger("urllib3").setLevel(logging.WARNING)
 
     class H2OHandler(Model):
         def __init__(self):
@@ -33,10 +35,9 @@ def load_h2o_and_all_models():
             p_x_train = x_train.copy()
             p_x_train[label] = y_train
             # Split
-            df = h2o.H2OFrame(p_x_train)
-            train, valid = df.split_frame(ratios=[.75])
+            train = h2o.H2OFrame(p_x_train)
 
-            self.model_object.train(x=features, y=label[0], training_frame=train, validation_frame=valid)
+            self.model_object.train(x=features, y=label[0], training_frame=train)
 
         def predict(self, dataset):
             x_test, _ = dataset.test_data

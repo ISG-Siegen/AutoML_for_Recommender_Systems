@@ -4,6 +4,8 @@ from utils.lcer import get_timeout_in_min
 
 def load_tpot_and_all_models():
     from tpot import TPOTRegressor
+    import logging
+    logging.getLogger("urllib3").setLevel(logging.WARNING)
 
     class TPOTHandler(Model):
 
