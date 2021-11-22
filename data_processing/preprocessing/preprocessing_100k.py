@@ -6,7 +6,7 @@ from benchmark_framework.dataset_base import RecSysProperties
 ML_100k_NAME = 'movielens-100K'
 
 
-def load_ml_100k_from_file():
+def load_ml_100k_from_file(all_features=False):
     """ Method to load ml100k dataset and return data, features (list of strings), and label (string) """
 
     # Load from Disc
@@ -42,12 +42,16 @@ def load_ml_100k_from_file():
     features.remove(label)  # this means simply all columns are features but the label column
 
     recsys_properties = RecSysProperties('userId', 'movieId', 'rating', 1, 5)
+    if all_features:
+        return ML_100k_NAME + "-all-features", rm_df, features, label, recsys_properties
+    else:
+        features = ['userId', 'movieId', 'rating']
+        rm_df = rm_df[['userId', 'movieId', 'rating']]
+        return ML_100k_NAME, rm_df, features, label, recsys_properties
 
-    return ML_100k_NAME, rm_df, features, label, recsys_properties
 
-
-def load_ml_100k_from_csv():
-    data = pd.read_table(os.path.join(get_dataset_container_path(), 'csv_files/movielens-100K.csv'), sep=',',
+def load_ml_100k_from_csv(all_features=False):
+    data = pd.read_table(os.path.join('/home/tobiasvente/datasets/csv_files/movielens-100K.csv'), sep=',',
                          header=0, engine='python')
     data = data.iloc[:, 1:]
     # Set labels/features
@@ -57,4 +61,9 @@ def load_ml_100k_from_csv():
 
     recsys_properties = RecSysProperties('userId', 'movieId', 'rating', 1, 5)
 
-    return ML_100k_NAME, data, features, label, recsys_properties
+    if all_features:
+        return ML_100k_NAME + "-all-features", data, features, label, recsys_properties
+    else:
+        features = ['userId', 'movieId', 'rating']
+        data = data[['userId', 'movieId', 'rating']]
+        return ML_100k_NAME, data, features, label, recsys_properties
