@@ -45,13 +45,13 @@ def load_ml_100k_from_file(all_features=False):
     if all_features:
         return ML_100k_NAME + "-all-features", rm_df, features, label, recsys_properties
     else:
-        features = ['userId', 'movieId', 'rating']
-        rm_df = rm_df[['userId', 'movieId', 'rating']]
+        features = ['userId', 'movieId', 'timestamp']
+        rm_df = rm_df[['userId', 'movieId', 'timestamp', 'rating']]
         return ML_100k_NAME, rm_df, features, label, recsys_properties
 
 
 def load_ml_100k_from_csv(all_features=False):
-    data = pd.read_table(os.path.join(get_dataset_container_path(), 'csv_files/movielens-latest-small.csv'), sep=',',
+    data = pd.read_table(os.path.join(get_dataset_container_path(), 'csv_files/movielens-100K.csv'), sep=',',
                          header=0, engine='python')
     data = data.iloc[:, 1:]
     # Set labels/features
@@ -64,6 +64,6 @@ def load_ml_100k_from_csv(all_features=False):
     if all_features:
         return ML_100k_NAME + "-all-features", data, features, label, recsys_properties
     else:
-        features = ['userId', 'movieId', 'rating']
-        data = data[['userId', 'movieId', 'rating']]
+        features = ['userId', 'movieId', 'timestamp']
+        data = data[['userId', 'movieId', 'timestamp', 'rating']]
         return ML_100k_NAME, data, features, label, recsys_properties
