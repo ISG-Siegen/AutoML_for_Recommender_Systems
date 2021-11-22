@@ -84,12 +84,14 @@ def ranking_eval(data: pd.DataFrame, save_images, prefix=""):
 
     # Reformat and Build data
     top_5_model_per_dataset = {}
+    top_5_model_name_per_dataset = {}
     libcat_ranking_per_dataset = {}
     for dataset_name in data["Dataset"].unique().tolist():
         tmp_df = data[data["Dataset"] == dataset_name]
         tmp_df = tmp_df.sort_values(by="RSME_RANK")
 
         top_5_model_per_dataset[dataset_name] = tmp_df["LibraryCategory"].iloc[0:5].to_list()
+        top_5_model_name_per_dataset[dataset_name] = tmp_df["Model"].iloc[0:5].to_list()
 
         x = tmp_df["LibraryCategory"].to_list()
         libcat_ranking_per_dataset[dataset_name] = sorted(set(x), key=x.index)
@@ -98,6 +100,10 @@ def ranking_eval(data: pd.DataFrame, save_images, prefix=""):
                                                        columns=["1", "2", "3", "4", "5"])
     data_for_rank_plot_libcat = pd.DataFrame.from_dict(libcat_ranking_per_dataset, orient="index",
                                                        columns=["1", "2", "3", "4", "5"])
+    # Print Top 5 model names to look for variance
+    print("####### Model Names top 5 #######")
+    for key, item in top_5_model_name_per_dataset.items():
+        print("Dataset: {} | {}".format(key, item))
 
     # Top 5 Models per Dataset color coded for LibraryCategory - includes only categories in the top 5
     heatmap(data_for_rank_plot_models, leg_pos="top")
