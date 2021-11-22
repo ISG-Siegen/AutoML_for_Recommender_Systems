@@ -51,7 +51,7 @@ def load_ml_100k_from_file(all_features=False):
 
 
 def load_ml_100k_from_csv(all_features=False):
-    data = pd.read_table(os.path.join('/home/tobiasvente/datasets/csv_files/movielens-100K.csv'), sep=',',
+    data = pd.read_table(os.path.join(get_dataset_container_path(), 'csv_files/movielens-latest-small.csv'), sep=',',
                          header=0, engine='python')
     data = data.iloc[:, 1:]
     # Set labels/features
