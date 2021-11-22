@@ -46,7 +46,7 @@ def cd_plot_and_stats_tests(data: pd.DataFrame, save_images, prefix=""):
         return
 
     # Do tests and get plot as well as report
-    res = autorank(experiment_results)
+    res = autorank(experiment_results, order="ascending")
     create_report(res)
     plot_stats(res)
     if save_images:
