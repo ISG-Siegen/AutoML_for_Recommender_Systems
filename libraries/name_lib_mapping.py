@@ -2,7 +2,7 @@
 from libraries.Baselines.constant_predictor import load_constant_predictors_and_all_models
 
 # RecSys
-from libraries.RecSys.surprise import load_surprise_and_all_models
+from libraries.RecSys.surprise_handler import load_surprise_and_all_models
 from libraries.RecSys.lenskit_handler import load_lenskit_and_all_models
 
 # AutoRecSys
