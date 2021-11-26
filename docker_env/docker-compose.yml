@@ -56,6 +56,10 @@ services:
     build:
       context: .
       target: autogluon
+  autopytorch:
+    build:
+      context: .
+      target: autopytorch
   # ---- RecSys ----
   surprise:
     build:

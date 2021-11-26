@@ -65,6 +65,10 @@ RUN apt-get update && apt-get install python-dev -y && \
     pip install --no-cache-dir -U setuptools wheel && pip install --no-cache-dir -U "mxnet<2.0.0"
 RUN pip install --no-cache-dir autogluon
 
+# -- autopytorch --
+FROM base as autopytorch
+RUN pip install --no-cache-dir autoPyTorch
+
 # ---- RecSys ----
 # -- surprise --
 FROM base_python as surprise
