@@ -197,22 +197,18 @@ def load_sklearn_and_all_models():
                      ScikitGradientBoostingRegressor]
 
         rest = [ScikitKNN, ScikitMLPRegressor, ScikitDecisionTreeRegressor]
+        problematic_but_usable_with_limiter = [ScikitKernelRidge, ScikitGaussianProcessRegressor, ScikitSVRegressor]
 
         # Informal Docu: Not usable Models
-        #   1. ScikitKernelRidge, ScikitGaussianProcessRegressor
-        #       -> Blows up RAM with a huge matrix that is impossible even for small datasets
-        #   2. ScikitHistGradientBoostingRegressor
+        #   1. ScikitHistGradientBoostingRegressor
         #       -> Could not import for some reason
-        #   3. VotingRegressor and StackingRegressor
+        #   2. VotingRegressor and StackingRegressor
         #       -> Both require estimators as input
-        #   4. ScikitDummyRegressor
+        #   3. ScikitDummyRegressor
         #       -> not a real regressor
-        #   5. ScikitRadiusNN
+        #   4. ScikitRadiusNN
         #       -> might predict nan if no value within radius and is general not more usable than normal nn
-        #   6. ScikitSVRegressor,
-        #       -> takes too long due to not iteration limit but epislon limit until convergence
 
-
-        return rest + ensembles + linear_models
+        return rest + ensembles + linear_models + problematic_but_usable_with_limiter
 
     return load_all_scikit_models()

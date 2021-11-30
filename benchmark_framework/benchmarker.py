@@ -2,6 +2,7 @@
 import time
 from benchmark_framework import metrics, dataset_base, model_base
 from utils.lcer import get_logger
+import traceback
 
 logger = get_logger("Benchmarker")
 
@@ -41,12 +42,17 @@ class Benchmark:
         return metric_val
 
     def _run_q(self, queue):
-        self._pre()
-        logger.info("### Start Fit and Prediction with limits ###")
-        y_pred = self._fit_predict()
-        metric_val = self.metric.evaluate(self.dataset, y_pred)
 
-        queue.put(metric_val)
+        try:
+            self._pre()
+            logger.info("### Start Fit and Prediction with limits ###")
+            y_pred = self._fit_predict()
+            metric_val = self.metric.evaluate(self.dataset, y_pred)
+
+            queue.put(metric_val)
+        except MemoryError:  # catches numpy memory error for too big allocations
+            logger.warning(traceback.format_exc())
+            raise SystemExit(9)
 
     def run_with_limits(self, time_in_min):
         # Function to run relevant code with timeout and handle memory or other errors
@@ -77,12 +83,17 @@ class Benchmark:
         else:
             if p.exitcode == 1:
                 # Code ran into a bug -> raise exit
-                exit(1)
+                raise SystemExit(1)
             elif p.exitcode == -9:
                 # Algorithm killed because uses too much memory
 
                 failed = True
                 fail_reason = "memout"
+
+            elif p.exitcode == 9:  # exit code set by us above
+                # Algorithm tried to allocate to much memory
+                failed = True
+                fail_reason = "memout_allocation"
 
         # Catch none failed run to get results
         if not failed:
