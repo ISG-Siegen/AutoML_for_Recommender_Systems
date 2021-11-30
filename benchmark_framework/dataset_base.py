@@ -3,11 +3,12 @@ from sklearn.model_selection import train_test_split
 
 
 class RecSysProperties:
-    def __init__(self, userId_col: str, itemId_col: str, rating_col: str, rating_lower_bound: int,
+    def __init__(self, userId_col: str, itemId_col: str, rating_col: str, timestamp_col: str, rating_lower_bound: int,
                  rating_upper_bound: int):
         self.itemId_col = itemId_col
         self.userId_col = userId_col
         self.rating_col = rating_col
+        self.timestamp_col = timestamp_col
         self.rating_lower_bound = rating_lower_bound
         self.rating_upper_bound = rating_upper_bound
 

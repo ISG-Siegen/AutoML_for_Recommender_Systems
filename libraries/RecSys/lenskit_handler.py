@@ -36,7 +36,8 @@ def load_lenskit_and_all_models():
 
             p_x_train = p_x_train.rename(
                 columns={dataset.recsys_properties.userId_col: "user", dataset.recsys_properties.itemId_col: "item",
-                         dataset.recsys_properties.rating_col: "rating"})
+                         dataset.recsys_properties.rating_col: "rating",
+                         dataset.recsys_properties.timestamp_col: "timestamp"})
 
             # ensure that the algorithm is a class Recommender,
             self.model_object = Recommender.adapt(self.model_object)
@@ -51,7 +52,8 @@ def load_lenskit_and_all_models():
             p_x_test = x_test.copy()
 
             p_x_test = p_x_test.rename(
-                columns={dataset.recsys_properties.userId_col: "user", dataset.recsys_properties.itemId_col: "item"})
+                columns={dataset.recsys_properties.userId_col: "user", dataset.recsys_properties.itemId_col: "item",
+                         dataset.recsys_properties.timestamp_col: "timestamp"})
 
             predictor = Fallback(self.model_object, self.base)  # Use bias as base following documentation
 

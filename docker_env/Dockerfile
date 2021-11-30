@@ -57,13 +57,17 @@ RUN pip install --no-cache-dir h2o && pip install --no-cache-dir psutil
 FROM base_python as tpot
 RUN pip install --no-cache-dir tpot && pip install --no-cache-dir torch
 
-# -- tpot --
+# -- autogluon --
 FROM python:3.7  as autogluon
 # Using 3.7 instead of 3.8 as 3.8 support is experimental
 RUN apt-get update && apt-get install python-dev -y && \
 	pip install --no-cache-dir --upgrade pip && pip install --no-cache-dir packaging && \
     pip install --no-cache-dir -U setuptools wheel && pip install --no-cache-dir -U "mxnet<2.0.0"
 RUN pip install --no-cache-dir autogluon
+
+# -- autopytorch --
+FROM base as autopytorch
+RUN pip install --no-cache-dir autoPyTorch
 
 # ---- RecSys ----
 # -- surprise --
