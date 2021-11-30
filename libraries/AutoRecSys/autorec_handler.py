@@ -74,9 +74,11 @@ def load_autorec_and_all_models():
                             # Change default value for objective to validation mse,
                             # otherwise the tuning process would be completely useless
                             objective="val_mse",
-                            # Add early stopping and epochs=100 as default is just non existing (which would be very bad
-                            epochs=100,
-                            callbacks=[tf.keras.callbacks.EarlyStopping(patience=2, min_delta=0.0001)])
+                            # Add batching, early stopping and epochs=100 as default is just non existing
+                            # which would be very bad...
+                            batch_size=1024,
+                            epochs=1000,
+                            callbacks=[tf.keras.callbacks.EarlyStopping(patience=10)])
 
             self.model_object = searcher
 

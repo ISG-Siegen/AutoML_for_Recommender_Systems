@@ -3,6 +3,7 @@ import logging
 from configparser import ConfigParser
 import os
 import pathlib
+from benchmark_framework.metrics import NAME_TO_METRIC
 
 local_config = ConfigParser()
 local_config.read(os.path.join(os.path.dirname(__file__), "../config.ini"))
@@ -41,6 +42,10 @@ def get_dataset_container_path():
     return get_config("datasets", "container_path")
 
 
+def get_default_metric():
+    return NAME_TO_METRIC[get_config("defaults", "metric")]
+
+
 def get_output_result_data():
     return get_config("output", "result_data")
 
@@ -50,4 +55,8 @@ def get_output_images():
 
 
 def get_timeout_in_min():
-    return int(get_config("settings", "timeout_in_min"))
+    return int(get_config("limits", "soft_timeout_in_min"))
+
+
+def get_hard_timeout_in_min():
+    return int(get_config("limits", "hard_timeout_in_min"))

@@ -33,12 +33,12 @@ NAME_LIB_MAP = {
 
     # AutoRecSys
     "autosurprise": load_auto_surprise_and_all_models,
-    # "autorec": load_autorec_and_all_models, # remove for now as taking to long and not controllable, not auto enough
+    "autorec": load_autorec_and_all_models,
 
     # ML
     "sklearn": load_sklearn_and_all_models,
     "xgboost": load_xgboost_and_all_models,
-    # "ktrain": load_ktrain_and_all_models,  # time to fit uncontrollable which therefore takes ages in the nn setting
+    "ktrain": load_ktrain_and_all_models,
 
     # AutoML
     "autosklearn": load_auto_sklearn_and_all_models,

@@ -31,3 +31,9 @@ class RSME(Metric):
             return sqrt(mean_squared_error(y_true, y_pred))
         else:
             raise RuntimeError("Unknown sklearn version {}".format(__version__))
+
+
+# Constant for string to metric mapping
+NAME_TO_METRIC = {
+    "RSME": RSME
+}

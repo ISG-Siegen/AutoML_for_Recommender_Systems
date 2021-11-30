@@ -7,7 +7,7 @@ sys.path.insert(1, os.path.join(sys.path[0], '..'))
 # Required Imports
 from libraries.name_lib_mapping import NAME_LIB_MAP
 from data_processing.preprocessing.main_preprocessing import DATASET_NAMES
-from utils.lcer import get_logger, get_output_result_data, get_base_path
+from utils.lcer import get_logger, get_output_result_data, get_base_path, get_default_metric
 from utils import filer
 from benchmark_framework.dataset_base import DummyDataset
 import pandas as pd
@@ -20,18 +20,22 @@ logger = get_logger("OverheadMgmt")
 
 # ------------- File management
 output_filepath = os.path.join(get_base_path(), get_output_result_data(), "run_overhead_data.json")
-output_filepath_benchmark_data = os.path.join(get_base_path(), get_output_result_data(), "overall_benchmark_results.csv")
+output_filepath_benchmark_data = os.path.join(get_base_path(), get_output_result_data(),
+                                              "overall_benchmark_results.csv")
 
+# ---- Create overall results output file if needed
 if fresh_start and os.path.isfile(output_filepath_benchmark_data):
     os.remove(output_filepath_benchmark_data)
 
 if not os.path.isfile(output_filepath_benchmark_data) or fresh_start:
     filer.write_data(
-        pd.DataFrame([], columns=["Dataset", "Model", "LibraryCategory", "RSME", "TimeInSeconds", "timestamp"]),
+        pd.DataFrame([], columns=["Dataset", "Model", "LibraryCategory", get_default_metric().name,
+                                  "TimeInSeconds", "timestamp", "failed", "fail_reason"]),
         output_filepath_benchmark_data)
 
 so_far_benchmark_data = filer.read_data(output_filepath_benchmark_data)
 
+# ---- Create run overhead data file if needed
 if fresh_start and os.path.isfile(output_filepath):
     os.remove(output_filepath)
 
