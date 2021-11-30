@@ -76,7 +76,7 @@ def load_autorec_and_all_models():
                             # Change default value for objective to validation mse,
                             # otherwise the tuning process would be completely useless
                             objective="val_mse",
-                            # Add batching, early stopping and epochs=100 as default is just non existing
+                            # Add batching, early stopping and epochs as default is just non existing
                             # which would be very bad...
                             batch_size=1024,
                             epochs=1000,
