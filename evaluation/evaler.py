@@ -18,6 +18,7 @@ pd.set_option("display.max_rows", None, "display.max_columns", None)
 
 
 def filter_too_large_errors(df, dataset_names):
+    df = df.copy()
     for dataset in dataset_names:
         tmp_df = df[df["Dataset"] == dataset]["RSME"]
         # Code adapted from https://datascience.stackexchange.com/a/57199
@@ -85,12 +86,11 @@ def eval_overall_results():
     # ----- Filter too large errors for model that did not converge with default values
     dataset_names = overall_data["Dataset"].unique().tolist()
 
-    overall_data_filtered = filter_too_large_errors(overall_data, dataset_names)
-
     # Some Plots over all Datasets
+    overall_data_filtered = filter_too_large_errors(overall_data, dataset_names)
     eval_plotter.boxplots_per_datasets(overall_data_filtered[["Dataset", "LibraryCategory", "RSME"]], True)
-    eval_plotter.cd_plot_and_stats_tests(overall_data_filtered, True)
-    eval_plotter.ranking_eval(overall_data_filtered, True)
+    eval_plotter.cd_plot_and_stats_tests(overall_data, True)
+    eval_plotter.ranking_eval(overall_data, True)
 
 
 if __name__ == "__main__":

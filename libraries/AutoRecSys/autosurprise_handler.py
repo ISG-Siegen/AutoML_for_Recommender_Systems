@@ -31,7 +31,7 @@ def load_auto_surprise_and_all_models():
                 data=data,
                 target_metric='test_rmse',
                 cpu_time_limit=60 * get_timeout_in_min(),
-                max_evals=int(10e10)  # setting it to a high number to avoid timeout by to few evals
+                max_evals=int(10e10)  # setting it to a high number to avoid stopping by to few evals instead of timeout
             )
             # create best model object
             self.model_object = engine.build_model(best_algo, best_params)

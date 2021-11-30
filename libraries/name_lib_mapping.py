@@ -2,7 +2,7 @@
 from libraries.Baselines.constant_predictor import load_constant_predictors_and_all_models
 
 # RecSys
-from libraries.RecSys.surprise import load_surprise_and_all_models
+from libraries.RecSys.surprise_handler import load_surprise_and_all_models
 from libraries.RecSys.lenskit_handler import load_lenskit_and_all_models
 
 # AutoRecSys
@@ -21,6 +21,7 @@ from libraries.AutoML.gama_handler import load_gama_and_all_models
 from libraries.AutoML.H2O_handler import load_h2o_and_all_models
 from libraries.AutoML.tpot_handler import load_tpot_and_all_models
 from libraries.AutoML.autogluon_handler import load_autogluon_and_all_models
+from libraries.AutoML.autopytorch_handler import load_auto_pytorch_and_all_models
 
 NAME_LIB_MAP = {
     # Baselines
@@ -41,6 +42,7 @@ NAME_LIB_MAP = {
 
     # AutoML
     "autosklearn": load_auto_sklearn_and_all_models,
+    "autopytorch": load_auto_pytorch_and_all_models,
     "flaml": load_flaml_and_all_models,
     "h2o": load_h2o_and_all_models,
     "autogluon": load_autogluon_and_all_models,

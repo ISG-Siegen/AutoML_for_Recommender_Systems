@@ -28,6 +28,15 @@ def load_surprise_and_all_models():
             # Adapt custom Dataframe to Surprise Lib requirements
             reader = Reader(rating_scale=(dataset.recsys_properties.rating_lower_bound,
                                           dataset.recsys_properties.rating_upper_bound))
+
+            # Surprise only supports userId, itemID, rating, timestamp as input but no additional features
+            # However, no of the current and used out-of-the-box implementations uses the timestamp
+            # Furthermore, the timestamp is also only supported when loading from a file.
+            # Consequently, only userid, itemid, rating is used by all surprise algorithms
+            # See for issues talking about this:
+            # https://github.com/NicolasHug/Surprise/issues/85; https://github.com/NicolasHug/Surprise/issues/314
+
+            # Load dataset with relevant columns and reader
             data = Dataset.load_from_df(p_x_train[[dataset.recsys_properties.userId_col,
                                                    dataset.recsys_properties.itemId_col,
                                                    dataset.recsys_properties.rating_col]], reader)
@@ -102,5 +111,6 @@ def load_surprise_and_all_models():
     surprise_models = [SurpriseSVD, SurpriseSVDpp, SurpriseCoClustering, SurpriseBaselineOnly,
                        SurpriseNMF, SurpriseNormalPredictor]
 
-    # Removed because knn: SurpriseKNNWithMeans, SurpriseKNNBaseline, SurpriseKNNBasic, SurpriseKNNWithZScore, SurpriseSlopeOne
+    # Removed because it uses knn and requires too much memory: SurpriseKNNWithMeans, SurpriseKNNBaseline,
+    # SurpriseKNNBasic, SurpriseKNNWithZScore, SurpriseSlopeOne
     return surprise_models
