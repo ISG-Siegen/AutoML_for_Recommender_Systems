@@ -10,7 +10,7 @@ from utils import filer
 import time
 from libraries.name_lib_mapping import NAME_LIB_MAP
 import pandas as pd
-from data_processing.preprocessing.main_preprocessing import get_dataset_load_functions
+from data_processing.preprocessing.main_preprocessing import get_dataset_load_functions, DATASET_NAMES
 
 # Use this to guard against multiprocess error
 if __name__ == '__main__':
@@ -51,6 +51,15 @@ if __name__ == '__main__':
     # ------------- Loop over all datasets
     logger.info("######## Loop over all Datasets and do benchmarks for library {} ########".format(lib_name))
     for idx, dataset_load_function in enumerate(dataset_load_functions, 1):
+
+        # Check if dataset can be skipped
+        if only_new_benchmarks and (not run_so_far_lib[DATASET_NAMES[idx - 1]]):
+            # Skip
+            logger.info(
+                "###### Skip dataset {} as all models for it have been run before ######".format(
+                    DATASET_NAMES[idx - 1]))
+            continue
+
         # Load dataset and create dataset object
         logger.info("###### Load Datasets {}, {}/{} ######".format(dataset_load_function, idx, nr_datasets))
         dataset = dataset_base.Dataset(*dataset_load_function())
