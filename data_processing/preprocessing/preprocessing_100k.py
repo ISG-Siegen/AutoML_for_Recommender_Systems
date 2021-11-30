@@ -41,13 +41,9 @@ def load_ml_100k_from_file(all_features=False):
     features = list(rm_df)
     features.remove(label)  # this means simply all columns are features but the label column
 
-    recsys_properties = RecSysProperties('userId', 'movieId', 'rating', 1, 5)
-    if all_features:
-        return ML_100k_NAME + "-all-features", rm_df, features, label, recsys_properties
-    else:
-        features = ['userId', 'movieId', 'timestamp']
-        rm_df = rm_df[['userId', 'movieId', 'timestamp', 'rating']]
-        return ML_100k_NAME, rm_df, features, label, recsys_properties
+    recsys_properties = RecSysProperties('userId', 'movieId', 'rating', 'timestamp', 1, 5)
+
+    return ML_100k_NAME, rm_df, features, label, recsys_properties
 
 
 def load_ml_100k_from_csv(all_features=False):
@@ -59,11 +55,6 @@ def load_ml_100k_from_csv(all_features=False):
     features = list(data)
     features.remove(label)  # this means simply all columns are features but the label column
 
-    recsys_properties = RecSysProperties('userId', 'movieId', 'rating', 1, 5)
+    recsys_properties = RecSysProperties('userId', 'movieId', 'rating', 'timestamp', 1, 5)
 
-    if all_features:
-        return ML_100k_NAME + "-all-features", data, features, label, recsys_properties
-    else:
-        features = ['userId', 'movieId', 'timestamp']
-        data = data[['userId', 'movieId', 'timestamp', 'rating']]
-        return ML_100k_NAME, data, features, label, recsys_properties
+    return ML_100k_NAME, data, features, label, recsys_properties
