@@ -2,10 +2,6 @@ from benchmark_framework.model_base import Model
 
 
 def load_autorec_and_all_models():
-    import tensorflow as tf
-    from autorecsys.auto_search import Search
-    from autorecsys.pipeline import Input, LatentFactorMapper, RatingPredictionOptimizer, HyperInteraction
-    from autorecsys.recommender import RPRecommender
     from sklearn.model_selection import train_test_split
 
     # From AutoRec's preprocessor base, makes all categorical columns tensorflow floats to be a feasible input
@@ -38,12 +34,18 @@ def load_autorec_and_all_models():
             super().__init__("AutoRec", None, "AutoRecSys")
 
         def train(self, dataset):
+            # Have to move imports here as otherwise a weired bugs makes the function unable to be run as a subprocess.
+            import tensorflow as tf
+            from autorecsys.auto_search import Search
+            from autorecsys.pipeline import Input, LatentFactorMapper, RatingPredictionOptimizer, HyperInteraction
+            from autorecsys.recommender import RPRecommender
+
             x_train, y_train = dataset.train_data
             # 0.1 from default value of autorec's preprocessor
             x_train, x_val, y_train, y_val = train_test_split(x_train, y_train, test_size=0.1, stratify=y_train)
             user_num, item_num = dataset.recsys_properties.get_num_values()
 
-            # Only give userid, itemid and rating as input here just like in autosurprise
+            # Only give userid, itemid and rating as input
             # (and as more features are not support by default (not part of docu code / latenfactormappers)
             x_train = x_train[[dataset.recsys_properties.userId_col, dataset.recsys_properties.itemId_col]]
             x_val = x_val[[dataset.recsys_properties.userId_col, dataset.recsys_properties.itemId_col]]
@@ -78,7 +80,8 @@ def load_autorec_and_all_models():
                             # which would be very bad...
                             batch_size=1024,
                             epochs=1000,
-                            callbacks=[tf.keras.callbacks.EarlyStopping(patience=10)])
+                            callbacks=[tf.keras.callbacks.EarlyStopping(patience=10)]
+                            )
 
             self.model_object = searcher
 
