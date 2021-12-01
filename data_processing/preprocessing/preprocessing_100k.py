@@ -2,6 +2,7 @@ import pandas as pd
 from utils.lcer import get_dataset_container_path
 import os
 from benchmark_framework.dataset_base import RecSysProperties
+import numpy as np
 
 ML_100k_NAME = 'movielens-100K'
 
@@ -27,13 +28,20 @@ def load_ml_100k_from_file(all_features=False):
     rm_df = pd.merge(rm_df, user_df, left_on='userId', right_on='userId')
 
     # handle categorical column
-    to_encode = ['occupation', 'gender']
-    for col in to_encode:
+    to_encode_categorical = ['occupation', 'gender']
+    for col in to_encode_categorical:
         df_dummies = pd.get_dummies(rm_df[col])
         rm_df = pd.concat([rm_df, df_dummies], axis=1)
 
+    to_encode_dates = ['releaseDate', 'videoReleaseDate']
+    for col in to_encode_dates:
+        df_dates = rm_df[col].datetime.values.astype(np.int64)
+        rm_df = pd.concat([rm_df, df_dates], axis=1)
+
     # Drop useless columns, drop zip_code as it has multiple string-based codes which could not be encoded otherwise
-    to_drop = ['title', 'releaseDate', 'imdbUrl', 'videoReleaseDate', 'itemId', 'zip_code'] + to_encode
+    to_drop = ['title', 'imdbUrl', 'itemId', 'zip_code'] + \
+              to_encode_categorical + \
+              to_encode_dates
     rm_df = rm_df.drop(to_drop, axis=1)
 
     # Set labels/features
