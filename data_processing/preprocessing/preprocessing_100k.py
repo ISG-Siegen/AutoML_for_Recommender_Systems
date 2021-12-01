@@ -7,7 +7,7 @@ import numpy as np
 ML_100k_NAME = 'movielens-100K'
 
 
-def load_ml_100k_from_file(all_features=False):
+def load_ml_100k_from_file():
     """ Method to load ml100k dataset and return data, features (list of strings), and label (string) """
 
     # Load from Disc
@@ -54,7 +54,7 @@ def load_ml_100k_from_file(all_features=False):
     return ML_100k_NAME, rm_df, features, label, recsys_properties
 
 
-def load_ml_100k_from_csv(all_features=False):
+def load_ml_100k_from_csv():
     data = pd.read_table(os.path.join(get_dataset_container_path(), 'csv_files/movielens-100K.csv'), sep=',',
                          header=0, engine='python')
     data = data.iloc[:, 1:]
