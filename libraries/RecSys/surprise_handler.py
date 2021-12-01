@@ -110,7 +110,7 @@ def load_surprise_and_all_models():
     # Return
     surprise_models = [SurpriseSVD, SurpriseSVDpp, SurpriseCoClustering, SurpriseBaselineOnly,
                        SurpriseNMF, SurpriseNormalPredictor]
+    memory_allocation_problematic_models = [SurpriseKNNWithMeans, SurpriseKNNBaseline, SurpriseKNNBasic,
+                                            SurpriseKNNWithZScore, SurpriseSlopeOne]
 
-    # Removed because it uses knn and requires too much memory: SurpriseKNNWithMeans, SurpriseKNNBaseline,
-    # SurpriseKNNBasic, SurpriseKNNWithZScore, SurpriseSlopeOne
-    return surprise_models
+    return surprise_models + memory_allocation_problematic_models

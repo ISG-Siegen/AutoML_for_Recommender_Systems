@@ -28,7 +28,7 @@ LOAD_FILE_FUNCTIONS = [load_ml_100k_from_file, load_ml_1m_from_file, load_ml_10m
                        load_amazon_instantvideo_from_file, load_amazon_music_from_file, load_amazon_toys_from_file,
                        load_netflix_from_file, load_yelp_from_file]
 
-# ------------ Relevant Dicts for Data Processing
+# ------------ Relevant Dicts for Data Processing (must have same order)
 LOAD_CSV_FUNCTIONS = [
     load_ml_100k_from_csv, load_ml_1m_from_csv,
     load_ml_latest_small_from_csv, load_amazon_instantvideo_from_csv, load_amazon_music_from_csv,
