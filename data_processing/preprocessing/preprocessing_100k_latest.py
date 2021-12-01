@@ -7,8 +7,16 @@ ML_LATESTSMALL_NAME = 'movielens-latest-small'
 
 
 def load_ml_latest_small_from_file():
-    data = pd.read_table(os.path.join(get_dataset_container_path(), 'ml-latest-small/ratings.csv'), sep=',',
-                         header=0, names=['user', 'movieId', 'rating', 'timestamp'], engine='python')
+    ratings_df = pd.read_table(os.path.join(get_dataset_container_path(), 'ml-latest-small/ratings.csv'), sep=',',
+                        header=0, names=['userId', 'movieId', 'rating', 'timestamp'], engine='python')
+
+    movies_df = pd.read_table(os.path.join(get_dataset_container_path(), 'ml-latest-small/movies.csv'), sep=',',
+                         header=0, names=['movieId', 'title', 'genres'], engine='python')
+
+    movies_df = pd.concat([movies_df.drop('genres', axis=1), movies_df.genres.str.get_dummies(sep='|')], axis=1)
+    movies_df = movies_df.drop(['title'], axis=1)
+
+    data = pd.merge(movies_df, ratings_df, left_on='movieId', right_on='movieId')
 
     # Set labels/features
     label = 'rating'
