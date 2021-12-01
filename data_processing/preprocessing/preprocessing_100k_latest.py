@@ -23,7 +23,7 @@ def load_ml_latest_small_from_file():
     features = list(data)
     features.remove(label)  # this means simply all columns are features but the label column
 
-    recsys_properties = RecSysProperties('userId', 'movieId', 'rating', 1, 5)
+    recsys_properties = RecSysProperties('userId', 'movieId', 'rating', 'timestamp', 0.5, 5)
 
     return ML_LATESTSMALL_NAME, data, features, label, recsys_properties
 
@@ -37,6 +37,6 @@ def load_ml_latest_small_from_csv():
     features = list(data)
     features.remove(label)  # this means simply all columns are features but the label column
 
-    recsys_properties = RecSysProperties('userId', 'movieId', 'rating', 1, 5)
+    recsys_properties = RecSysProperties('userId', 'movieId', 'rating', 'timestamp', 0.5, 5)
 
     return ML_LATESTSMALL_NAME, data, features, label, recsys_properties
