@@ -1,32 +1,37 @@
 from benchmark_framework import dataset_base
 from data_processing.preprocessing.preprocessing_100k import load_ml_100k_from_file, load_ml_100k_from_csv, ML_100k_NAME
 from data_processing.preprocessing.preprocessing_1m import load_ml_1m_from_file, load_ml_1m_from_csv, ML_1M_NAME
-from data_processing.preprocessing.preprocessing_10m import load_ml_10m_from_file, load_ml_10m_from_csv, ML_10M100k_NAME
-from data_processing.preprocessing.preprocessing_20m import load_ml_20m_from_file, load_ml_20m_from_csv, ML_20M_NAME
+# from data_processing.preprocessing.preprocessing_10m import load_ml_10m_from_file, load_ml_10m_from_csv, \
+# ML_10M100k_NAME
+# from data_processing.preprocessing.preprocessing_20m import load_ml_20m_from_file, load_ml_20m_from_csv, ML_20M_NAME
 from data_processing.preprocessing.preprocessing_100k_latest import load_ml_latest_small_from_file, \
     load_ml_latest_small_from_csv, ML_LATESTSMALL_NAME
-from data_processing.preprocessing.preprocessing_amazon_books import load_amazon_books_from_file, \
-    load_amazon_books_from_csv, AMAZON_BOOKS_NAME
-from data_processing.preprocessing.preprocessing_amazon_electronics import load_amazon_electronics_from_file, \
-    load_amazon_electronics_from_csv, AMAZON_ELECTRONICS_NAME
+# from data_processing.preprocessing.preprocessing_amazon_books import load_amazon_books_from_file, \
+#    load_amazon_books_from_csv, AMAZON_BOOKS_NAME
+# from data_processing.preprocessing.preprocessing_amazon_electronics import load_amazon_electronics_from_file, \
+#    load_amazon_electronics_from_csv, AMAZON_ELECTRONICS_NAME
 from data_processing.preprocessing.preprocessing_amazon_instantvideo import load_amazon_instantvideo_from_file, \
     load_amazon_instantvideo_from_csv, AMAZON_INSTANTVIDEO_NAME
 from data_processing.preprocessing.preprocessing_amazon_music import load_amazon_music_from_file, \
     load_amazon_music_from_csv, AMAZON_MUSIC_NAME
 from data_processing.preprocessing.preprocessing_amazon_toys import load_amazon_toys_from_file, \
     load_amazon_toys_from_csv, AMAZON_TOYS_NAME
-from data_processing.preprocessing.preprocessing_netflix import load_netflix_from_file, load_netflix_from_csv, \
-    NETFLIX_NAME
+# from data_processing.preprocessing.preprocessing_netflix import load_netflix_from_file, load_netflix_from_csv, \
+#    NETFLIX_NAME
 from data_processing.preprocessing.preprocessing_yelp import load_yelp_from_file, load_yelp_from_csv, YELP_NAME
 from utils.lcer import get_logger
 
 logger = get_logger("Preprocessing")
 
 # All load functions are stored in load_file_functions and load_csv_functions list
-LOAD_FILE_FUNCTIONS = [load_ml_100k_from_file, load_ml_1m_from_file, load_ml_10m_from_file, load_ml_20m_from_file,
-                       load_ml_latest_small_from_file, load_amazon_books_from_file, load_amazon_electronics_from_file,
+LOAD_FILE_FUNCTIONS = [load_ml_100k_from_file, load_ml_1m_from_file,
+                       load_ml_latest_small_from_file, load_yelp_from_file,
                        load_amazon_instantvideo_from_file, load_amazon_music_from_file, load_amazon_toys_from_file,
-                       load_netflix_from_file, load_yelp_from_file]
+
+                       # Remove for now
+                       # load_ml_10m_from_file, load_ml_20m_from_file,
+                       #   load_netflix_from_file, load_amazon_books_from_file, load_amazon_electronics_from_file,
+                       ]
 
 # ------------ Relevant Dicts for Data Processing (must have same order)
 LOAD_CSV_FUNCTIONS = [
@@ -46,6 +51,8 @@ DATASET_NAMES = [
 
 
 # ------------ Code
+
+
 def load_file_to_csv():
     logger.info("######## Store Datasets To CSV ########")
 
