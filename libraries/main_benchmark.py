@@ -11,7 +11,7 @@ from general_utils.lcer import get_logger, get_output_result_data, get_base_path
     get_hard_timeout_in_min
 from general_utils import filer
 from libraries.name_lib_mapping import NAME_LIB_MAP
-from data_processing.preprocessing.data_handler import get_data_for_load_datasets, load_from_csv
+from data_processing.preprocessing.data_handler import load_datasets_information, load_from_files
 
 # Use this to guard against multiprocess error
 if __name__ == '__main__':
@@ -29,7 +29,7 @@ if __name__ == '__main__':
     lib_algos = NAME_LIB_MAP[lib_name]()
 
     #  Collect dataset loaders
-    data_for_load_datasets = get_data_for_load_datasets()
+    data_for_load_datasets = load_datasets_information()
     nr_datasets = len(data_for_load_datasets)
 
     # Default values
@@ -63,7 +63,7 @@ if __name__ == '__main__':
 
         # Load dataset and create dataset object
         logger.info("###### Load Datasets {}, {}/{} ######".format(dataset_name, idx, nr_datasets))
-        dataset = dataset_base.Dataset(*load_from_csv(value_tuple[0], value_tuple[1]))
+        dataset = dataset_base.Dataset(*load_from_files(value_tuple[0], value_tuple[1]))
         logger.info("###### Start processing Dataset {} ######".format(dataset.name))
 
         # Execute benchmarks for every algorithm

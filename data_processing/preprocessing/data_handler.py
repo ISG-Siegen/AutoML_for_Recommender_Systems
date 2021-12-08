@@ -32,7 +32,7 @@ def save_to_files(name, data_df, recsys_properties):
         json.dump(meta_data, f, ensure_ascii=False, indent=4)
 
 
-def load_from_csv(path_to_file_csv, path_to_file_json):
+def load_from_files(path_to_file_csv, path_to_file_json):
     # Read Data
     df = pd.read_csv(path_to_file_csv)
     with open(path_to_file_json) as json_file:
@@ -56,10 +56,10 @@ def load_from_csv(path_to_file_csv, path_to_file_json):
 
 # --- Function to be used to preprocess and load preprocessed data
 def get_all_dataset_names():
-    return [x[2] for x in get_data_for_load_datasets()]
+    return [x[2] for x in load_datasets_information()]
 
 
-def get_data_for_load_datasets():
+def load_datasets_information():
     dir_path_csv = os.path.join(get_dataset_container_path(), "preprocessed_data/*.csv")
     dir_path_json = os.path.join(get_dataset_container_path(), "preprocessed_data/*.json")
 

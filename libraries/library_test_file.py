@@ -15,10 +15,10 @@ loaded_models_to_test = lenskit_models  # Set the name for the test case below
 # [NO NEED TO CHANGE THIS] ---------------- Test if implementation works
 # Get a test dataset (here ml 100k)
 from benchmark_framework import dataset_base, metrics
-from data_processing.preprocessing.data_handler import get_data_for_load_datasets, load_from_csv
+from data_processing.preprocessing.data_handler import load_datasets_information, load_from_files
 
-data_for_load_dataset = [x for x in get_data_for_load_datasets() if x[2] == "movielens-100K"][0]  # use ml100k dataset
-dataset = dataset_base.Dataset(*load_from_csv(data_for_load_dataset[0], data_for_load_dataset[1]))
+data_for_load_dataset = [x for x in load_datasets_information() if x[2] == "movielens-100K"][0]  # use ml100k dataset
+dataset = dataset_base.Dataset(*load_from_files(data_for_load_dataset[0], data_for_load_dataset[1]))
 
 for model in loaded_models_to_test:
 

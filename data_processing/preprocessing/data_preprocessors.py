@@ -5,15 +5,15 @@ from benchmark_framework.dataset_base import RecSysProperties
 
 
 def get_all_preprocess_functions():
-    single_dataset_preprocessors = [preprocess_ml_100k_to_file, preprocess_ml_1m_to_file,
-                                    preprocess_ml_latest_small_to_file, preprocess_yelp_to_file]
+    single_dataset_preprocessors = [preprocess_ml_100k, preprocess_ml_1m,
+                                    preprocess_ml_latest_small, preprocess_yelp]
 
     return single_dataset_preprocessors + build_amazon_load_functions()
 
 
 # ---- Specific Load Functions
 # -- Movielens
-def preprocess_ml_100k_to_file():
+def preprocess_ml_100k():
     """ Method to load ml100k dataset and return data, features (list of strings), and label (string) """
 
     # Load from Disc
@@ -56,7 +56,7 @@ def preprocess_ml_100k_to_file():
     return name, rm_df, recsys_properties
 
 
-def preprocess_ml_1m_to_file():
+def preprocess_ml_1m():
     ratings_df = pd.read_table(os.path.join(get_dataset_container_path(), 'ml-1m/ratings.dat'), sep='::',
                                header=0, names=['userId', 'movieId', 'rating', 'timestamp'], engine='python')
 
@@ -81,7 +81,7 @@ def preprocess_ml_1m_to_file():
     return 'movielens-1M', data, recsys_properties
 
 
-def preprocess_ml_latest_small_to_file():
+def preprocess_ml_latest_small():
     ratings_df = pd.read_table(os.path.join(get_dataset_container_path(), 'ml-latest-small/ratings.csv'), sep=',',
                                header=0, names=['userId', 'movieId', 'rating', 'timestamp'], engine='python')
 
@@ -101,29 +101,29 @@ def preprocess_ml_latest_small_to_file():
 # -- Amazon
 def build_amazon_load_functions():
     # List of Amazon Dataset Meta-info needed to build loader
-    amazon_dataset_info = [("ratings_Amazon_Instant_Video", "instantvideoId", "amazon-instantvideo"),
-                           ("ratings_Toys_and_Games", "toysId", "amazon-toys"),
-                           ("ratings_Digital_Music", "musicId", "amazon-music")
+    amazon_dataset_info = [("ratings_Amazon_Instant_Video", "amazon-instantvideo"),
+                           ("ratings_Toys_and_Games", "amazon-toys"),
+                           ("ratings_Digital_Music", "amazon-music")
                            ]
 
     # For saving function
     load_functions_list = []
 
     # Build function for each combination and append to list
-    for file_name, item_id_name, dataset_name in amazon_dataset_info:
+    for file_name, dataset_name in amazon_dataset_info:
         # Build load function
         def _default_amazon_preprocessor():
             data = pd.read_table(os.path.join(get_dataset_container_path(), '{}.csv'.format(file_name)), sep=',',
-                                 header=0, names=['user', item_id_name, 'rating', 'timestamp'], engine='python')
+                                 header=0, names=['user', 'itemId', 'rating', 'timestamp'], engine='python')
 
             data['user'] = data.groupby(['user']).ngroup()
-            data[item_id_name] = data.groupby([item_id_name]).ngroup()
+            data['itemId'] = data.groupby(['itemId']).ngroup()
 
-            recsys_properties = RecSysProperties('userId', item_id_name, 'rating', 'timestamp', 1, 5)
+            recsys_properties = RecSysProperties('userId', 'itemId', 'rating', 'timestamp', 1, 5)
 
             return dataset_name, data, recsys_properties
 
-        _default_amazon_preprocessor.__name__ = "preprocess_{}_to_file".format(dataset_name)
+        _default_amazon_preprocessor.__name__ = "preprocess_{}".format(dataset_name)
 
         # Add function to list
         load_functions_list.append(_default_amazon_preprocessor)
@@ -132,7 +132,7 @@ def build_amazon_load_functions():
 
 
 # -- Other
-def preprocess_yelp_to_file():
+def preprocess_yelp():
     data = pd.read_json(os.path.join(get_dataset_container_path(), 'yelp_training_set_review.json'), lines=True)
     data = data.rename(columns={"user_id": "user", "business_id": "itemId", "stars": "rating", "date": "timestamp"})
     data = data[['user', 'itemId', 'rating', 'timestamp']]
