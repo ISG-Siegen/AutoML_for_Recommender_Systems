@@ -123,6 +123,8 @@ def build_amazon_load_functions():
 
             return dataset_name, data, recsys_properties
 
+        _default_amazon_preprocessor.__name__ = "preprocess_{}_to_file".format(dataset_name)
+
         # Add function to list
         load_functions_list.append(_default_amazon_preprocessor)
 

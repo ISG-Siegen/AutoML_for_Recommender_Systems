@@ -97,9 +97,10 @@ def get_data_for_load_datasets():
 
 def preprocess_all_datasets():
     preprocessors = get_all_preprocess_functions()
+
     n_preprocessors = len(preprocessors)
     for idx, fn in enumerate(preprocessors, 1):
-        logger.info("Start Preprocessing: {} [{}/{}]".format(str(fn), idx, n_preprocessors))
+        logger.info("Start Preprocessing: {} [{}/{}]".format(fn.__name__, idx, n_preprocessors))
         # Preprocess and save results to csv
         save_to_files(*fn())
 
