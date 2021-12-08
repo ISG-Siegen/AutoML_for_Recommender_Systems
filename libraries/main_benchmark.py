@@ -5,8 +5,9 @@ import sys
 sys.path.insert(1, os.path.join(sys.path[0], '..'))
 # Rest of imports
 from benchmark_framework import benchmarker, dataset_base
-from utils.lcer import get_logger, get_output_result_data, get_base_path, get_default_metric, get_hard_timeout_in_min
-from utils import filer
+from general_utils.lcer import get_logger, get_output_result_data, get_base_path, get_default_metric, \
+    get_hard_timeout_in_min
+from general_utils import filer
 import time
 from libraries.name_lib_mapping import NAME_LIB_MAP
 import pandas as pd
@@ -20,7 +21,7 @@ if __name__ == '__main__':
     logger = get_logger("BenchmarkExe")
 
     # Read Input (the lib name to run)
-    lib_name = str(sys.argv[1])
+    lib_name = "sklearn"  # str(sys.argv[1])
     only_new_benchmarks = True
     with_limits = True
 

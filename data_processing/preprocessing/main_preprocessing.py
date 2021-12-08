@@ -19,7 +19,7 @@ from data_processing.preprocessing.preprocessing_amazon_toys import load_amazon_
 # from data_processing.preprocessing.preprocessing_netflix import load_netflix_from_file, load_netflix_from_csv, \
 #    NETFLIX_NAME
 from data_processing.preprocessing.preprocessing_yelp import load_yelp_from_file, load_yelp_from_csv, YELP_NAME
-from utils.lcer import get_logger
+from general_utils.lcer import get_logger
 
 logger = get_logger("Preprocessing")
 

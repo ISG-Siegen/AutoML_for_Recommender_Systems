@@ -1,6 +1,6 @@
 import pandas as pd
 import os
-from utils.lcer import get_dataset_container_path
+from general_utils.lcer import get_dataset_container_path
 from benchmark_framework.dataset_base import RecSysProperties
 
 ML_LATESTSMALL_NAME = 'movielens-latest-small'

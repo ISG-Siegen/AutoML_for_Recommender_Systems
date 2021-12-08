@@ -1,7 +1,7 @@
 # General Benchmark class
 import time
 from benchmark_framework import metrics, dataset_base, model_base
-from utils.lcer import get_logger
+from general_utils.lcer import get_logger
 import traceback
 
 logger = get_logger("Benchmarker")

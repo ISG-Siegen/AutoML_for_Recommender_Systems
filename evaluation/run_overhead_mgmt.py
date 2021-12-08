@@ -7,8 +7,8 @@ sys.path.insert(1, os.path.join(sys.path[0], '..'))
 # Required Imports
 from libraries.name_lib_mapping import NAME_LIB_MAP
 from data_processing.preprocessing.main_preprocessing import DATASET_NAMES
-from utils.lcer import get_logger, get_output_result_data, get_base_path, get_default_metric
-from utils import filer
+from general_utils.lcer import get_logger, get_output_result_data, get_base_path, get_default_metric
+from general_utils import filer
 from benchmark_framework.dataset_base import DummyDataset
 import pandas as pd
 

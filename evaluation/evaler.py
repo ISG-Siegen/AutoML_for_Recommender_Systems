@@ -7,9 +7,9 @@ import itertools
 sys.path.insert(1, os.path.join(sys.path[0], '..'))
 # Default imports
 import pandas as pd
-from utils import filer
+from general_utils import filer
 from evaluation import eval_plotter
-from utils.lcer import get_logger, get_output_result_data, get_base_path
+from general_utils.lcer import get_logger, get_output_result_data, get_base_path
 import numpy as np
 from collections import defaultdict
 

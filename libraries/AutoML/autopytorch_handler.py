@@ -1,5 +1,5 @@
 from benchmark_framework.model_base import Model
-from utils.lcer import get_timeout_in_min
+from general_utils.lcer import get_timeout_in_min
 
 
 def load_auto_pytorch_and_all_models():

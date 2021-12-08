@@ -1,5 +1,5 @@
 import pandas as pd
-from utils.lcer import get_dataset_container_path
+from general_utils.lcer import get_dataset_container_path
 import os
 from benchmark_framework.dataset_base import RecSysProperties
 import numpy as np

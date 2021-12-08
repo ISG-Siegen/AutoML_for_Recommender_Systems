@@ -1,11 +1,11 @@
 from benchmark_framework.model_base import Model
-from utils.lcer import get_timeout_in_min
+from general_utils.lcer import get_timeout_in_min
 
 
 def load_auto_surprise_and_all_models():
     from surprise import Dataset, Reader
     from auto_surprise.engine import Engine
-    from utils.surprise_utils import predict
+    from general_utils.surprise_utils import predict
 
     class AutoSurpriseModel(Model):
         def __init__(self):
