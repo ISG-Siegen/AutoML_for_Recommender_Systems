@@ -1,4 +1,5 @@
 # !Make sure you have select the correct environment with appropriate packages that need to be loaded !
+# !Make sure you have the dataset that is used here on your system (a .csv and .json file) - ask lennart or tobias
 # [Ignore This] ------------- Ensure that base path is found
 import os
 import sys
@@ -14,9 +15,10 @@ loaded_models_to_test = lenskit_models  # Set the name for the test case below
 # [NO NEED TO CHANGE THIS] ---------------- Test if implementation works
 # Get a test dataset (here ml 100k)
 from benchmark_framework import dataset_base, metrics
-from data_processing.preprocessing.main_preprocessing import load_ml_100k_from_csv
+from data_processing.preprocessing.data_handler import get_data_for_load_datasets, load_from_csv
 
-dataset = dataset_base.Dataset(*load_ml_100k_from_csv())
+data_for_load_dataset = [x for x in get_data_for_load_datasets() if x[2] == "movielens-100K"][0]
+dataset = dataset_base.Dataset(*load_from_csv(data_for_load_dataset[0], data_for_load_dataset[1]))
 
 for model in loaded_models_to_test:
 
