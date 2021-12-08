@@ -6,7 +6,7 @@ import sys
 sys.path.insert(1, os.path.join(sys.path[0], '..'))
 # Required Imports
 from libraries.name_lib_mapping import NAME_LIB_MAP
-from data_processing.preprocessing.main_preprocessing import DATASET_NAMES
+from data_processing.preprocessing.data_handler import get_all_dataset_names
 from general_utils.lcer import get_logger, get_output_result_data, get_base_path, get_default_metric
 from general_utils import filer
 from benchmark_framework.dataset_base import DummyDataset
@@ -17,6 +17,7 @@ lib_name = str(sys.argv[1])
 algo_names_list = []
 fresh_start = False
 logger = get_logger("OverheadMgmt")
+DATASET_NAMES = get_all_dataset_names()
 
 # ------------- File management
 output_filepath = os.path.join(get_base_path(), get_output_result_data(), "run_overhead_data.json")

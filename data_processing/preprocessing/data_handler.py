@@ -55,6 +55,10 @@ def load_from_csv(path_to_file_csv, path_to_file_json):
 
 
 # --- Function to be used to preprocess and load preprocessed data
+def get_all_dataset_names():
+    return [x[2] for x in get_data_for_load_datasets()]
+
+
 def get_data_for_load_datasets():
     dir_path_csv = os.path.join(get_dataset_container_path(), "preprocessed_data/*.csv")
     dir_path_json = os.path.join(get_dataset_container_path(), "preprocessed_data/*.json")
