@@ -17,7 +17,7 @@ loaded_models_to_test = lenskit_models  # Set the name for the test case below
 from benchmark_framework import dataset_base, metrics
 from data_processing.preprocessing.data_handler import get_data_for_load_datasets, load_from_csv
 
-data_for_load_dataset = [x for x in get_data_for_load_datasets() if x[2] == "movielens-100K"][0]
+data_for_load_dataset = [x for x in get_data_for_load_datasets() if x[2] == "movielens-100K"][0]  # use ml100k dataset
 dataset = dataset_base.Dataset(*load_from_csv(data_for_load_dataset[0], data_for_load_dataset[1]))
 
 for model in loaded_models_to_test:
