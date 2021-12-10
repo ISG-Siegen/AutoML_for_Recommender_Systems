@@ -7,7 +7,7 @@ from general_utils.amazon_dataset_utils import getDF
 
 def get_all_preprocess_functions():
     single_dataset_preprocessors = [preprocess_ml_100k, preprocess_ml_1m,
-                                    preprocess_ml_latest_small, preprocess_yelp]
+                                    preprocess_ml_latest_small]
 
     return single_dataset_preprocessors + build_amazon_load_functions()
 
@@ -16,7 +16,6 @@ def get_all_preprocess_functions():
 # -- Movielens
 def preprocess_ml_100k():
     """ Method to load ml100k dataset and return data, features (list of strings), and label (string) """
-
     # Load from Disc
     ratings_df = pd.read_csv(os.path.join(get_dataset_container_path(), 'ml-100k/u.data'), sep='\t',
                              encoding='iso-8859-1', names=['userId', 'itemId', 'rating', 'timestamp'])
@@ -58,15 +57,14 @@ def preprocess_ml_100k():
 
 
 def preprocess_ml_1m():
-    ratings_df = pd.read_table(os.path.join(get_dataset_container_path(), 'ml-1m/ratings.dat'), sep='::',
+    ratings_df = pd.read_csv(os.path.join(get_dataset_container_path(), 'ml-1m/ratings.dat'), sep='::',
                                header=0, names=['userId', 'movieId', 'rating', 'timestamp'], engine='python')
 
-    movies_df = pd.read_table(os.path.join(get_dataset_container_path(), 'ml-1m/movies.dat'), sep='::',
-                              header=0, names=['movieId', 'title', 'genres'], engine='python')
+    movies_df = pd.read_csv(os.path.join(get_dataset_container_path(), 'ml-1m/movies.dat'), sep='::',
+                              header=0, names=['movieId', 'title', 'genres'], engine='python', encoding='iso-8859-1')
     movies_df = pd.concat([movies_df.drop('genres', axis=1), movies_df.genres.str.get_dummies(sep='|')], axis=1)
-    movies_df = movies_df.drop(['title'], axis=1)
 
-    user_df = pd.read_table(os.path.join(get_dataset_container_path(), 'ml-1m/movies.dat'), sep='::',
+    user_df = pd.read_csv(os.path.join(get_dataset_container_path(), 'ml-1m/users.dat'), sep='::',
                             header=0, names=['userId', 'gender', 'age', 'occupation', 'zipCode'], engine='python')
    # TODO gender to dummies
     user_df['gender'] = user_df['gender'].replace({'F': 0, 'M': 1})
@@ -115,8 +113,8 @@ def build_amazon_load_functions():
     for file_name, meta_file_name, dataset_name in amazon_dataset_info:
         # Build load function
         def _default_amazon_preprocessor():
-            review_data = getDF(os.path.join(get_dataset_container_path(), '{}.csv'.format(file_name)))
-            meta_data =getDF(os.path.join(get_dataset_container_path(), '{}.csv'.format(meta_file_name)))
+            review_data = getDF(os.path.join(get_dataset_container_path(), '{}.json.gz'.format(file_name)))
+            meta_data = getDF(os.path.join(get_dataset_container_path(), '{}.json.gz'.format(meta_file_name)))
 
             data = review_data.drop(['image', 'reviewerName', 'style', 'reviewerText', 'summary', 'reviewTime'], axis=1)
             meta_data = meta_data.drop(['title', 'feature', 'description', 'imageURL', 'imageURLHighRes'
