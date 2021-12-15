@@ -3,6 +3,7 @@ from sklearn.model_selection import train_test_split
 
 
 class RecSysProperties:
+    # Default values for column names
     _default_userId_col_name = "userId"
     _default_itemId_col_col_name = "itemId"
     _default_timestamp_col_name = "timestamp"
@@ -18,8 +19,6 @@ class RecSysProperties:
         self.rating_upper_bound = rating_upper_bound
 
         self.user_num = self.item_num = 0
-
-        # Default values for column names
 
     def set_num_values(self, df):
         """Function to set the number of users and items for usage of certain libraries"""
