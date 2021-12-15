@@ -1,11 +1,15 @@
 import os
-from general_utils.lcer import get_dataset_container_path
+import sys
+import json
+import glob
 import pandas as pd
+
+# ------------- Ensure that base path is found
+sys.path.insert(1, os.path.join(sys.path[0], '..'))
+from general_utils.lcer import get_dataset_container_path
 from benchmark_framework.dataset_base import RecSysProperties
 from general_utils.lcer import get_logger
 from data_processing.preprocessing.data_preprocessors import get_all_preprocess_functions
-import json
-import glob
 
 logger = get_logger("data_preprocessor")
 
