@@ -1,6 +1,6 @@
 import pandas as pd
 import os
-from utils.lcer import get_dataset_container_path
+from general_utils.lcer import get_dataset_container_path
 from benchmark_framework.dataset_base import RecSysProperties
 
 ML_1M_NAME = 'movielens-1M'
@@ -31,7 +31,7 @@ def load_ml_1m_from_file():
     features = list(data)
     features.remove(label)  # this means simply all columns are features but the label column
 
-    recsys_properties = RecSysProperties('userId', 'movieId', 'rating', 1, 5)
+    recsys_properties = RecSysProperties('userId', 'movieId', 'rating', 'timestamp', 1, 5)
 
     return ML_1M_NAME, data, features, label, recsys_properties
 
@@ -45,6 +45,6 @@ def load_ml_1m_from_csv():
     features = list(data)
     features.remove(label)  # this means simply all columns are features but the label column
 
-    recsys_properties = RecSysProperties('userId', 'movieId', 'rating', 1, 5)
+    recsys_properties = RecSysProperties('userId', 'movieId', 'rating', 'timestamp', 1, 5)
 
     return ML_1M_NAME, data, features, label, recsys_properties

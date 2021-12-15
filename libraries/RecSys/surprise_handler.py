@@ -6,7 +6,7 @@ def load_surprise_and_all_models():
     from surprise import SVD, SVDpp
     from surprise import KNNBasic, KNNBaseline, KNNWithMeans, KNNWithZScore
     from surprise import CoClustering, BaselineOnly, SlopeOne, NMF, NormalPredictor
-    from utils.surprise_utils import predict
+    from general_utils.surprise_utils import predict
     from surprise import Dataset, Reader
 
     # Default interface for Surprise

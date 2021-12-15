@@ -3,8 +3,14 @@ from sklearn.model_selection import train_test_split
 
 
 class RecSysProperties:
-    def __init__(self, userId_col: str, itemId_col: str, rating_col: str, timestamp_col: str, rating_lower_bound: int,
-                 rating_upper_bound: int):
+    # Default values for column names
+    _default_userId_col_name = "userId"
+    _default_itemId_col_col_name = "itemId"
+    _default_timestamp_col_name = "timestamp"
+    _default_rating_col_name = "rating"
+
+    def __init__(self, userId_col: str, itemId_col: str, rating_col: str, timestamp_col: str, rating_lower_bound: float,
+                 rating_upper_bound: float):
         self.itemId_col = itemId_col
         self.userId_col = userId_col
         self.rating_col = rating_col
@@ -21,6 +27,16 @@ class RecSysProperties:
 
     def get_num_values(self):
         return self.user_num, self.item_num
+
+    def transform_dataset(self, data_df):
+        """Function to transform existing dataset to correct format for saving it"""
+
+        return data_df.rename(columns={
+            self.itemId_col: self._default_itemId_col_col_name,
+            self.userId_col: self._default_userId_col_name,
+            self.timestamp_col: self._default_timestamp_col_name,
+            self.rating_col: self._default_rating_col_name
+        })
 
 
 class Dataset:

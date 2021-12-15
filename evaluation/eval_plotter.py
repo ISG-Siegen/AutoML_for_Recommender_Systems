@@ -1,11 +1,11 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 import os
-from utils.lcer import get_output_images, get_base_path
+from general_utils.lcer import get_output_images, get_base_path
 import numpy as np
 import seaborn as sns
 from autorank import autorank, create_report, plot_stats
-from utils.catheat import heatmap
+from general_utils.catheat import heatmap
 
 YMIN = 0
 YMAX = None

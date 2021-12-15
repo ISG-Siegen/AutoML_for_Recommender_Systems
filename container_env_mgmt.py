@@ -1,5 +1,5 @@
 import docker
-from utils.lcer import get_logger, get_dataset_local_path, get_base_path, get_dataset_container_path
+from general_utils.lcer import get_logger, get_dataset_local_path, get_base_path, get_dataset_container_path
 import signal
 import time
 from libraries.name_lib_mapping import get_all_lib_names

@@ -1,16 +1,17 @@
 import os
 import sys
+import time
+import pandas as pd
 
 # ------------- Ensure that base path is found
 sys.path.insert(1, os.path.join(sys.path[0], '..'))
 # Rest of imports
 from benchmark_framework import benchmarker, dataset_base
-from utils.lcer import get_logger, get_output_result_data, get_base_path, get_default_metric, get_hard_timeout_in_min
-from utils import filer
-import time
+from general_utils.lcer import get_logger, get_output_result_data, get_base_path, get_default_metric, \
+    get_hard_timeout_in_min
+from general_utils import filer
 from libraries.name_lib_mapping import NAME_LIB_MAP
-import pandas as pd
-from data_processing.preprocessing.main_preprocessing import get_dataset_load_functions, DATASET_NAMES
+from data_processing.preprocessing.data_handler import load_datasets_information, load_from_files
 
 # Use this to guard against multiprocess error
 if __name__ == '__main__':
@@ -20,7 +21,7 @@ if __name__ == '__main__':
     logger = get_logger("BenchmarkExe")
 
     # Read Input (the lib name to run)
-    lib_name = str(sys.argv[1])
+    lib_name = "sklearn"  # str(sys.argv[1])
     only_new_benchmarks = True
     with_limits = True
 
@@ -28,8 +29,8 @@ if __name__ == '__main__':
     lib_algos = NAME_LIB_MAP[lib_name]()
 
     #  Collect dataset loaders
-    dataset_load_functions = get_dataset_load_functions()
-    nr_datasets = len(dataset_load_functions)
+    data_for_load_datasets = load_datasets_information()
+    nr_datasets = len(data_for_load_datasets)
 
     # Default values
     metric = get_default_metric()()
@@ -50,19 +51,19 @@ if __name__ == '__main__':
 
     # ------------- Loop over all datasets
     logger.info("######## Loop over all Datasets and do benchmarks for library {} ########".format(lib_name))
-    for idx, dataset_load_function in enumerate(dataset_load_functions, 1):
+    for idx, value_tuple in enumerate(data_for_load_datasets, 1):
+        dataset_name = value_tuple[2]
 
         # Check if dataset can be skipped
-        if only_new_benchmarks and (not run_so_far_lib[DATASET_NAMES[idx - 1]]):
+        if only_new_benchmarks and (not run_so_far_lib[dataset_name]):
             # Skip
             logger.info(
-                "###### Skip dataset {} as all models for it have been run before ######".format(
-                    DATASET_NAMES[idx - 1]))
+                "###### Skip dataset {} as all models for it have been run before ######".format(dataset_name))
             continue
 
         # Load dataset and create dataset object
-        logger.info("###### Load Datasets {}, {}/{} ######".format(dataset_load_function, idx, nr_datasets))
-        dataset = dataset_base.Dataset(*dataset_load_function())
+        logger.info("###### Load Datasets {}, {}/{} ######".format(dataset_name, idx, nr_datasets))
+        dataset = dataset_base.Dataset(*load_from_files(value_tuple[0], value_tuple[1]))
         logger.info("###### Start processing Dataset {} ######".format(dataset.name))
 
         # Execute benchmarks for every algorithm
