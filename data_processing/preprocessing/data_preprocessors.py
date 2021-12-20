@@ -4,6 +4,7 @@ import pandas as pd
 from benchmark_framework.dataset_base import RecSysProperties
 from general_utils.amazon_dataset_utils import getDF
 
+# TODO make it so that it can be executed either for local or in container by making base path a variable
 
 def get_all_preprocess_functions():
     single_dataset_preprocessors = [preprocess_ml_100k, preprocess_ml_1m,
