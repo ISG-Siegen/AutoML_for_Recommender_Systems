@@ -124,7 +124,7 @@ def create_amazon_load_function(file_name, meta_file_name, dataset_name):
         return dataset_name, data, recsys_properties
 
     amazon_load_function_template.__name__ = "preprocess_{}".format(dataset_name)
-    return amazon_load_function_template()
+    return amazon_load_function_template
 
 
 def build_amazon_load_functions():
