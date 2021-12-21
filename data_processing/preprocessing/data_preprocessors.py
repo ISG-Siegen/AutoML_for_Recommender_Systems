@@ -4,6 +4,7 @@ import pandas as pd
 from benchmark_framework.dataset_base import RecSysProperties
 from general_utils.amazon_dataset_utils import getDF
 
+
 # TODO make it so that it can be executed either for local or in container by making base path a variable
 
 def get_all_preprocess_functions():
@@ -59,15 +60,15 @@ def preprocess_ml_100k():
 
 def preprocess_ml_1m():
     ratings_df = pd.read_csv(os.path.join(get_dataset_container_path(), 'ml-1m/ratings.dat'), sep='::',
-                               header=0, names=['userId', 'movieId', 'rating', 'timestamp'], engine='python')
+                             header=0, names=['userId', 'movieId', 'rating', 'timestamp'], engine='python')
 
     movies_df = pd.read_csv(os.path.join(get_dataset_container_path(), 'ml-1m/movies.dat'), sep='::',
-                              header=0, names=['movieId', 'title', 'genres'], engine='python', encoding='iso-8859-1')
+                            header=0, names=['movieId', 'title', 'genres'], engine='python', encoding='iso-8859-1')
     movies_df = pd.concat([movies_df.drop('genres', axis=1), movies_df.genres.str.get_dummies(sep='|')], axis=1)
 
     user_df = pd.read_csv(os.path.join(get_dataset_container_path(), 'ml-1m/users.dat'), sep='::',
-                            header=0, names=['userId', 'gender', 'age', 'occupation', 'zipCode'], engine='python')
-   # TODO gender to dummies
+                          header=0, names=['userId', 'gender', 'age', 'occupation', 'zipCode'], engine='python')
+    # TODO gender to dummies
     user_df['gender'] = user_df['gender'].replace({'F': 0, 'M': 1})
 
     # merge
@@ -100,6 +101,32 @@ def preprocess_ml_latest_small():
 
 
 # -- Amazon
+def create_amazon_load_function(file_name, meta_file_name, dataset_name):
+    def amazon_load_function_template():
+        review_data = getDF(os.path.join(get_dataset_container_path(), '{}.json.gz'.format(file_name)))
+        meta_data = getDF(os.path.join(get_dataset_container_path(), '{}.json.gz'.format(meta_file_name)))
+
+        data = review_data.drop(['image', 'reviewerName', 'style', 'reviewerText', 'summary', 'reviewTime'], axis=1)
+        meta_data = meta_data.drop(['title', 'feature', 'description', 'imageURL', 'imageURLHighRes'
+                                                                                   'also_viewed', 'tech1', 'tech2',
+                                    'similar', 'categories'], axis=1)
+
+        data = pd.merge(data, meta_data, on='asin')
+
+        data.rename(
+            columns={'asin': 'itemId', 'reviewerId': 'userId', 'overall': 'rating', 'unixReviewTime': 'timestamp'})
+
+        data['user'] = data.groupby(['user']).ngroup()
+        data['itemId'] = data.groupby(['itemId']).ngroup()
+
+        recsys_properties = RecSysProperties('userId', 'itemId', 'rating', 'timestamp', 1, 5)
+
+        return dataset_name, data, recsys_properties
+
+    amazon_load_function_template.__name__ = "preprocess_{}".format(dataset_name)
+    return amazon_load_function_template()
+
+
 def build_amazon_load_functions():
     # List of Amazon Dataset Meta-info needed to build loader
     amazon_dataset_info = [('Electronics_5', 'meta_Electronics', 'amazon-electronics'),
@@ -113,30 +140,7 @@ def build_amazon_load_functions():
     # Build function for each combination and append to list
     for file_name, meta_file_name, dataset_name in amazon_dataset_info:
         # Build load function
-        def _default_amazon_preprocessor():
-            review_data = getDF(os.path.join(get_dataset_container_path(), '{}.json.gz'.format(file_name)))
-            meta_data = getDF(os.path.join(get_dataset_container_path(), '{}.json.gz'.format(meta_file_name)))
-
-            data = review_data.drop(['image', 'reviewerName', 'style', 'reviewerText', 'summary', 'reviewTime'], axis=1)
-            meta_data = meta_data.drop(['title', 'feature', 'description', 'imageURL', 'imageURLHighRes'
-                                        'also_viewed', 'tech1', 'tech2', 'similar', 'categories'], axis=1)
-
-            data = pd.merge(data, meta_data, on='asin')
-
-            data.rename(
-                columns={'asin': 'itemId', 'reviewerId': 'userId', 'overall': 'rating', 'unixReviewTime': 'timestamp'})
-
-            data['user'] = data.groupby(['user']).ngroup()
-            data['itemId'] = data.groupby(['itemId']).ngroup()
-
-            recsys_properties = RecSysProperties('userId', 'itemId', 'rating', 'timestamp', 1, 5)
-
-            return dataset_name, data, recsys_properties
-
-        _default_amazon_preprocessor.__name__ = "preprocess_{}".format(dataset_name)
-
-        # Add function to list
-        load_functions_list.append(_default_amazon_preprocessor)
+        load_functions_list.append(create_amazon_load_function(file_name, meta_file_name, dataset_name))
 
     return load_functions_list
 
@@ -148,7 +152,7 @@ def preprocess_yelp():
     user_data = pd.read_json(os.path.join(get_dataset_container_path(), 'user.json'), lines=True)
     tip_data = pd.read_json(os.path.join(get_dataset_container_path(), 'tip.json'), lines=True)
 
-    #TODO check postal code, string city
+    # TODO check postal code, string city
     business_data = business_data.drop(['name', 'address', 'city', 'postal code', 'categories', 'hours',
                                         'attributes'], axis=1)
 
