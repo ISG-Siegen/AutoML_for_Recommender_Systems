@@ -3,6 +3,7 @@ from general_utils.lcer import get_dataset_container_path
 import pandas as pd
 from benchmark_framework.dataset_base import RecSysProperties
 from general_utils.amazon_dataset_utils import getDF
+from general_utils.yelp_dataset_utils import get_superset_of_column_names_from_file, read_and_write_file
 
 
 # TODO make it so that it can be executed either for local or in container by making base path a variable
@@ -11,7 +12,8 @@ def get_all_preprocess_functions():
     single_dataset_preprocessors = [preprocess_ml_100k, preprocess_ml_1m,
                                     preprocess_ml_latest_small]
 
-    return single_dataset_preprocessors + build_amazon_load_functions()
+    #return single_dataset_preprocessors + build_amazon_load_functions()
+    return preprocess_yelp
 
 
 # ---- Specific Load Functions
@@ -147,10 +149,23 @@ def build_amazon_load_functions():
 
 # -- Yelp
 def preprocess_yelp():
-    business_data = pd.read_json(os.path.join(get_dataset_container_path(), 'business.json'), lines=True)
-    review_data = pd.read_json(os.path.join(get_dataset_container_path(), 'review.json'), lines=True)
-    user_data = pd.read_json(os.path.join(get_dataset_container_path(), 'user.json'), lines=True)
-    tip_data = pd.read_json(os.path.join(get_dataset_container_path(), 'tip.json'), lines=True)
+    filenames = ['yelp_academic_dataset_business', 'yelp_academic_dataset_review',
+                 'yelp_academic_dataset_user', 'yelp_academic_dataset_tip']
+
+    for filename in filenames:
+        column_names = get_superset_of_column_names_from_file(os.path.join(get_dataset_container_path(),
+                                                                           ('yelp/'+filename+'.json')))
+        read_and_write_file(os.path.join(get_dataset_container_path(), ('yelp/'+filename+'.json')),
+                            os.path.join(get_dataset_container_path(), ('yelp/'+filename+'.csv')), column_names)
+
+    business_data = pd.read_csv(os.path.join(get_dataset_container_path(), 'yelp/yelp_academic_dataset_business.csv'),
+                                lines=True)
+    review_data = pd.read_csv(os.path.join(get_dataset_container_path(), 'yelp/yelp_academic_dataset_review.csv'),
+                              lines=True)
+    user_data = pd.read_csv(os.path.join(get_dataset_container_path(), 'yelp/yelp_academic_dataset_user.csv'),
+                            lines=True)
+    tip_data = pd.read_csv(os.path.join(get_dataset_container_path(), 'yelp_academic_dataset_tip.csv'),
+                           lines=True)
 
     # TODO check postal code, string city
     business_data = business_data.drop(['name', 'address', 'city', 'postal code', 'categories', 'hours',
