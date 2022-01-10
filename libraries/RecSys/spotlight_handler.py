@@ -22,7 +22,7 @@ def load_spotlight():
             rating_train = (y_train.values.flatten())
 
             train_interactions = Interactions(userID_train, itemID_train, rating_train)
-            self.model.fit(train_interactions, verbose=True)
+            self.model_object.fit(train_interactions, verbose=True)
 
         def predict(self, dataset):
             x_test, y_test = dataset.test_data
@@ -31,7 +31,7 @@ def load_spotlight():
             rating_test = (y_test.values.flatten())
 
             test_interactions = Interactions(userID_test, itemID_test, rating_test)
-            predictions = self.model.predict(test_interactions.user_ids, test_interactions.item_ids)
+            predictions = self.model_object.predict(test_interactions.user_ids, test_interactions.item_ids)
 
             return predictions
 
