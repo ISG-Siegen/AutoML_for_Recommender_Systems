@@ -206,7 +206,7 @@ def preprocess_yelp():
     user_data = user_data.drop(['name', 'friends', 'elite'], axis=1)
 
     review_data = review_data.rename(
-        columns={'stars': 'review_stars', 'funny': 'reviev_funny', 'cool': 'review_cool', 'useful': 'review_useful'})
+        columns={'funny': 'reviev_funny', 'cool': 'review_cool', 'useful': 'review_useful'})
     business_data = business_data.rename(columns={'review_count': 'business_review_count', 'stars': 'business_stars'})
     user_data = user_data.rename(
         columns={'funny': 'user_funny', 'cool': 'user_cool', 'reviw_count': 'user_review_count'})
