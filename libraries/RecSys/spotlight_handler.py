@@ -12,12 +12,10 @@ def load_spotlight():
 
     class SpotlightModel(Model):
         def __init__(self):
-            super().__init__("Spotlight", None, "RecSys")
+            # default parameters
+            super().__init__("Spotlight", ExplicitFactorizationModel(), "RecSys")
 
         def train(self, dataset):
-            # default parameters
-            self.model = ExplicitFactorizationModel()
-
             x_train, y_train = dataset.train_data
             itemID_train = (x_train['itemId'].values)
             userID_train = (x_train['userId'].values)
