@@ -21,7 +21,7 @@ if __name__ == '__main__':
     logger = get_logger("BenchmarkExe")
 
     # Read Input (the lib name to run)
-    lib_name = "sklearn"  # str(sys.argv[1])
+    lib_name = str(sys.argv[1])
     only_new_benchmarks = True
     with_limits = True
 
