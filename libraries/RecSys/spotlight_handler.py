@@ -17,18 +17,18 @@ def load_spotlight():
 
         def train(self, dataset):
             x_train, y_train = dataset.train_data
-            itemID_train = (x_train['itemId'].values)
-            userID_train = (x_train['userId'].values)
-            rating_train = (y_train.values.flatten())
+            itemID_train = x_train['itemId'].values
+            userID_train = x_train['userId'].values
+            rating_train = y_train.values.flatten()
 
             train_interactions = Interactions(userID_train, itemID_train, rating_train)
             self.model_object.fit(train_interactions, verbose=True)
 
         def predict(self, dataset):
             x_test, y_test = dataset.test_data
-            itemID_test = (x_test['itemId'].values)
-            userID_test = (x_test['userId'].values)
-            rating_test = (y_test.values.flatten())
+            itemID_test = x_test['itemId'].values
+            userID_test = x_test['userId'].values
+            rating_test = y_test.values.flatten()
 
             test_interactions = Interactions(userID_test, itemID_test, rating_test)
             predictions = self.model_object.predict(test_interactions.user_ids, test_interactions.item_ids)
