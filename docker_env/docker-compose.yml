@@ -69,6 +69,10 @@ services:
     build:
       context: .
       target: lenskit
+  spotlight:
+    build:
+      context: .
+      target: spotlight
   # ---- AutoRecSys ----
   autosurprise:
     build:

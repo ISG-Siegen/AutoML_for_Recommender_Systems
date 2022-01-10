@@ -79,6 +79,9 @@ FROM base as lenskit
 # Add specific extra depnendices for specific algorithms to use
 RUN pip install --no-cache-dir lenskit[sklearn,hpf,implicit,tf]
 
+# -- spotlight --
+FROM base_python as spotlight
+RUN pip install torch && pip install -e git+https://github.com/maciejkula/spotlight.git#egg=spotlight
 
 # ---- AutoRecSys ----
 # -- autosurprise --
