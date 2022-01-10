@@ -10,10 +10,9 @@ from general_utils.yelp_dataset_utils import get_superset_of_column_names_from_f
 
 def get_all_preprocess_functions():
     single_dataset_preprocessors = [preprocess_ml_100k, preprocess_ml_1m,
-                                    preprocess_ml_latest_small]
+                                    preprocess_ml_latest_small, preprocess_yelp]
 
-    #return single_dataset_preprocessors + build_amazon_load_functions()
-    return preprocess_yelp
+    return single_dataset_preprocessors + build_amazon_load_functions()
 
 
 # ---- Specific Load Functions
@@ -40,7 +39,7 @@ def preprocess_ml_100k():
     # handle categorical column
     to_encode_categorical = ['occupation', 'gender']
     for col in to_encode_categorical:
-        df_dummies = pd.get_dummies(rm_df[col], prefix="d")
+        df_dummies = pd.get_dummies(rm_df[col], prefix=col)
         rm_df = pd.concat([rm_df, df_dummies], axis=1)
 
     to_encode_dates = ['releaseDate']
@@ -70,15 +69,16 @@ def preprocess_ml_1m():
 
     user_df = pd.read_csv(os.path.join(get_dataset_container_path(), 'ml-1m/users.dat'), sep='::',
                           header=0, names=['userId', 'gender', 'age', 'occupation', 'zipCode'], engine='python')
-    # TODO gender to dummies
-    user_df['gender'] = user_df['gender'].replace({'F': 0, 'M': 1})
+    # gender to dummies
+    df_dummies = pd.get_dummies(user_df['gender'], prefix="gender")
+    user_df = pd.concat([user_df, df_dummies], axis=1)
 
     # merge
     data = pd.merge(ratings_df, movies_df, left_on='movieId', right_on='movieId')
     data = pd.merge(data, user_df, left_on='userId', right_on='userId')
 
     # Drop Useless Columns
-    data = data.drop(['title', 'zipCode'], axis=1)
+    data = data.drop(['title', 'zipCode', 'gender'], axis=1)
 
     recsys_properties = RecSysProperties('userId', 'movieId', 'rating', 'timestamp', 1, 5)
 
@@ -108,17 +108,45 @@ def create_amazon_load_function(file_name, meta_file_name, dataset_name):
         review_data = getDF(os.path.join(get_dataset_container_path(), '{}.json.gz'.format(file_name)))
         meta_data = getDF(os.path.join(get_dataset_container_path(), '{}.json.gz'.format(meta_file_name)))
 
-        data = review_data.drop(['image', 'reviewerName', 'style', 'reviewerText', 'summary', 'reviewTime'], axis=1)
-        meta_data = meta_data.drop(['title', 'feature', 'description', 'imageURL', 'imageURLHighRes'
-                                                                                   'also_viewed', 'tech1', 'tech2',
-                                    'similar', 'categories'], axis=1)
+        # hanlde review data problems
+        review_data.loc[pd.isna(review_data['vote']), 'vote'] = 0
+
+        def fix_vote_problem(vote_input):
+            try:
+                vote_input = int(vote_input)
+                return vote_input
+            except ValueError:
+
+                return int(vote_input.replace(',', ''))
+
+        review_data['vote'] = review_data['vote'].apply(fix_vote_problem)
+        df_dummies = pd.get_dummies(review_data['verified'], prefix="verified")
+        review_data = pd.concat([review_data, df_dummies], axis=1)
+
+        # handle meta_data problems
+        def fix_price_problem(price_input):
+
+            price_input = price_input[1:]
+            try:
+                price_input = float(price_input)
+                return price_input
+            except ValueError:
+                return -1
+
+        meta_data['price'] = meta_data['price'].apply(fix_price_problem)
+
+        data = review_data.drop(['image', 'reviewerName', 'style', 'reviewText', 'summary', 'reviewTime', 'verified'],
+                                axis=1)
+        meta_data = meta_data.drop(
+            ['title', 'feature', 'description', 'imageURL', 'imageURLHighRes', 'category', 'tech1', 'tech2', 'also_buy',
+             'also_view', 'brand', 'rank', 'main_cat', 'similar_item', 'date', 'details', 'fit'], axis=1)
 
         data = pd.merge(data, meta_data, on='asin')
 
-        data.rename(
-            columns={'asin': 'itemId', 'reviewerId': 'userId', 'overall': 'rating', 'unixReviewTime': 'timestamp'})
+        data = data.rename(
+            columns={'asin': 'itemId', 'reviewerID': 'userId', 'overall': 'rating', 'unixReviewTime': 'timestamp'})
 
-        data['user'] = data.groupby(['user']).ngroup()
+        data['userId'] = data.groupby(['userId']).ngroup()
         data['itemId'] = data.groupby(['itemId']).ngroup()
 
         recsys_properties = RecSysProperties('userId', 'itemId', 'rating', 'timestamp', 1, 5)
@@ -147,58 +175,63 @@ def build_amazon_load_functions():
     return load_functions_list
 
 
-# -- Yelp
+# -- yelp
 def preprocess_yelp():
+    import argparse
+    import collections
+    import csv
+    import simplejson as json
+
     filenames = ['yelp_academic_dataset_business', 'yelp_academic_dataset_review',
-                 'yelp_academic_dataset_user', 'yelp_academic_dataset_tip']
+                 'yelp_academic_dataset_user']
 
     for filename in filenames:
         column_names = get_superset_of_column_names_from_file(os.path.join(get_dataset_container_path(),
-                                                                           ('yelp/'+filename+'.json')))
-        read_and_write_file(os.path.join(get_dataset_container_path(), ('yelp/'+filename+'.json')),
-                            os.path.join(get_dataset_container_path(), ('yelp/'+filename+'.csv')), column_names)
+                                                                           ('yelp/' + filename + '.json')))
+        read_and_write_file(os.path.join(get_dataset_container_path(), ('yelp/' + filename + '.json')),
+                            os.path.join(get_dataset_container_path(), ('yelp/' + filename + '.csv')), column_names)
 
-    business_data = pd.read_csv(os.path.join(get_dataset_container_path(), 'yelp/yelp_academic_dataset_business.csv'),
-                                lines=True)
-    review_data = pd.read_csv(os.path.join(get_dataset_container_path(), 'yelp/yelp_academic_dataset_review.csv'),
-                              lines=True)
-    user_data = pd.read_csv(os.path.join(get_dataset_container_path(), 'yelp/yelp_academic_dataset_user.csv'),
-                            lines=True)
-    tip_data = pd.read_csv(os.path.join(get_dataset_container_path(), 'yelp_academic_dataset_tip.csv'),
-                           lines=True)
+    business_data = pd.read_csv(os.path.join(get_dataset_container_path(), 'yelp/yelp_academic_dataset_business.csv'))
 
-    # TODO check postal code, string city
-    business_data = business_data.drop(['name', 'address', 'city', 'postal code', 'categories', 'hours',
-                                        'attributes'], axis=1)
+    review_data = pd.read_csv(os.path.join(get_dataset_container_path(), 'yelp/yelp_academic_dataset_review.csv'))
+
+    user_data = pd.read_csv(os.path.join(get_dataset_container_path(), 'yelp/yelp_academic_dataset_user.csv'))
+
+    business_data = business_data[business_data.columns.drop(list(business_data.filter(regex='attributes')))]
+    business_data = business_data[business_data.columns.drop(list(business_data.filter(regex='hours')))]
+    business_data = business_data.drop(['name', 'address', 'city', 'postal_code', 'categories'], axis=1)
 
     review_data = review_data.drop(['text'], axis=1)
 
     user_data = user_data.drop(['name', 'friends', 'elite'], axis=1)
 
-    # TODO check data after merge
-    tip_data = tip_data.drop(['text'], axis=1)
-    tip_data = tip_data.rename(columns={'date': 'tip_date'})
+    review_data = review_data.rename(
+        columns={'stars': 'review_stars', 'funny': 'reviev_funny', 'cool': 'review_cool', 'useful': 'review_useful'})
+    business_data = business_data.rename(columns={'review_count': 'business_review_count', 'stars': 'business_stars'})
+    user_data = user_data.rename(
+        columns={'funny': 'user_funny', 'cool': 'user_cool', 'reviw_count': 'user_review_count'})
 
     data = pd.merge(review_data, business_data, on='business_id')
     data = pd.merge(data, user_data, on='user_id')
-    data = pd.merge(data, tip_data, on='user_id')
 
     data = data.drop(['review_id'], axis=1)
     data = data.rename(columns={"user_id": "userId", "business_id": "itemId", "stars": "rating", "date": "timestamp"})
 
-    to_encode_dates = ['date', 'tip_date', 'yelping_since']
+    to_encode_dates = ['yelping_since', 'timestamp']
     for col in to_encode_dates:
+        # dirty way to convert bit notation to string
+        data[col] = data[col].apply(lambda x: x[2:-1])
         df_dates = pd.to_datetime(data[col]).apply(lambda x: int(pd.Timestamp(x).value / 10 ** 9))
         data = data.drop([col], axis=1)
         data = pd.concat([data, df_dates], axis=1)
 
     categorical_culums = ['is_open', 'state']
     for col in categorical_culums:
-        df_dummies = pd.get_dummies(data[col], prefix="d")
+        df_dummies = pd.get_dummies(data[col], prefix=col)
         data = data.drop([col], axis=1)
         data = pd.concat([data, df_dummies], axis=1)
 
-    data['user'] = data.groupby(['user']).ngroup()
+    data['userId'] = data.groupby(['userId']).ngroup()
     data['itemId'] = data.groupby(['itemId']).ngroup()
 
     recsys_propertys = RecSysProperties('userId', 'itemId', 'rating', 'timestamp', 1, 5)
