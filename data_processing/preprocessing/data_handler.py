@@ -18,6 +18,9 @@ logger = get_logger("data_preprocessor")
 def save_to_files(name, data_df, recsys_properties):
     logger.info("######## Store Datasets {} to CSV and its meta-data to JSON ########".format(name))
 
+    # drop duplicates
+    data_df = data_df.drop_duplicates(ignore_index=True)
+
     # Rename columns to standardized format
     data_df = recsys_properties.transform_dataset(data_df)
     file_path_csv = os.path.join(get_dataset_container_path(), "preprocessed_data/{}.csv".format(name))
