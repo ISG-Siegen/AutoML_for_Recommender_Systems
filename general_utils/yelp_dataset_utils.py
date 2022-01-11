@@ -2,6 +2,8 @@
 For more information on the Yelp Dataset Challenge please visit http://yelp.com/dataset_challenge
 """
 def read_and_write_file(json_file_path, csv_file_path, column_names):
+    import simplejson as json
+    import csv
     """Read in the json dataset file and write it out to a csv file, given the column names."""
     with open(csv_file_path, 'w+') as fout:
         csv_file = csv.writer(fout)
@@ -13,6 +15,7 @@ def read_and_write_file(json_file_path, csv_file_path, column_names):
 
 
 def get_superset_of_column_names_from_file(json_file_path):
+    import simplejson as json
     """Read in the json dataset file and return the superset of column names."""
     column_names = set()
     with open(json_file_path) as fin:
@@ -25,6 +28,7 @@ def get_superset_of_column_names_from_file(json_file_path):
 
 
 def get_column_names(line_contents, parent_key=''):
+    import collections
     """Return a list of flattened key names given a dict.
   Example:
       line_contents = {
