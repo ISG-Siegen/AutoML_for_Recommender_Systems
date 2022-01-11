@@ -177,11 +177,6 @@ def build_amazon_load_functions():
 
 # -- yelp
 def preprocess_yelp():
-    import argparse
-    import collections
-    import csv
-    import simplejson as json
-
     filenames = ['yelp_academic_dataset_business', 'yelp_academic_dataset_review',
                  'yelp_academic_dataset_user']
 
