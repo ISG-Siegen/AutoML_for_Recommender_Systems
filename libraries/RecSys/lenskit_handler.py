@@ -43,6 +43,13 @@ def load_lenskit_and_all_models():
             self.model_object = Recommender.adapt(self.model_object)
             self.base = Recommender.adapt(self.base)
 
+            # All of our used lenskit algorithms do not use Timestamp, thus as a result duplicates exit (e.g. for edits or repeated reviews).
+            # These duplicates are however not handled by lenskit and crashes these algorithms during prediction.
+            # To solve this, drop duplicates here.
+            # Note: this changes the training set compared to other algos. However, without this, training would not work at all
+            # This is an error that should be handled internally by lenskit but is not...
+            p_x_train = p_x_train[~p_x_train[["user", "item"]].duplicated()]
+
             # Train
             self.model_object.fit(p_x_train)
             self.base.fit(p_x_train)
@@ -54,10 +61,30 @@ def load_lenskit_and_all_models():
             p_x_test = p_x_test.rename(
                 columns={dataset.recsys_properties.userId_col: "user", dataset.recsys_properties.itemId_col: "item",
                          dataset.recsys_properties.timestamp_col: "timestamp"})
-
             predictor = Fallback(self.model_object, self.base)  # Use bias as base following documentation
 
-            return predictor.predict(p_x_test)
+            # If we remove duplicates above and predict (potentially) with duplicates here,
+            # lenskit will for some reason return an array with more predictions than given inputs.
+            # That is, for some of the input predictions, multiple predictions are made.
+            # All theses inputs are itself user,item duplicates in the test dataset.
+            # In short, lenskit produces duplicate predictions for each duplicate input.
+
+            predictions = predictor.predict(p_x_test)
+
+            # Remove duplicate predictions (only use first occurrence)
+            predictions = predictions[~predictions.index.duplicated()]
+
+            # Re-order predictions
+            predictions = predictions.reindex(p_x_test.index)
+
+            # Verify correctness of return value
+            try:
+                assert predictions.index.tolist() == p_x_test.index.tolist()
+            except AssertionError:
+                raise AssertionError("Predictions and Test data do not have the same index list." +
+                                     "Returned predictions are likely incorrect ordered or otherwise broken.")
+
+            return predictions
 
     # Different Models from the library
     # -- Knn algorithms
