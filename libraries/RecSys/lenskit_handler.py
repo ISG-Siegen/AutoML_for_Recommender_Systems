@@ -55,6 +55,7 @@ def load_lenskit_and_all_models():
             self.base.fit(p_x_train)
 
         def predict(self, dataset):
+            """Lenskit's predict function becomes very complicated because we need to handle duplicate errors."""
             x_test, _ = dataset.test_data
             p_x_test = x_test.copy()
 
@@ -63,19 +64,35 @@ def load_lenskit_and_all_models():
                          dataset.recsys_properties.timestamp_col: "timestamp"})
             predictor = Fallback(self.model_object, self.base)  # Use bias as base following documentation
 
-            # If we remove duplicates above and predict (potentially) with duplicates here,
-            # lenskit will for some reason return an array with more predictions than given inputs.
+            # Remove duplicates here to avoid breaking prediction (will be filled later on with predicted value)
+            dp_mask = p_x_test[["user", "item"]].duplicated()
+            d_p_x_test = p_x_test[~dp_mask]
+
+            # Get predictions for subset
+            predictions = predictor.predict(d_p_x_test)
+
+            # If we remove duplicates in training and predict (potentially) with duplicates here,
+            # lenskit will for some reason return an array with more predictions than given inputs in some cases.
             # That is, for some of the input predictions, multiple predictions are made.
             # All theses inputs are itself user,item duplicates in the test dataset.
             # In short, lenskit produces duplicate predictions for each duplicate input.
-
-            predictions = predictor.predict(p_x_test)
-
-            # Remove duplicate predictions (only use first occurrence)
+            # Solution: Remove duplicate predictions (only use first occurrence)
             predictions = predictions[~predictions.index.duplicated()]
 
             # Re-order predictions
             predictions = predictions.reindex(p_x_test.index)
+
+            # predictions will contain nan for each index that was a duplicate if above any duplicates were removed
+            # These must be filled now by finding the prediction values for all duplicates.
+            # Re-using the prediction is not possible as the duplicates can also have duplicates.
+            for index, row in p_x_test[dp_mask][["user", "item"]].iterrows():
+                # Get index of original value
+                t = d_p_x_test.index[(d_p_x_test["user"] == row["user"])
+                                     & (d_p_x_test["item"] == row["item"])].values[0]
+                # Get Prediction
+                pred_val = predictions[t]
+                # Fill prediction
+                predictions[index] = pred_val
 
             # Verify correctness of return value
             try:
