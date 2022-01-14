@@ -8,7 +8,8 @@ def get_statistics_from_dataframe(dataframe, recsys_properties, name):
     rows = len(dataframe.index)
     add_features = len(dataframe.drop([recsys_properties.userId_col,
                                        recsys_properties.itemId_col,
-                                       recsys_properties.timestamp_col], axis=1).columns)
+                                       recsys_properties.timestamp_col,
+                                       recsys_properties.rating_col], axis=1).columns)
     return [name, users, items, rows, add_features]
 
 
