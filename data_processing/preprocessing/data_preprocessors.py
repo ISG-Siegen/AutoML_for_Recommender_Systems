@@ -4,16 +4,17 @@ import pandas as pd
 from benchmark_framework.dataset_base import RecSysProperties
 from general_utils.amazon_dataset_utils import getDF
 from general_utils.yelp_dataset_utils import get_superset_of_column_names_from_file, read_and_write_file
+from general_utils.netflix_dataset_utils import read_netflix_data
 
 
 # TODO make it so that it can be executed either for local or in container by making base path a variable
 
 def get_all_preprocess_functions():
     single_dataset_preprocessors = [preprocess_ml_100k, preprocess_ml_1m,
-                                    preprocess_ml_latest_small, preprocess_yelp]
+                                    preprocess_ml_latest_small, preprocess_yelp,
+                                    preprocess_netflix]
 
     return single_dataset_preprocessors + build_amazon_load_functions()
-
 
 # ---- Specific Load Functions
 # -- Movielens
@@ -233,4 +234,26 @@ def preprocess_yelp():
 
     return 'yelp', data, recsys_propertys
 
-# TODO add netflix with subsampling here
+
+def preprocess_netflix():
+    filenames = ['combined_data_1',
+                 'combined_data_2',
+                 'combined_data_3',
+                 'combined_data_4']
+
+    read_netflix_data(filenames)
+
+    data = pd.read_csv(os.path.join(get_dataset_container_path(), 'netflix/fullcombined_data.csv'))
+    data.columns = ['movieId', 'userId', 'rating', 'timestamp']
+
+    movie_df = pd.read_csv(os.path.join(get_dataset_container_path(), 'netflix/movie_titles.csv'),
+                           sep=',', usecols=[0, 1])
+    movie_df.columns = ['movieId', 'publish_year']
+
+    data = pd.merge(data, movie_df, on='movieId')
+
+    data = data.sample(n=10000000, axis=0, random_state=42)
+
+    recsys_propertys = RecSysProperties('userId', 'movieId', 'rating', 'timestamp', 1, 5)
+
+    return 'netflix', data, recsys_propertys
