@@ -15,6 +15,15 @@ def get_all_preprocess_functions():
     return single_dataset_preprocessors + build_amazon_load_functions()
 
 
+# ---- Utils
+def convert_date_to_timestamp(data, to_encode_columns):
+    for col in to_encode_columns:
+        df_dates = pd.to_datetime(data[col]).apply(lambda x: int(pd.Timestamp(x).value / 10 ** 9))
+        data = data.drop([col], axis=1)
+        data = pd.concat([data, df_dates], axis=1)
+    return data
+
+
 # ---- Specific Load Functions
 # -- Movielens
 def preprocess_ml_100k(base_path):
@@ -177,7 +186,7 @@ def build_amazon_load_functions():
     return load_functions_list
 
 
-# -- yelp
+# -- Yelp
 def preprocess_yelp(base_path):
     filenames = ['yelp_academic_dataset_business', 'yelp_academic_dataset_review',
                  'yelp_academic_dataset_user']
@@ -236,6 +245,7 @@ def preprocess_yelp(base_path):
     return 'yelp', data, recsys_propertys
 
 
+# -- Netflix
 def preprocess_netflix(base_path):
     filenames = ['combined_data_1',
                  'combined_data_2',
@@ -258,3 +268,34 @@ def preprocess_netflix(base_path):
     recsys_propertys = RecSysProperties('userId', 'movieId', 'rating', 'timestamp', 1, 5)
 
     return 'netflix', data, recsys_propertys
+
+
+# -- Food.com Recipe & Review Data
+def preprocess_food(base_path):
+    # This preprocessing script assume that the downloaded archive folder was re-named to "food_com_archive"
+    interactions_df = pd.read_csv(os.path.join(base_path, "food_com_archive", "RAW_interactions.csv"))
+    recipes_data_df = pd.read_csv(os.path.join(base_path, "food_com_archive", "RAW_recipes.csv"))
+
+    # -- Preprocess Interactions DF
+    interactions_df.drop(columns=["review"], inplace=True)
+    interactions_df = convert_date_to_timestamp(interactions_df, ["date"])
+
+    # -- Preprocess Recipes DF
+    recipes_data_df = convert_date_to_timestamp(recipes_data_df, ["submitted"])
+
+    # Make nutrition values their own columns
+    nut_cols = recipes_data_df["nutrition"].apply(lambda x: pd.Series([float(i) for i in x[1:-1].split(',')]))
+    nut_cols = nut_cols.rename(columns={x: "nutrition_" + str(x) for x in list(nut_cols)})
+    recipes_data_df = pd.concat([recipes_data_df, nut_cols], axis=1)
+
+    # Drop cols
+    to_drop = ["name", "tags", "steps", "description", "ingredients", "nutrition"]
+    recipes_data_df.drop(columns=to_drop, inplace=True)
+
+    # Merge and return
+    data = pd.merge(interactions_df, recipes_data_df, left_on="recipe_id", right_on="id")
+    data.drop(columns=["id"], inplace=True)  # drop old id that is not needed
+
+    recsys_properties = RecSysProperties("user_id", "recipe_id", "rating", "date", 0, 5)
+
+    return 'foodCom', data, recsys_properties
