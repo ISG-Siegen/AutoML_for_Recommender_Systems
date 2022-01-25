@@ -26,6 +26,8 @@ def load_auto_surprise_and_all_models():
                                                    dataset.recsys_properties.itemId_col,
                                                    dataset.recsys_properties.rating_col]], reader)
 
+            # Random_state=None is very important here. It fixes a bug with random states caused by autosurprise
+            # removing it makes it run into an error.
             engine = Engine(verbose=False, random_state=None)
             best_algo, best_params, best_score, tasks = engine.train(
                 data=data,
