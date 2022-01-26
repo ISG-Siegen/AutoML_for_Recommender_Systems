@@ -114,8 +114,8 @@ def preprocess_ml_latest_small(base_path):
 # -- Amazon
 def create_amazon_load_function(file_name, meta_file_name, dataset_name):
     def amazon_load_function_template(base_path):
-        review_data = getDF(os.path.join(base_path, '{}.json.gz'.format(file_name)))
-        meta_data = getDF(os.path.join(base_path, '{}.json.gz'.format(meta_file_name)))
+        review_data = getDF(os.path.join(base_path, 'amazon', '{}.json.gz'.format(file_name)))
+        meta_data = getDF(os.path.join(base_path, 'amazon', '{}.json.gz'.format(meta_file_name)))
 
         # hanlde review data problems
         review_data.loc[pd.isna(review_data['vote']), 'vote'] = 0
