@@ -10,15 +10,19 @@ from general_utils.netflix_dataset_utils import read_netflix_data
 def get_all_preprocess_functions():
     single_dataset_preprocessors = [preprocess_ml_100k, preprocess_ml_1m,
                                     preprocess_ml_latest_small, preprocess_yelp,
-                                    preprocess_netflix]
+                                    preprocess_netflix, preprocess_food]
 
     return single_dataset_preprocessors + build_amazon_load_functions()
 
 
 # ---- Utils
-def convert_date_to_timestamp(data, to_encode_columns):
+def convert_date_to_timestamp(data, to_encode_columns, prefix=False):
     for col in to_encode_columns:
         df_dates = pd.to_datetime(data[col]).apply(lambda x: int(pd.Timestamp(x).value / 10 ** 9))
+
+        if prefix:
+            df_dates.name = "ts_" + col
+
         data = data.drop([col], axis=1)
         data = pd.concat([data, df_dates], axis=1)
     return data
@@ -51,15 +55,11 @@ def preprocess_ml_100k(base_path):
         df_dummies = pd.get_dummies(rm_df[col], prefix=col)
         rm_df = pd.concat([rm_df, df_dummies], axis=1)
 
-    to_encode_dates = ['releaseDate']
-    for col in to_encode_dates:
-        df_dates = pd.to_datetime(rm_df[col]).apply(lambda x: int(pd.Timestamp(x).value / 10 ** 9))
-        rm_df["ts_releaseDate"] = df_dates
+    # Handle Dates and make them a timestamp
+    rm_df = convert_date_to_timestamp(rm_df, ['releaseDate'], prefix=True)
 
     # Drop useless columns, drop zip_code as it has multiple string-based codes which could not be encoded otherwise
-    to_drop = ['title', 'imdbUrl', 'itemId', 'zip_code', 'videoReleaseDate'] + \
-              to_encode_categorical + \
-              to_encode_dates
+    to_drop = ['title', 'imdbUrl', 'itemId', 'zip_code', 'videoReleaseDate'] + to_encode_categorical
     rm_df = rm_df.drop(to_drop, axis=1)
 
     name = 'movielens-100K'
@@ -167,6 +167,8 @@ def create_amazon_load_function(file_name, meta_file_name, dataset_name):
 
 
 def build_amazon_load_functions():
+    # This preprocessing script assume that the downloaded amazon datasets were moved to a folder was named "amazon"
+
     # List of Amazon Dataset Meta-info needed to build loader
     amazon_dataset_info = [
         ('Electronics_5', 'meta_Electronics', 'amazon-electronics'),
@@ -192,6 +194,7 @@ def build_amazon_load_functions():
 
 # -- Yelp
 def preprocess_yelp(base_path):
+    # We assume the downloaded yelp datasets was extracted into a folder called "yelp"
     filenames = ['yelp_academic_dataset_business', 'yelp_academic_dataset_review',
                  'yelp_academic_dataset_user']
 
@@ -229,7 +232,7 @@ def preprocess_yelp(base_path):
 
     to_encode_dates = ['yelping_since', 'timestamp']
     for col in to_encode_dates:
-        # dirty way to convert bit notation to string
+        # dirty way to convert bit notation to string, hence not re-use function from above
         data[col] = data[col].apply(lambda x: x[2:-1])
         df_dates = pd.to_datetime(data[col]).apply(lambda x: int(pd.Timestamp(x).value / 10 ** 9))
         data = data.drop([col], axis=1)
@@ -251,6 +254,7 @@ def preprocess_yelp(base_path):
 
 # -- Netflix
 def preprocess_netflix(base_path):
+    # This preprocessing script assume that the downloaded archive folder was re-named to "netflix"
     filenames = ['combined_data_1',
                  'combined_data_2',
                  'combined_data_3',
@@ -260,6 +264,8 @@ def preprocess_netflix(base_path):
 
     data = pd.read_csv(os.path.join(base_path, 'netflix/fullcombined_data.csv'))
     data.columns = ['movieId', 'userId', 'rating', 'timestamp']
+    # Convert timestamp
+    data = convert_date_to_timestamp(data, ["timestamp"])
 
     movie_df = pd.read_csv(os.path.join(base_path, 'netflix/movie_titles.csv'),
                            sep=',', usecols=[0, 1])

@@ -19,7 +19,9 @@ def save_to_files(base_path, name, data_df, recsys_properties):
     logger.info("######## Store Datasets {} to CSV and its meta-data to JSON ########".format(name))
 
     # drop duplicates
+    pre_drop_len = len(data_df)
     data_df = data_df.drop_duplicates(ignore_index=True)
+    print("Dropped {} duplicates".format(pre_drop_len - len(data_df)))
 
     # Rename columns to standardized format
     data_df = recsys_properties.transform_dataset(data_df)
