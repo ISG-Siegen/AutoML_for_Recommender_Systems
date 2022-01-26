@@ -172,7 +172,11 @@ def build_amazon_load_functions():
         ('Electronics_5', 'meta_Electronics', 'amazon-electronics'),
         ('Movies_and_TV_5', 'meta_Movies_and_TV', 'amazon-movies-and-tv'),
         ('Digital_Music_5', 'meta_Digital_Music', 'amazon-digital-music'),
-        ('Toys_and_Games_5', 'meta_Toys_and_Games', 'amazon-toys-and-games')
+        ('Toys_and_Games_5', 'meta_Toys_and_Games', 'amazon-toys-and-games'),
+        ('AMAZON_FASHION_5', 'meta_AMAZON_FASHION', 'amazon-fashion'),
+        ('Appliances_5', 'meta_Appliances', 'amazon-appliances'),
+        ('Industrial_and_Scientific_5', 'meta_Industrial_and_Scientific', 'amazon-industrial-and-scientific'),
+        ('Software_5', 'meta_Software', 'amazon-software')
     ]
 
     # For saving function
