@@ -4,31 +4,44 @@ import pandas as pd
 from benchmark_framework.dataset_base import RecSysProperties
 from general_utils.amazon_dataset_utils import getDF
 from general_utils.yelp_dataset_utils import get_superset_of_column_names_from_file, read_and_write_file
+from general_utils.netflix_dataset_utils import read_netflix_data
 
-
-# TODO make it so that it can be executed either for local or in container by making base path a variable
 
 def get_all_preprocess_functions():
     single_dataset_preprocessors = [preprocess_ml_100k, preprocess_ml_1m,
-                                    preprocess_ml_latest_small, preprocess_yelp]
+                                    preprocess_ml_latest_small, preprocess_yelp,
+                                    preprocess_netflix, preprocess_food]
 
     return single_dataset_preprocessors + build_amazon_load_functions()
 
 
+# ---- Utils
+def convert_date_to_timestamp(data, to_encode_columns, prefix=False):
+    for col in to_encode_columns:
+        df_dates = pd.to_datetime(data[col]).apply(lambda x: int(pd.Timestamp(x).value / 10 ** 9))
+
+        if prefix:
+            df_dates.name = "ts_" + col
+
+        data = data.drop([col], axis=1)
+        data = pd.concat([data, df_dates], axis=1)
+    return data
+
+
 # ---- Specific Load Functions
 # -- Movielens
-def preprocess_ml_100k():
+def preprocess_ml_100k(base_path):
     """ Method to load ml100k dataset and return data, features (list of strings), and label (string) """
     # Load from Disc
-    ratings_df = pd.read_csv(os.path.join(get_dataset_container_path(), 'ml-100k/u.data'), sep='\t',
+    ratings_df = pd.read_csv(os.path.join(base_path, 'ml-100k/u.data'), sep='\t',
                              encoding='iso-8859-1', names=['userId', 'itemId', 'rating', 'timestamp'])
-    movies_df = pd.read_csv(os.path.join(get_dataset_container_path(), 'ml-100k/u.item'), sep='|',
+    movies_df = pd.read_csv(os.path.join(base_path, 'ml-100k/u.item'), sep='|',
                             encoding="iso-8859-1", header=None)
     movies_df.columns = ['movieId', 'title', 'releaseDate', 'videoReleaseDate', 'imdbUrl', 'unknown', 'action',
                          'adventure', 'animation', 'childrens', 'comedy', 'crime', 'documentary', 'drama',
                          'fantasy', 'filmnoir', 'horror', 'musical', 'mystery', 'romance', 'scifi', 'thriller',
                          'war', 'western']
-    user_df = pd.read_csv(os.path.join(get_dataset_container_path(), 'ml-100k/u.user'), sep='|',
+    user_df = pd.read_csv(os.path.join(base_path, 'ml-100k/u.user'), sep='|',
                           encoding="iso-8859-1", header=None)
     user_df.columns = ['userId', 'age', 'gender', 'occupation', 'zip_code']
 
@@ -42,15 +55,11 @@ def preprocess_ml_100k():
         df_dummies = pd.get_dummies(rm_df[col], prefix=col)
         rm_df = pd.concat([rm_df, df_dummies], axis=1)
 
-    to_encode_dates = ['releaseDate']
-    for col in to_encode_dates:
-        df_dates = pd.to_datetime(rm_df[col]).apply(lambda x: int(pd.Timestamp(x).value / 10 ** 9))
-        rm_df["ts_releaseDate"] = df_dates
+    # Handle Dates and make them a timestamp
+    rm_df = convert_date_to_timestamp(rm_df, ['releaseDate'], prefix=True)
 
     # Drop useless columns, drop zip_code as it has multiple string-based codes which could not be encoded otherwise
-    to_drop = ['title', 'imdbUrl', 'itemId', 'zip_code', 'videoReleaseDate'] + \
-              to_encode_categorical + \
-              to_encode_dates
+    to_drop = ['title', 'imdbUrl', 'itemId', 'zip_code', 'videoReleaseDate'] + to_encode_categorical
     rm_df = rm_df.drop(to_drop, axis=1)
 
     name = 'movielens-100K'
@@ -59,15 +68,15 @@ def preprocess_ml_100k():
     return name, rm_df, recsys_properties
 
 
-def preprocess_ml_1m():
-    ratings_df = pd.read_csv(os.path.join(get_dataset_container_path(), 'ml-1m/ratings.dat'), sep='::',
+def preprocess_ml_1m(base_path):
+    ratings_df = pd.read_csv(os.path.join(base_path, 'ml-1m/ratings.dat'), sep='::',
                              header=0, names=['userId', 'movieId', 'rating', 'timestamp'], engine='python')
 
-    movies_df = pd.read_csv(os.path.join(get_dataset_container_path(), 'ml-1m/movies.dat'), sep='::',
+    movies_df = pd.read_csv(os.path.join(base_path, 'ml-1m/movies.dat'), sep='::',
                             header=0, names=['movieId', 'title', 'genres'], engine='python', encoding='iso-8859-1')
     movies_df = pd.concat([movies_df.drop('genres', axis=1), movies_df.genres.str.get_dummies(sep='|')], axis=1)
 
-    user_df = pd.read_csv(os.path.join(get_dataset_container_path(), 'ml-1m/users.dat'), sep='::',
+    user_df = pd.read_csv(os.path.join(base_path, 'ml-1m/users.dat'), sep='::',
                           header=0, names=['userId', 'gender', 'age', 'occupation', 'zipCode'], engine='python')
     # gender to dummies
     df_dummies = pd.get_dummies(user_df['gender'], prefix="gender")
@@ -85,11 +94,11 @@ def preprocess_ml_1m():
     return 'movielens-1M', data, recsys_properties
 
 
-def preprocess_ml_latest_small():
-    ratings_df = pd.read_table(os.path.join(get_dataset_container_path(), 'ml-latest-small/ratings.csv'), sep=',',
+def preprocess_ml_latest_small(base_path):
+    ratings_df = pd.read_table(os.path.join(base_path, 'ml-latest-small/ratings.csv'), sep=',',
                                header=0, names=['userId', 'movieId', 'rating', 'timestamp'], engine='python')
 
-    movies_df = pd.read_table(os.path.join(get_dataset_container_path(), 'ml-latest-small/movies.csv'), sep=',',
+    movies_df = pd.read_table(os.path.join(base_path, 'ml-latest-small/movies.csv'), sep=',',
                               header=0, names=['movieId', 'title', 'genres'], engine='python')
 
     movies_df = pd.concat([movies_df.drop('genres', axis=1), movies_df.genres.str.get_dummies(sep='|')], axis=1)
@@ -104,9 +113,9 @@ def preprocess_ml_latest_small():
 
 # -- Amazon
 def create_amazon_load_function(file_name, meta_file_name, dataset_name):
-    def amazon_load_function_template():
-        review_data = getDF(os.path.join(get_dataset_container_path(), '{}.json.gz'.format(file_name)))
-        meta_data = getDF(os.path.join(get_dataset_container_path(), '{}.json.gz'.format(meta_file_name)))
+    def amazon_load_function_template(base_path):
+        review_data = getDF(os.path.join(base_path, 'amazon', '{}.json.gz'.format(file_name)))
+        meta_data = getDF(os.path.join(base_path, 'amazon', '{}.json.gz'.format(meta_file_name)))
 
         # hanlde review data problems
         review_data.loc[pd.isna(review_data['vote']), 'vote'] = 0
@@ -158,11 +167,19 @@ def create_amazon_load_function(file_name, meta_file_name, dataset_name):
 
 
 def build_amazon_load_functions():
+    # This preprocessing script assume that the downloaded amazon datasets were moved to a folder was named "amazon"
+
     # List of Amazon Dataset Meta-info needed to build loader
-    amazon_dataset_info = [('Electronics_5', 'meta_Electronics', 'amazon-electronics'),
-                           ("Movies_and_TV_5", 'meta_Movies_and_TV', 'amazon-movies-and-tv'),
-                           ('Digital_Music_5', 'meta_Digital_Music', 'amazon-digital-music'),
-                           ('Toys_and_Games_5', 'meta_Toys_and_Games', 'amazon-toys-and-games')]
+    amazon_dataset_info = [
+        ('Electronics_5', 'meta_Electronics', 'amazon-electronics'),
+        ('Movies_and_TV_5', 'meta_Movies_and_TV', 'amazon-movies-and-tv'),
+        ('Digital_Music_5', 'meta_Digital_Music', 'amazon-digital-music'),
+        ('Toys_and_Games_5', 'meta_Toys_and_Games', 'amazon-toys-and-games'),
+        ('AMAZON_FASHION_5', 'meta_AMAZON_FASHION', 'amazon-fashion'),
+        ('Appliances_5', 'meta_Appliances', 'amazon-appliances'),
+        ('Industrial_and_Scientific_5', 'meta_Industrial_and_Scientific', 'amazon-industrial-and-scientific'),
+        ('Software_5', 'meta_Software', 'amazon-software')
+    ]
 
     # For saving function
     load_functions_list = []
@@ -175,22 +192,23 @@ def build_amazon_load_functions():
     return load_functions_list
 
 
-# -- yelp
-def preprocess_yelp():
+# -- Yelp
+def preprocess_yelp(base_path):
+    # We assume the downloaded yelp datasets was extracted into a folder called "yelp"
     filenames = ['yelp_academic_dataset_business', 'yelp_academic_dataset_review',
                  'yelp_academic_dataset_user']
 
     for filename in filenames:
-        column_names = get_superset_of_column_names_from_file(os.path.join(get_dataset_container_path(),
+        column_names = get_superset_of_column_names_from_file(os.path.join(base_path,
                                                                            ('yelp/' + filename + '.json')))
-        read_and_write_file(os.path.join(get_dataset_container_path(), ('yelp/' + filename + '.json')),
-                            os.path.join(get_dataset_container_path(), ('yelp/' + filename + '.csv')), column_names)
+        read_and_write_file(os.path.join(base_path, ('yelp/' + filename + '.json')),
+                            os.path.join(base_path, ('yelp/' + filename + '.csv')), column_names)
 
-    business_data = pd.read_csv(os.path.join(get_dataset_container_path(), 'yelp/yelp_academic_dataset_business.csv'))
+    business_data = pd.read_csv(os.path.join(base_path, 'yelp/yelp_academic_dataset_business.csv'))
 
-    review_data = pd.read_csv(os.path.join(get_dataset_container_path(), 'yelp/yelp_academic_dataset_review.csv'))
+    review_data = pd.read_csv(os.path.join(base_path, 'yelp/yelp_academic_dataset_review.csv'))
 
-    user_data = pd.read_csv(os.path.join(get_dataset_container_path(), 'yelp/yelp_academic_dataset_user.csv'))
+    user_data = pd.read_csv(os.path.join(base_path, 'yelp/yelp_academic_dataset_user.csv'))
 
     business_data = business_data[business_data.columns.drop(list(business_data.filter(regex='attributes')))]
     business_data = business_data[business_data.columns.drop(list(business_data.filter(regex='hours')))]
@@ -214,7 +232,7 @@ def preprocess_yelp():
 
     to_encode_dates = ['yelping_since', 'timestamp']
     for col in to_encode_dates:
-        # dirty way to convert bit notation to string
+        # dirty way to convert bit notation to string, hence not re-use function from above
         data[col] = data[col].apply(lambda x: x[2:-1])
         df_dates = pd.to_datetime(data[col]).apply(lambda x: int(pd.Timestamp(x).value / 10 ** 9))
         data = data.drop([col], axis=1)
@@ -233,4 +251,61 @@ def preprocess_yelp():
 
     return 'yelp', data, recsys_propertys
 
-# TODO add netflix with subsampling here
+
+# -- Netflix
+def preprocess_netflix(base_path):
+    # This preprocessing script assume that the downloaded archive folder was re-named to "netflix"
+    filenames = ['combined_data_1',
+                 'combined_data_2',
+                 'combined_data_3',
+                 'combined_data_4']
+
+    read_netflix_data(filenames)
+
+    data = pd.read_csv(os.path.join(base_path, 'netflix/fullcombined_data.csv'))
+    data.columns = ['movieId', 'userId', 'rating', 'timestamp']
+    # Convert timestamp
+    data = convert_date_to_timestamp(data, ["timestamp"])
+
+    movie_df = pd.read_csv(os.path.join(base_path, 'netflix/movie_titles.csv'),
+                           sep=',', usecols=[0, 1])
+    movie_df.columns = ['movieId', 'publish_year']
+
+    data = pd.merge(data, movie_df, on='movieId')
+
+    data = data.sample(n=10000000, axis=0, random_state=42)
+
+    recsys_propertys = RecSysProperties('userId', 'movieId', 'rating', 'timestamp', 1, 5)
+
+    return 'netflix', data, recsys_propertys
+
+
+# -- Food.com Recipe & Review Data
+def preprocess_food(base_path):
+    # This preprocessing script assume that the downloaded archive folder was re-named to "food_com_archive"
+    interactions_df = pd.read_csv(os.path.join(base_path, "food_com_archive", "RAW_interactions.csv"))
+    recipes_data_df = pd.read_csv(os.path.join(base_path, "food_com_archive", "RAW_recipes.csv"))
+
+    # -- Preprocess Interactions DF
+    interactions_df.drop(columns=["review"], inplace=True)
+    interactions_df = convert_date_to_timestamp(interactions_df, ["date"])
+
+    # -- Preprocess Recipes DF
+    recipes_data_df = convert_date_to_timestamp(recipes_data_df, ["submitted"])
+
+    # Make nutrition values their own columns
+    nut_cols = recipes_data_df["nutrition"].apply(lambda x: pd.Series([float(i) for i in x[1:-1].split(',')]))
+    nut_cols = nut_cols.rename(columns={x: "nutrition_" + str(x) for x in list(nut_cols)})
+    recipes_data_df = pd.concat([recipes_data_df, nut_cols], axis=1)
+
+    # Drop cols
+    to_drop = ["name", "tags", "steps", "description", "ingredients", "nutrition"]
+    recipes_data_df.drop(columns=to_drop, inplace=True)
+
+    # Merge and return
+    data = pd.merge(interactions_df, recipes_data_df, left_on="recipe_id", right_on="id")
+    data.drop(columns=["id"], inplace=True)  # drop old id that is not needed
+
+    recsys_properties = RecSysProperties("user_id", "recipe_id", "rating", "date", 0, 5)
+
+    return 'foodCom', data, recsys_properties

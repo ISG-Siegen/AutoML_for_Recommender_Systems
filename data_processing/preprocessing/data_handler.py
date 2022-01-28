@@ -6,7 +6,7 @@ import pandas as pd
 
 # ------------- Ensure that base path is found
 sys.path.insert(1, os.path.join(sys.path[0], '../..'))
-from general_utils.lcer import get_dataset_container_path
+from general_utils.lcer import get_dataset_container_path, get_dataset_local_path
 from benchmark_framework.dataset_base import RecSysProperties
 from general_utils.lcer import get_logger
 from data_processing.preprocessing.data_preprocessors import get_all_preprocess_functions
@@ -15,16 +15,18 @@ logger = get_logger("data_preprocessor")
 
 
 # --- Utils
-def save_to_files(name, data_df, recsys_properties):
+def save_to_files(base_path, name, data_df, recsys_properties):
     logger.info("######## Store Datasets {} to CSV and its meta-data to JSON ########".format(name))
 
     # drop duplicates
+    pre_drop_len = len(data_df)
     data_df = data_df.drop_duplicates(ignore_index=True)
+    print("Dropped {} duplicates".format(pre_drop_len - len(data_df)))
 
     # Rename columns to standardized format
     data_df = recsys_properties.transform_dataset(data_df)
-    file_path_csv = os.path.join(get_dataset_container_path(), "preprocessed_data/{}.csv".format(name))
-    file_path_json = os.path.join(get_dataset_container_path(), "preprocessed_data/{}.json".format(name))
+    file_path_csv = os.path.join(base_path, "preprocessed_data/{}.csv".format(name))
+    file_path_json = os.path.join(base_path, "preprocessed_data/{}.json".format(name))
 
     # Add meta data as empty columns
     data_df.to_csv(path_or_buf=file_path_csv, sep=',', header=True, index=False)
@@ -102,15 +104,22 @@ def load_datasets_information():
     return path_tuples
 
 
-def preprocess_all_datasets():
+def preprocess_all_datasets(local_execution=True):
     preprocessors = get_all_preprocess_functions()
 
     n_preprocessors = len(preprocessors)
+
+    if local_execution:
+        base_path = get_dataset_local_path()
+    else:
+        #  We assume the execution shall be done in a container if it shall not be executed locally
+        base_path = get_dataset_container_path()
+
     for idx, fn in enumerate(preprocessors, 1):
         logger.info("Start Preprocessing: {} [{}/{}]".format(fn.__name__, idx, n_preprocessors))
         # Preprocess and save results to csv
-        save_to_files(*fn())
+        save_to_files(base_path, *fn(base_path))
 
 
 if __name__ == "__main__":
-    preprocess_all_datasets()
+    preprocess_all_datasets(local_execution=True)
