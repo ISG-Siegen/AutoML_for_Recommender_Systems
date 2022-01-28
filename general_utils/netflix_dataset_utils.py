@@ -4,9 +4,9 @@ import os
 # most code to read the data in is reused from https://gist.github.com/guimatheus92/5bf038f94abe46056b79a0a3a640e1bd
 
 
-def read_netflix_data(filenames):
+def read_netflix_data(filenames, base_path):
     # Open and create file for recording
-    dataset = open(os.path.join(get_dataset_container_path(), 'netflix/fullcombined_data.csv'), mode='w')
+    dataset = open(os.path.join(base_path, 'netflix/fullcombined_data.csv'), mode='w')
     # Create list for files rows
     rows = list()
 
@@ -14,7 +14,7 @@ def read_netflix_data(filenames):
         # Print a message
         print("Reading the file {}...".format(filename))
         # With the file open, we extract the rows
-        with open(os.path.join(get_dataset_container_path(), ('netflix/' + filename + '.txt'))) as f:
+        with open(os.path.join(base_path, ('netflix/' + filename + '.txt'))) as f:
             # Loop through each row
             for row in f:
                 # Deleting list content
