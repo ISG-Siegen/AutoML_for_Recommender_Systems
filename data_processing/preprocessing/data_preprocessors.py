@@ -1,16 +1,17 @@
 import os
-from general_utils.lcer import get_dataset_container_path
 import pandas as pd
 from benchmark_framework.dataset_base import RecSysProperties
 from general_utils.amazon_dataset_utils import getDF
 from general_utils.yelp_dataset_utils import get_superset_of_column_names_from_file, read_and_write_file
 from general_utils.netflix_dataset_utils import read_netflix_data
+import math
 
 
 def get_all_preprocess_functions():
-    single_dataset_preprocessors = [preprocess_ml_100k, preprocess_ml_1m,
-                                    preprocess_ml_latest_small, preprocess_yelp,
-                                    preprocess_netflix, preprocess_food]
+    single_dataset_preprocessors = [
+        preprocess_ml_100k, preprocess_ml_1m, preprocess_ml_latest_small, preprocess_yelp, preprocess_netflix,
+        preprocess_food
+    ]
 
     return single_dataset_preprocessors + build_amazon_load_functions()
 
@@ -135,6 +136,14 @@ def create_amazon_load_function(file_name, meta_file_name, dataset_name):
         # handle meta_data problems
         def fix_price_problem(price_input):
 
+            # catch case where price is a float (some datasets)
+            if isinstance(price_input, float):
+                if math.isnan(price_input):
+                    return -1
+                else:
+                    return price_input
+
+            # catch case where price is a string (some datasets)
             price_input = price_input[1:]
             try:
                 price_input = float(price_input)
@@ -146,9 +155,14 @@ def create_amazon_load_function(file_name, meta_file_name, dataset_name):
 
         data = review_data.drop(['image', 'reviewerName', 'style', 'reviewText', 'summary', 'reviewTime', 'verified'],
                                 axis=1)
-        meta_data = meta_data.drop(
-            ['title', 'feature', 'description', 'imageURL', 'imageURLHighRes', 'category', 'tech1', 'tech2', 'also_buy',
-             'also_view', 'brand', 'rank', 'main_cat', 'similar_item', 'date', 'details', 'fit'], axis=1)
+
+        # check if the columns are in the given data, for some reason, not all datasets have the same columns.
+        # this represents teh super set of columns to drop
+        to_drop = ['title', 'feature', 'description', 'imageURL', 'imageURLHighRes', 'category', 'tech1', 'tech2',
+                   'also_buy', 'also_view', 'brand', 'rank', 'main_cat', 'similar_item', 'date', 'details', 'fit']
+        drop_here = [d for d in to_drop if d in list(meta_data)]
+
+        meta_data = meta_data.drop(drop_here, axis=1)
 
         data = pd.merge(data, meta_data, on='asin')
 
@@ -268,7 +282,7 @@ def preprocess_netflix(base_path):
     data = convert_date_to_timestamp(data, ["timestamp"])
 
     movie_df = pd.read_csv(os.path.join(base_path, 'netflix/movie_titles.csv'),
-                           sep=',', usecols=[0, 1])
+                           sep=',', usecols=[0, 1], encoding='iso-8859-1', header=None)
     movie_df.columns = ['movieId', 'publish_year']
 
     data = pd.merge(data, movie_df, on='movieId')
