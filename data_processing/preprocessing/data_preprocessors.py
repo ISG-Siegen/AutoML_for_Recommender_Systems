@@ -260,7 +260,7 @@ def preprocess_netflix(base_path):
                  'combined_data_3',
                  'combined_data_4']
 
-    read_netflix_data(filenames)
+    read_netflix_data(filenames, base_path)
 
     data = pd.read_csv(os.path.join(base_path, 'netflix/fullcombined_data.csv'))
     data.columns = ['movieId', 'userId', 'rating', 'timestamp']
