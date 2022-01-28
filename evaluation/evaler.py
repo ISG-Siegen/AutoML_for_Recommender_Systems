@@ -91,8 +91,8 @@ def eval_overall_results():
     overall_data_filtered = filter_too_large_errors(overall_data, dataset_names)
 
     # Some Plots over all Datasets
-    # eval_plotter.boxplots_per_datasets(overall_data_filtered[["Dataset", "LibraryCategory", "RSME"]], True)
-    # eval_plotter.cd_plot_and_stats_tests(overall_data, True)
+    eval_plotter.boxplots_per_datasets(overall_data_filtered[["Dataset", "LibraryCategory", "RSME"]], True)
+    eval_plotter.cd_plot_and_stats_tests(overall_data, True)
     eval_plotter.ranking_eval(overall_data, True)
 
 
