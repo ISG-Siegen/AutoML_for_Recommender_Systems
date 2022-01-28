@@ -29,7 +29,7 @@ def filter_too_large_errors(df, dataset_names):
         # Set all values lower than the upper whisker to nan and then drop them
         df.loc[(df["Dataset"] == dataset) & (df["RSME"] > Q3 + 1.5 * IQR), "RSME"] = np.nan
 
-    return df.dropna()
+    return df[df["RSME"].notna()]
 
 
 def select_newest_subset(data):
@@ -82,12 +82,15 @@ def eval_overall_results():
     overall_data = filer.read_data(os.path.join(get_base_path(), get_output_result_data(),
                                                 "overall_benchmark_results.csv"))
     overall_data = select_newest_subset(overall_data)
-
-    # ----- Filter too large errors for model that did not converge with default values
     dataset_names = overall_data["Dataset"].unique().tolist()
 
-    # Some Plots over all Datasets
+    # ---- Remove failed datasets
+    overall_data = overall_data[overall_data["RSME"].notna()]
+
+    # ----- Filter too large errors for model that did not converge with default values
     overall_data_filtered = filter_too_large_errors(overall_data, dataset_names)
+
+    # Some Plots over all Datasets
     eval_plotter.boxplots_per_datasets(overall_data_filtered[["Dataset", "LibraryCategory", "RSME"]], True)
     eval_plotter.cd_plot_and_stats_tests(overall_data, True)
     eval_plotter.ranking_eval(overall_data, True)

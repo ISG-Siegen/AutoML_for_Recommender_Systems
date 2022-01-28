@@ -31,11 +31,11 @@ NAME_LIB_MAP = {
     # RecSys
     "surprise": load_surprise_and_all_models,
     "lenskit": load_lenskit_and_all_models,
+    "spotlight": load_spotlight,
 
     # AutoRecSys
     "autosurprise": load_auto_surprise_and_all_models,
     "autorec": load_autorec_and_all_models,
-    "spotlight": load_spotlight,
 
     # ML
     "sklearn": load_sklearn_and_all_models,

@@ -197,7 +197,7 @@ def load_sklearn_and_all_models():
                      ScikitGradientBoostingRegressor]
 
         rest = [ScikitKNN, ScikitMLPRegressor, ScikitDecisionTreeRegressor]
-        problematic_but_usable_with_limiter = [ScikitKernelRidge, ScikitGaussianProcessRegressor, ScikitSVRegressor]
+        problematic_but_usable_with_limiter = [ScikitKernelRidge, ScikitSVRegressor]
 
         # Informal Docu: Not usable Models
         #   1. ScikitHistGradientBoostingRegressor
@@ -208,6 +208,8 @@ def load_sklearn_and_all_models():
         #       -> not a real regressor
         #   4. ScikitRadiusNN
         #       -> might predict nan if no value within radius and is general not more usable than normal nn
+        #   5. ScikitGaussianProcessRegressor
+        #       -> has bugs related to multiprocessing which makes the task sleep endlessly in our framework
 
         return rest + ensembles + linear_models + problematic_but_usable_with_limiter
 

@@ -43,21 +43,65 @@ def load_lenskit_and_all_models():
             self.model_object = Recommender.adapt(self.model_object)
             self.base = Recommender.adapt(self.base)
 
+            # All of our used lenskit algorithms do not use Timestamp, thus as a result duplicates exit (e.g. for edits or repeated reviews).
+            # These duplicates are however not handled by lenskit and crashes these algorithms during prediction.
+            # To solve this, drop duplicates here.
+            # Note: this changes the training set compared to other algos. However, without this, training would not work at all
+            # This is an error that should be handled internally by lenskit but is not...
+            p_x_train = p_x_train[~p_x_train[["user", "item"]].duplicated()]
+
             # Train
             self.model_object.fit(p_x_train)
             self.base.fit(p_x_train)
 
         def predict(self, dataset):
+            """Lenskit's predict function becomes very complicated because we need to handle duplicate errors."""
             x_test, _ = dataset.test_data
             p_x_test = x_test.copy()
 
             p_x_test = p_x_test.rename(
                 columns={dataset.recsys_properties.userId_col: "user", dataset.recsys_properties.itemId_col: "item",
                          dataset.recsys_properties.timestamp_col: "timestamp"})
-
             predictor = Fallback(self.model_object, self.base)  # Use bias as base following documentation
 
-            return predictor.predict(p_x_test)
+            # Remove duplicates here to avoid breaking prediction (will be filled later on with predicted value)
+            dp_mask = p_x_test[["user", "item"]].duplicated()
+            d_p_x_test = p_x_test[~dp_mask]
+
+            # Get predictions for subset
+            predictions = predictor.predict(d_p_x_test)
+
+            # If we remove duplicates in training and predict (potentially) with duplicates here,
+            # lenskit will for some reason return an array with more predictions than given inputs in some cases.
+            # That is, for some of the input predictions, multiple predictions are made.
+            # All theses inputs are itself user,item duplicates in the test dataset.
+            # In short, lenskit produces duplicate predictions for each duplicate input.
+            # Solution: Remove duplicate predictions (only use first occurrence)
+            predictions = predictions[~predictions.index.duplicated()]
+
+            # Re-order predictions
+            predictions = predictions.reindex(p_x_test.index)
+
+            # predictions will contain nan for each index that was a duplicate if above any duplicates were removed
+            # These must be filled now by finding the prediction values for all duplicates.
+            # Re-using the prediction is not possible as the duplicates can also have duplicates.
+            for index, row in p_x_test[dp_mask][["user", "item"]].iterrows():
+                # Get index of original value
+                t = d_p_x_test.index[(d_p_x_test["user"] == row["user"])
+                                     & (d_p_x_test["item"] == row["item"])].values[0]
+                # Get Prediction
+                pred_val = predictions[t]
+                # Fill prediction
+                predictions[index] = pred_val
+
+            # Verify correctness of return value
+            try:
+                assert predictions.index.tolist() == p_x_test.index.tolist()
+            except AssertionError:
+                raise AssertionError("Predictions and Test data do not have the same index list." +
+                                     "Returned predictions are likely incorrect ordered or otherwise broken.")
+
+            return predictions
 
     # Different Models from the library
     # -- Knn algorithms

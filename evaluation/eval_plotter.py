@@ -98,8 +98,9 @@ def ranking_eval(data: pd.DataFrame, save_images, prefix=""):
 
     data_for_rank_plot_models = pd.DataFrame.from_dict(top_5_model_per_dataset, orient="index",
                                                        columns=["1", "2", "3", "4", "5"])
+    nr_cats = len(data["LibraryCategory"].unique().tolist())
     data_for_rank_plot_libcat = pd.DataFrame.from_dict(libcat_ranking_per_dataset, orient="index",
-                                                       columns=["1", "2", "3", "4", "5"])
+                                                       columns=[str(i) for i in range(1, nr_cats + 1)])
     # Print Top 5 model names to look for variance
     print("####### Model Names top 5 #######")
     for key, item in top_5_model_name_per_dataset.items():
