@@ -50,6 +50,10 @@ def get_output_result_data():
     return get_config("output", "result_data")
 
 
+def get_output_result_tables():
+    return get_config("output", "result_tables")
+
+
 def get_output_images():
     return get_config("output", "images")
 

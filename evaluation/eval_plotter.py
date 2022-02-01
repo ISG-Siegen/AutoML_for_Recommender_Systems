@@ -1,8 +1,7 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 import os
-from general_utils.lcer import get_output_images, get_base_path
-import numpy as np
+from general_utils.lcer import get_output_images, get_base_path, get_output_result_tables
 import seaborn as sns
 from autorank import autorank, create_report, plot_stats
 from general_utils.catheat import heatmap
@@ -61,25 +60,35 @@ def cd_plot_and_stats_tests(data: pd.DataFrame, save_images, prefix=""):
 
 
 def ranking_eval(data: pd.DataFrame, save_images, prefix=""):
-    # Rank Input Data per Dataset
+    # Rank Input Data per Dataset (uses average rank, lower is better)
+    #   The input values (for the rmse) can have nan values representing a failure as a result of running into a limit.
+    #   To counteract this, anything that did run into a limit gets ranked last (if multiple all get the same rank)
+    #   By default, equal values are assigned a rank that is the average of the ranks of those values.
     for dataset_name in data["Dataset"].unique().tolist():
         tmp_df = data[data["Dataset"] == dataset_name]
-        tmp_ranked = tmp_df["RSME"].rank()
-        data.loc[data["Dataset"] == dataset_name, "RSME_RANK"] = tmp_ranked
+        tmp_ranked = tmp_df["RSME"].rank(na_option="bottom")
+        data.loc[data["Dataset"] == dataset_name, "RMSE_RANK"] = tmp_ranked
 
     # -- Print Top-Average Ranked
     # Per Model
-    print("######### Models Ranked - Top 10  (Average values for: RSME, Time, failed, Rank - over datasets) #########")
+    print("######### Models Ranked - Top 10  (Average values for: Rank, RMSE - over datasets) #########")
     rank_per_model = data.groupby(by="Model").mean()
-    print(rank_per_model.sort_values(by="RSME_RANK").head(10))
+    res_table_top_10_models = rank_per_model[["RMSE_RANK", "RSME"]].sort_values(by="RMSE_RANK").head(10)
+    print(res_table_top_10_models)
 
     # Per Category
-    print("\n ######### Categories Ranked (Average values for: RSME, Time, failed, Rank " +
+    print("\n ######### Categories Ranked (Average values for: Rank, failed, models_in_category" +
           "- over datasets and categories) #########")
     rank_per_cat = data.groupby(by="LibraryCategory").mean()
     # Get Count of model for a category (normalize by number of datasets to get true number)
-    rank_per_cat["models_in_category"] = data.groupby(by="LibraryCategory").size() / data["Dataset"].nunique()
-    print(rank_per_cat.sort_values(by="RSME_RANK"))
+    rank_per_cat["algorithm_in_category"] = data.groupby(by="LibraryCategory").size() / data["Dataset"].nunique()
+    res_table_rank_per_cat = rank_per_cat[["RMSE_RANK", "failed", "algorithm_in_category"]].sort_values(by="RMSE_RANK")
+    print(res_table_rank_per_cat)
+
+    # -- Save Tables
+    res_table_top_10_models.to_csv(os.path.join(get_base_path(), get_output_result_tables(), "rank_top_10_models.csv"))
+    res_table_rank_per_cat.to_csv(os.path.join(get_base_path(), get_output_result_tables(), "rank_per_cat.csv"))
+    exit()
 
     # --- Rank Plots
 
@@ -89,7 +98,7 @@ def ranking_eval(data: pd.DataFrame, save_images, prefix=""):
     libcat_ranking_per_dataset = {}
     for dataset_name in data["Dataset"].unique().tolist():
         tmp_df = data[data["Dataset"] == dataset_name]
-        tmp_df = tmp_df.sort_values(by="RSME_RANK")
+        tmp_df = tmp_df.sort_values(by="RMSE_RANK")
 
         top_5_model_per_dataset[dataset_name] = tmp_df["LibraryCategory"].iloc[0:5].to_list()
         top_5_model_name_per_dataset[dataset_name] = tmp_df["Model"].iloc[0:5].to_list()
