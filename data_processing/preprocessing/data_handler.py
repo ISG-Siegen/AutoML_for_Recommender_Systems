@@ -68,9 +68,14 @@ def get_all_dataset_names():
     return [x[2] for x in load_datasets_information()]
 
 
-def load_datasets_information():
-    dir_path_csv = os.path.join(get_dataset_container_path(), "preprocessed_data/*.csv")
-    dir_path_json = os.path.join(get_dataset_container_path(), "preprocessed_data/*.json")
+def load_datasets_information(container_path=True):
+    if container_path:
+        base_path = get_dataset_container_path()
+    else:
+        base_path = get_dataset_local_path()
+
+    dir_path_csv = os.path.join(base_path, "preprocessed_data/*.csv")
+    dir_path_json = os.path.join(base_path, "preprocessed_data/*.json")
 
     data_paths = glob.glob(dir_path_csv)
     meta_data_paths = glob.glob(dir_path_json)
