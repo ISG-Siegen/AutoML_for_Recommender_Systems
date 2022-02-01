@@ -287,6 +287,9 @@ def preprocess_netflix(base_path):
 
     data = pd.merge(data, movie_df, on='movieId')
 
+    # Some moives have NULL as publish year, to handle this we simply drop these 
+    data = data[data['publish_year'].notna()]
+
     data = data.sample(n=10000000, axis=0, random_state=42)
 
     recsys_propertys = RecSysProperties('userId', 'movieId', 'rating', 'timestamp', 1, 5)
