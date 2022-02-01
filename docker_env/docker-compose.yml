@@ -73,12 +73,12 @@ services:
     build:
       context: .
       target: spotlight
+  autorec:
+    build:
+      context: .
+      target: autorec
   # ---- AutoRecSys ----
   autosurprise:
     build:
       context: .
       target: autosurprise
-  autorec:
-    build:
-      context: .
-      target: autorec
