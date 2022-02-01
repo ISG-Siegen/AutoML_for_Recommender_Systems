@@ -69,16 +69,17 @@ def ranking_eval(data: pd.DataFrame, save_images, prefix=""):
 
     # -- Print Top-Average Ranked
     # Per Model
-    print("######### Models Ranked - Top / bottom 10  (Average RSME, Time, Average Rank - over datasets) #########")
+    print("######### Models Ranked - Top 10  (Average values for: RSME, Time, failed, Rank - over datasets) #########")
     rank_per_model = data.groupby(by="Model").mean()
     print(rank_per_model.sort_values(by="RSME_RANK").head(10))
 
     # Per Category
-    print("\n ######### Categories Ranked (Average RSME, Time, Rank - over datasets and categories) #########")
+    print("\n ######### Categories Ranked (Average values for: RSME, Time, failed, Rank " +
+          "- over datasets and categories) #########")
     rank_per_cat = data.groupby(by="LibraryCategory").mean()
     # Get Count of model for a category (normalize by number of datasets to get true number)
     rank_per_cat["models_in_category"] = data.groupby(by="LibraryCategory").size() / data["Dataset"].nunique()
-    print(rank_per_cat.sort_values(by="RSME_RANK").head(10))
+    print(rank_per_cat.sort_values(by="RSME_RANK"))
 
     # --- Rank Plots
 
