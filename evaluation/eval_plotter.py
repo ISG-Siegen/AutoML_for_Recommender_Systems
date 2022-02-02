@@ -51,7 +51,7 @@ def cd_plot_and_stats_tests(data: pd.DataFrame, save_images, prefix=""):
     if save_images:
         name = prefix
         name += "autorank_plot_all_data"
-        plt.savefig(get_correct_path(name))
+        # plt.savefig(get_correct_path(name))
     plt.show()
 
     # For more see: https://github.com/sherbold/autorank
