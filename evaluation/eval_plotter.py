@@ -15,6 +15,27 @@ def get_correct_path(file_name):
     return os.path.join(get_base_path(), get_output_images(), "{}.pdf".format(file_name))
 
 
+def normalized_and_aggregated_distribution_plots(data: pd.DataFrame, save_images, prefix=""):
+    raise NotImplementedError
+    relative_baseline = "ConstantPredictor_Mean"
+
+    # Normalize by the baseline such that baseline is 0
+    for dataset_name in data["Dataset"].unique().tolist():
+        tmp_df = data[data["Dataset"] == dataset_name]
+        baseline_val = tmp_df[tmp_df["Model"] == relative_baseline]["RSME"].tolist()[0]
+
+        tmp_normalized = tmp_df["RSME"].apply(lambda x: x - baseline_val)
+        data.loc[data["Dataset"] == dataset_name, "N_RMSE"] = tmp_normalized
+
+    data.drop(data[data["Model"] == relative_baseline].index, inplace=True)
+    ax = sns.boxplot(x="N_RMSE", y="Dataset", hue="LibraryCategory", data=data, dodge=True,
+                     linewidth=1)
+    # plt.vlines(0)
+    plt.gca().invert_xaxis()
+    plt.xlabel("Difference to Baseline (Negative is better")
+    plt.show()
+
+
 def boxplots_per_datasets(data: pd.DataFrame, save_images, prefix=""):
     # OLD: sns.catplot(x="LibraryCategory", y="RSME", col="Dataset", data=data, kind="box")
     ax = sns.boxplot(x="RSME", y="Dataset", hue="LibraryCategory", data=data, dodge=True,

@@ -112,6 +112,8 @@ def eval_overall_results():
     boxplot_data_filtered = filter_too_large_errors(boxplot_data)
     # Boxplots
     eval_plotter.boxplots_per_datasets(boxplot_data_filtered[["Dataset", "LibraryCategory", "RSME"]], True)
+    # eval_plotter.normalized_and_aggregated_distribution_plots(boxplot_data_filtered[["Dataset", "Model",
+    #                                                                               "LibraryCategory", "RSME"]], True)
 
 
 if __name__ == "__main__":
