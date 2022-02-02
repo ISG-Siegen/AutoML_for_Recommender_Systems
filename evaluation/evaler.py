@@ -84,9 +84,14 @@ def eval_overall_results():
     overall_data = select_newest_subset(overall_data)
     dataset_names = overall_data["Dataset"].unique().tolist()
 
+    # Failure Eval
+    eval_plotter.failure_eval(overall_data, True)
+
     # Ranking Eval
     eval_plotter.ranking_eval(overall_data, True)
+
     exit()
+
     # CD and statistical evaluation
     eval_plotter.cd_plot_and_stats_tests(overall_data, True)
 

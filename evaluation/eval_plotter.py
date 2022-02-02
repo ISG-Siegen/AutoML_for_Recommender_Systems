@@ -184,3 +184,46 @@ def ranking_eval(data: pd.DataFrame, save_images, prefix=""):
         name += "ranking_categories_per_dataset"
         # plt.savefig(get_correct_path(name))
     plt.show()
+
+
+def failure_eval(data: pd.DataFrame, save_images, prefix=""):
+    # Some general stats for the text
+    print("Total Failed: {} | Percentage {}".format(data["failed"].sum(), data["failed"].sum() / len(data)))
+    tmp_data = data["fail_reason"].value_counts()
+    print("Failure Reasons:", [(i, tmp_data[i], tmp_data[i] / len(data)) for i in tmp_data.index])
+
+    # -- Goal Table: Dataset, Failure Categories..., Total Failure
+    dataset_to_category_fails = {}
+    for dataset_name in data["Dataset"].unique().tolist():
+        tmp_df = data[data["Dataset"] == dataset_name]
+        models_per_category = tmp_df.groupby(by="LibraryCategory").size()
+
+        # Get values
+        counts = tmp_df[["LibraryCategory", "failed"]].groupby(by="LibraryCategory").sum()
+        counts["LibraryCategory"] = counts.index
+
+        current_failures = [(x[1], x[0], x[0] / models_per_category[x[1]]) for x in counts.values.tolist()]
+        current_failures.append(("Total", sum(tuple_vals[1] for tuple_vals in current_failures),
+                                 sum(tuple_vals[1] for tuple_vals in current_failures) / sum(models_per_category)))
+        dataset_to_category_fails[dataset_name] = current_failures
+
+    # Build table data
+    valid_categories = sorted(data["LibraryCategory"].unique().tolist()) + ["Total"]  # columns
+    table_data = []
+    for dataset_name, values in dataset_to_category_fails.items():
+        row = [dataset_name]  # row
+        for cat in valid_categories:
+
+            # Find the correct entry
+            for cat_name, abs_count, freq in values:
+                if cat_name == cat:
+                    # Correct entry found, add to data
+                    row.append("{} ({:.2%})".format(abs_count, freq))
+        table_data.append(row)
+    valid_categories = ["Dataset"] + valid_categories
+    failure_table = pd.DataFrame(table_data, columns=valid_categories)
+    print(failure_table)
+
+    # -- Save Table
+    failure_table.to_csv(os.path.join(get_base_path(), get_output_result_tables(),
+                                      "failure_table_per_dataset_per_cat.csv"), index=False)
