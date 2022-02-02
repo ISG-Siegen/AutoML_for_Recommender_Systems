@@ -208,20 +208,28 @@ def failure_eval(data: pd.DataFrame, save_images, prefix=""):
         dataset_to_category_fails[dataset_name] = current_failures
 
     # Build table data
-    valid_categories = sorted(data["LibraryCategory"].unique().tolist()) + ["Total"]  # columns
+    valid_categories = data["LibraryCategory"].unique().tolist()  # columns
+    valid_categories.remove("Baseline")
+    manual_category_order = ["AutoML", "AutoRecSys", "ML", "RecSys"]
+    assert set(manual_category_order) == set(valid_categories)
+    manual_category_order += ["Total"]
+
     table_data = []
     for dataset_name, values in dataset_to_category_fails.items():
         row = [dataset_name]  # row
-        for cat in valid_categories:
+        for cat in manual_category_order:
 
             # Find the correct entry
             for cat_name, abs_count, freq in values:
                 if cat_name == cat:
                     # Correct entry found, add to data
-                    row.append("{} ({:.2%})".format(abs_count, freq))
+                    if abs_count != 0:
+                        row.append("{} ({:.2%})".format(abs_count, freq))
+                    else:
+                        row.append("-")
         table_data.append(row)
-    valid_categories = ["Dataset"] + valid_categories
-    failure_table = pd.DataFrame(table_data, columns=valid_categories)
+    manual_category_order = ["Dataset"] + manual_category_order
+    failure_table = pd.DataFrame(table_data, columns=manual_category_order)
     print(failure_table)
 
     # -- Save Table
