@@ -17,19 +17,27 @@ logger = get_logger("Evaluation")
 pd.set_option("display.max_rows", None, "display.max_columns", None)
 
 
-def filter_too_large_errors(df, dataset_names):
+def filter_too_large_errors(df):
     df = df.copy()
-    for dataset in dataset_names:
-        tmp_df = df[df["Dataset"] == dataset]["RSME"]
-        # Code adapted from https://datascience.stackexchange.com/a/57199
-        Q1 = tmp_df.quantile(0.25)
-        Q3 = tmp_df.quantile(0.75)
-        IQR = Q3 - Q1
+    # dataset_names = df["Dataset"].unique().tolist()
+    # for dataset in dataset_names:
+    #     tmp_df = df[df["Dataset"] == dataset]["RSME"]
+    #     # Code adapted from https://datascience.stackexchange.com/a/57199
+    #     Q1 = tmp_df.quantile(0.25)
+    #     Q3 = tmp_df.quantile(0.75)
+    #     IQR = Q3 - Q1
+    #
+    #     # Set all values lower than the upper whisker to nan and then drop them
+    #     df.loc[(df["Dataset"] == dataset) & (df["RSME"] > Q3 + 1.5 * IQR), "RSME"] = np.nan
 
-        # Set all values lower than the upper whisker to nan and then drop them
-        df.loc[(df["Dataset"] == dataset) & (df["RSME"] > Q3 + 1.5 * IQR), "RSME"] = np.nan
+    # Filter based on a static value
+    pre_length = len(df)
+    df.loc[df["RSME"] > 2, "RSME"] = np.nan
+    df = df[df["RSME"].notna()]
+    print("We removed {} ({:.2%}) of {} RMSE values because of a too large error for boxplots.".format(
+        pre_length - len(df), (pre_length - len(df)) / pre_length, pre_length))
 
-    return df[df["RSME"].notna()]
+    return df
 
 
 def select_newest_subset(data):
@@ -82,25 +90,28 @@ def eval_overall_results():
     overall_data = filer.read_data(os.path.join(get_base_path(), get_output_result_data(),
                                                 "overall_benchmark_results.csv"))
     overall_data = select_newest_subset(overall_data)
-    dataset_names = overall_data["Dataset"].unique().tolist()
 
     # Failure Eval
-    eval_plotter.failure_eval(overall_data, True)
+    eval_plotter.failure_eval(overall_data.copy(), True)
 
     # Ranking Eval
-    eval_plotter.ranking_eval(overall_data, True)
-
-    exit()
+    eval_plotter.ranking_eval(overall_data.copy(), True)
 
     # CD and statistical evaluation
-    eval_plotter.cd_plot_and_stats_tests(overall_data, True)
+    eval_plotter.cd_plot_and_stats_tests(overall_data.copy(), True)
 
     # ---- Remove failed datasets
-    overall_data = overall_data[overall_data["RSME"].notna()]
+
+    boxplot_data = overall_data.copy()[overall_data["RSME"].notna()]
+
+    print("We removed {} ({:.2%}) of {} RMSE values because of failure.".format(len(overall_data) - len(boxplot_data),
+                                                                                (len(overall_data) - len(
+                                                                                    boxplot_data)) / len(overall_data),
+                                                                                len(overall_data)))
     # ----- Filter too large errors for model that did not converge with default values
-    overall_data_filtered = filter_too_large_errors(overall_data, dataset_names)
+    boxplot_data_filtered = filter_too_large_errors(boxplot_data)
     # Boxplots
-    eval_plotter.boxplots_per_datasets(overall_data_filtered[["Dataset", "LibraryCategory", "RSME"]], True)
+    eval_plotter.boxplots_per_datasets(boxplot_data_filtered[["Dataset", "LibraryCategory", "RSME"]], True)
 
 
 if __name__ == "__main__":

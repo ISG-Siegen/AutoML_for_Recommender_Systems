@@ -5,6 +5,7 @@ from general_utils.lcer import get_output_images, get_base_path, get_output_resu
 import seaborn as sns
 from autorank import autorank, create_report, plot_stats
 from general_utils.catheat import heatmap
+import numpy as np
 
 YMIN = 0
 YMAX = None
@@ -15,12 +16,15 @@ def get_correct_path(file_name):
 
 
 def boxplots_per_datasets(data: pd.DataFrame, save_images, prefix=""):
-    sns.catplot(x="LibraryCategory", y="RSME", col="Dataset", data=data, kind="box")
-
+    # OLD: sns.catplot(x="LibraryCategory", y="RSME", col="Dataset", data=data, kind="box")
+    ax = sns.boxplot(x="RSME", y="Dataset", hue="LibraryCategory", data=data, dodge=True,
+                     linewidth=1)
+    [ax.axhline(y + .5, color='k') for y in ax.get_yticks()]
+    plt.xlabel("RMSE")
     if save_images:
         name = prefix
         name += "boxplots_per_datasets"
-        plt.savefig(get_correct_path(name))
+        # plt.savefig(get_correct_path(name))
     plt.show()
 
 
