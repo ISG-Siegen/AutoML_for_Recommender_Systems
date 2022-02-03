@@ -83,17 +83,15 @@ RUN pip install --no-cache-dir lenskit[sklearn,hpf,implicit,tf]
 FROM base_python as spotlight
 RUN pip install torch && pip install -e git+https://github.com/maciejkula/spotlight.git#egg=spotlight
 
-# ---- AutoRecSys ----
-# -- autosurprise --
-FROM base_python as autosurprise
-RUN pip install --no-cache-dir auto-surprise
-
-## -- AutoRec --
 # -- AutoRec --
 FROM python:3.8 as autorec
 # autorec needs python <3.9 for tensorflow < 2.5
 RUN pip install --no-cache-dir --upgrade pip && pip install Cython && pip install --no-cache-dir autorec==0.0.2
 
+# ---- AutoRecSys ----
+# -- autosurprise --
+FROM base_python as autosurprise
+RUN pip install --no-cache-dir auto-surprise
 
 
 

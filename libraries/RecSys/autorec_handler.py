@@ -31,7 +31,7 @@ def load_autorec_and_all_models():
         # Sadly not very Auto as a lot of options still open to chose by user
 
         def __init__(self):
-            super().__init__("AutoRec", None, "AutoRecSys")
+            super().__init__("AutoRec", None, "RecSys")
 
         def train(self, dataset):
             # Have to move imports here as otherwise a weired bugs makes the function unable to be run as a subprocess.

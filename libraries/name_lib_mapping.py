@@ -5,10 +5,10 @@ from libraries.Baselines.constant_predictor import load_constant_predictors_and_
 from libraries.RecSys.surprise_handler import load_surprise_and_all_models
 from libraries.RecSys.lenskit_handler import load_lenskit_and_all_models
 from libraries.RecSys.spotlight_handler import load_spotlight
+from libraries.RecSys.autorec_handler import load_autorec_and_all_models
 
 # AutoRecSys
 from libraries.AutoRecSys.autosurprise_handler import load_auto_surprise_and_all_models
-from libraries.AutoRecSys.autorec_handler import load_autorec_and_all_models
 
 # ML
 from libraries.ML.scikit_models import load_sklearn_and_all_models
@@ -32,10 +32,10 @@ NAME_LIB_MAP = {
     "surprise": load_surprise_and_all_models,
     "lenskit": load_lenskit_and_all_models,
     "spotlight": load_spotlight,
+    "autorec": load_autorec_and_all_models,
 
     # AutoRecSys
     "autosurprise": load_auto_surprise_and_all_models,
-    "autorec": load_autorec_and_all_models,
 
     # ML
     "sklearn": load_sklearn_and_all_models,
