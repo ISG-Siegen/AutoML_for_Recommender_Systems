@@ -25,6 +25,11 @@ def load_surprise_and_all_models():
             p_x_train = x_train.copy()
             p_x_train[label] = y_train
 
+            # Fix Problems with NMF not being able to handle zero ratings
+            if self.name == "Surprise_NMF":
+                # To do so, make 0 values to epsilon
+                p_x_train.loc[p_x_train[label[0]] == 0, label] = 0.0000001
+
             # Adapt custom Dataframe to Surprise Lib requirements
             reader = Reader(rating_scale=(dataset.recsys_properties.rating_lower_bound,
                                           dataset.recsys_properties.rating_upper_bound))

@@ -25,6 +25,12 @@ def load_sklearn_and_all_models():
 
         def train(self, dataset):
             x_train, y_train = dataset.train_data
+
+            # Fix Problems with not being able to handle zero ratings
+            if self.name == "SciKit_GammaRegressor":
+                # To do so, make 0 values to epsilon
+                y_train[y_train == 0] = 0.0000001
+
             self.model_object.fit(x_train, y_train.values.ravel())
 
         def predict(self, dataset):
