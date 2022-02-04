@@ -16,7 +16,8 @@ def get_correct_path(file_name):
 
 
 def normalized_and_aggregated_distribution_plots(data: pd.DataFrame, save_images, prefix=""):
-    raise NotImplementedError
+    raise NotImplementedError("This function shall not be used for our current evaluation as a result of" +
+                              " our discussion!")
     relative_baseline = "ConstantPredictor_Mean"
 
     # Normalize by the baseline such that baseline is 0
@@ -32,7 +33,7 @@ def normalized_and_aggregated_distribution_plots(data: pd.DataFrame, save_images
                      linewidth=1)
     # plt.vlines(0)
     plt.gca().invert_xaxis()
-    plt.xlabel("Difference to Baseline (Negative is better")
+    plt.xlabel("Difference to Baseline (Negative is better)")
     plt.show()
 
 
