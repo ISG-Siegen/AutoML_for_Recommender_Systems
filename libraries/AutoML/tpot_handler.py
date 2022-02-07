@@ -13,7 +13,7 @@ def load_tpot_and_all_models():
             super().__init__("TPOT_Regressor", TPOTRegressor(generations=None,
                                                              max_time_mins=get_timeout_in_min(),
                                                              n_jobs=-1,
-                                                             scoring='neg_mean_squared_error',  # RSME not available
+                                                             scoring='neg_mean_squared_error',  # RMSE not available
                                                              # no function for memory limitation exists
                                                              )
                              , "AutoML"

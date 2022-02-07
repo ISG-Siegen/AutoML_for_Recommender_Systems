@@ -38,7 +38,7 @@ def normalized_and_aggregated_distribution_plots(data: pd.DataFrame, save_images
 
 
 def boxplots_per_datasets(data: pd.DataFrame, save_images, prefix=""):
-    # OLD: sns.catplot(x="LibraryCategory", y="RSME", col="Dataset", data=data, kind="box")
+    # OLD: sns.catplot(x="LibraryCategory", y="RMSE", col="Dataset", data=data, kind="box")
     ax = sns.boxplot(x="RSME", y="Dataset", hue="LibraryCategory", data=data, dodge=True,
                      linewidth=1)
     [ax.axhline(y + .5, color='k') for y in ax.get_yticks()]
@@ -57,7 +57,7 @@ def row_to_col_data_format(data):
 
     # Fill results df
     for index, row in data.iterrows():
-        experiment_results.at[row["Dataset"], row["Model"]] = float(row["RSME"])
+        experiment_results.at[row["Dataset"], row["Model"]] = float(row["RMSE"])
     experiment_results = experiment_results.apply(pd.to_numeric)
 
     return experiment_results
@@ -92,7 +92,7 @@ def ranking_eval(data: pd.DataFrame, save_images, prefix=""):
     #   By default, equal values are assigned a rank that is the average of the ranks of those values.
     for dataset_name in data["Dataset"].unique().tolist():
         tmp_df = data[data["Dataset"] == dataset_name]
-        tmp_ranked = tmp_df["RSME"].rank(na_option="bottom")
+        tmp_ranked = tmp_df["RMSE"].rank(na_option="bottom")
         data.loc[data["Dataset"] == dataset_name, "RMSE_RANK"] = tmp_ranked
 
     # -- Print Top-Average Ranked

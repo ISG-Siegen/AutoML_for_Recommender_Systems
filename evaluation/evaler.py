@@ -21,7 +21,7 @@ def filter_too_large_errors(df):
     df = df.copy()
     # dataset_names = df["Dataset"].unique().tolist()
     # for dataset in dataset_names:
-    #     tmp_df = df[df["Dataset"] == dataset]["RSME"]
+    #     tmp_df = df[df["Dataset"] == dataset]["RMSE"]
     #     # Code adapted from https://datascience.stackexchange.com/a/57199
     #     Q1 = tmp_df.quantile(0.25)
     #     Q3 = tmp_df.quantile(0.75)
@@ -32,7 +32,7 @@ def filter_too_large_errors(df):
 
     # Filter based on a static value
     pre_length = len(df)
-    df.loc[df["RSME"] > 2, "RSME"] = np.nan
+    df.loc[df["RMSE"] > 2, "RMSE"] = np.nan
     df = df[df["RSME"].notna()]
     print("We removed {} ({:.2%}) of {} RMSE values because of a too large error for boxplots.".format(
         pre_length - len(df), (pre_length - len(df)) / pre_length, pre_length))
@@ -101,7 +101,6 @@ def eval_overall_results():
     eval_plotter.cd_plot_and_stats_tests(overall_data.copy(), True)
 
     # ---- Remove failed datasets
-
     boxplot_data = overall_data.copy()[overall_data["RSME"].notna()]
 
     print("We removed {} ({:.2%}) of {} RMSE values because of failure.".format(len(overall_data) - len(boxplot_data),
@@ -111,7 +110,7 @@ def eval_overall_results():
     # ----- Filter too large errors for model that did not converge with default values
     boxplot_data_filtered = filter_too_large_errors(boxplot_data)
     # Boxplots
-    eval_plotter.boxplots_per_datasets(boxplot_data_filtered[["Dataset", "LibraryCategory", "RSME"]], True)
+    eval_plotter.boxplots_per_datasets(boxplot_data_filtered[["Dataset", "LibraryCategory", "RMSE"]], True)
     # eval_plotter.normalized_and_aggregated_distribution_plots(boxplot_data_filtered[["Dataset", "Model",
     #                                                                               "LibraryCategory", "RSME"]], True)
 
