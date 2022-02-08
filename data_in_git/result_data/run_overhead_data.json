@@ -35,123 +35,39 @@
   ],
   "constant_predictors": {
     "yelp": [],
-    "foodCom": [
-      "ConstantPredictor_Mean"
-    ],
+    "foodCom": [],
     "amazon-toys-and-games": [],
     "amazon-digital-music": [],
-    "amazon-fashion": [
-      "ConstantPredictor_Mean"
-    ],
+    "amazon-fashion": [],
     "amazon-electronics": [],
     "movielens-100K": [],
     "amazon-movies-and-tv": [],
     "movielens-1M": [],
-    "amazon-appliances": [
-      "ConstantPredictor_Mean"
-    ],
+    "amazon-appliances": [],
     "movielens-latest-small": [],
-    "amazon-software": [
-      "ConstantPredictor_Mean"
-    ],
-    "netflix": [
-      "ConstantPredictor_Mean"
-    ],
-    "amazon-industrial-and-scientific": [
-      "ConstantPredictor_Mean"
-    ],
+    "amazon-software": [],
+    "netflix": [],
+    "amazon-industrial-and-scientific": [],
     "model_names": [
       "ConstantPredictor_Mean"
     ],
-    "all_benchmarks_done_at_least_once": false
+    "all_benchmarks_done_at_least_once": true
   },
   "surprise": {
     "yelp": [],
-    "foodCom": [
-      "Surprise_NMF",
-      "Surprise_KNNWithZScore",
-      "Surprise_KNNWithMeans",
-      "Surprise_CoClustering",
-      "Surprise_KNNBasic",
-      "Surprise_KNNBaseline",
-      "Surprise_SVDpp",
-      "Surprise_NormalPredictor",
-      "Surprise_BaselineOnly",
-      "Surprise_SingularValueDecompositionAlgorithm",
-      "Surprise_SlopeOne"
-    ],
+    "foodCom": [],
     "amazon-toys-and-games": [],
     "amazon-digital-music": [],
-    "amazon-fashion": [
-      "Surprise_NMF",
-      "Surprise_KNNWithZScore",
-      "Surprise_KNNWithMeans",
-      "Surprise_CoClustering",
-      "Surprise_KNNBasic",
-      "Surprise_KNNBaseline",
-      "Surprise_SVDpp",
-      "Surprise_NormalPredictor",
-      "Surprise_BaselineOnly",
-      "Surprise_SingularValueDecompositionAlgorithm",
-      "Surprise_SlopeOne"
-    ],
+    "amazon-fashion": [],
     "amazon-electronics": [],
     "movielens-100K": [],
     "amazon-movies-and-tv": [],
     "movielens-1M": [],
-    "amazon-appliances": [
-      "Surprise_NMF",
-      "Surprise_KNNWithZScore",
-      "Surprise_KNNWithMeans",
-      "Surprise_CoClustering",
-      "Surprise_KNNBasic",
-      "Surprise_KNNBaseline",
-      "Surprise_SVDpp",
-      "Surprise_NormalPredictor",
-      "Surprise_BaselineOnly",
-      "Surprise_SingularValueDecompositionAlgorithm",
-      "Surprise_SlopeOne"
-    ],
+    "amazon-appliances": [],
     "movielens-latest-small": [],
-    "amazon-software": [
-      "Surprise_NMF",
-      "Surprise_KNNWithZScore",
-      "Surprise_KNNWithMeans",
-      "Surprise_CoClustering",
-      "Surprise_KNNBasic",
-      "Surprise_KNNBaseline",
-      "Surprise_SVDpp",
-      "Surprise_NormalPredictor",
-      "Surprise_BaselineOnly",
-      "Surprise_SingularValueDecompositionAlgorithm",
-      "Surprise_SlopeOne"
-    ],
-    "netflix": [
-      "Surprise_NMF",
-      "Surprise_KNNWithZScore",
-      "Surprise_KNNWithMeans",
-      "Surprise_CoClustering",
-      "Surprise_KNNBasic",
-      "Surprise_KNNBaseline",
-      "Surprise_SVDpp",
-      "Surprise_NormalPredictor",
-      "Surprise_BaselineOnly",
-      "Surprise_SingularValueDecompositionAlgorithm",
-      "Surprise_SlopeOne"
-    ],
-    "amazon-industrial-and-scientific": [
-      "Surprise_NMF",
-      "Surprise_KNNWithZScore",
-      "Surprise_KNNWithMeans",
-      "Surprise_CoClustering",
-      "Surprise_KNNBasic",
-      "Surprise_KNNBaseline",
-      "Surprise_SVDpp",
-      "Surprise_NormalPredictor",
-      "Surprise_BaselineOnly",
-      "Surprise_SingularValueDecompositionAlgorithm",
-      "Surprise_SlopeOne"
-    ],
+    "amazon-software": [],
+    "netflix": [],
+    "amazon-industrial-and-scientific": [],
     "model_names": [
       "Surprise_SingularValueDecompositionAlgorithm",
       "Surprise_SVDpp",
@@ -165,89 +81,23 @@
       "Surprise_KNNWithZScore",
       "Surprise_SlopeOne"
     ],
-    "all_benchmarks_done_at_least_once": false
+    "all_benchmarks_done_at_least_once": true
   },
   "lenskit": {
     "yelp": [],
-    "foodCom": [
-      "lenskit_ALSBiasedMF",
-      "lenskit_FunkSVD",
-      "lenskit_IntegratedBiasMF",
-      "lenskit_Bias",
-      "lenskit_UserUser",
-      "lenskit_HPF",
-      "lenskit_BPR",
-      "lenskit_TFBiasedMF",
-      "lenskit_ItemItem",
-      "lenskit_BiasedSVD"
-    ],
+    "foodCom": [],
     "amazon-toys-and-games": [],
     "amazon-digital-music": [],
-    "amazon-fashion": [
-      "lenskit_ALSBiasedMF",
-      "lenskit_FunkSVD",
-      "lenskit_IntegratedBiasMF",
-      "lenskit_Bias",
-      "lenskit_UserUser",
-      "lenskit_HPF",
-      "lenskit_BPR",
-      "lenskit_TFBiasedMF",
-      "lenskit_ItemItem",
-      "lenskit_BiasedSVD"
-    ],
+    "amazon-fashion": [],
     "amazon-electronics": [],
     "movielens-100K": [],
     "amazon-movies-and-tv": [],
     "movielens-1M": [],
-    "amazon-appliances": [
-      "lenskit_ALSBiasedMF",
-      "lenskit_FunkSVD",
-      "lenskit_IntegratedBiasMF",
-      "lenskit_Bias",
-      "lenskit_UserUser",
-      "lenskit_HPF",
-      "lenskit_BPR",
-      "lenskit_TFBiasedMF",
-      "lenskit_ItemItem",
-      "lenskit_BiasedSVD"
-    ],
+    "amazon-appliances": [],
     "movielens-latest-small": [],
-    "amazon-software": [
-      "lenskit_ALSBiasedMF",
-      "lenskit_FunkSVD",
-      "lenskit_IntegratedBiasMF",
-      "lenskit_Bias",
-      "lenskit_UserUser",
-      "lenskit_HPF",
-      "lenskit_BPR",
-      "lenskit_TFBiasedMF",
-      "lenskit_ItemItem",
-      "lenskit_BiasedSVD"
-    ],
-    "netflix": [
-      "lenskit_ALSBiasedMF",
-      "lenskit_FunkSVD",
-      "lenskit_IntegratedBiasMF",
-      "lenskit_Bias",
-      "lenskit_UserUser",
-      "lenskit_HPF",
-      "lenskit_BPR",
-      "lenskit_TFBiasedMF",
-      "lenskit_ItemItem",
-      "lenskit_BiasedSVD"
-    ],
-    "amazon-industrial-and-scientific": [
-      "lenskit_ALSBiasedMF",
-      "lenskit_FunkSVD",
-      "lenskit_IntegratedBiasMF",
-      "lenskit_Bias",
-      "lenskit_UserUser",
-      "lenskit_HPF",
-      "lenskit_BPR",
-      "lenskit_TFBiasedMF",
-      "lenskit_ItemItem",
-      "lenskit_BiasedSVD"
-    ],
+    "amazon-software": [],
+    "netflix": [],
+    "amazon-industrial-and-scientific": [],
     "model_names": [
       "lenskit_ItemItem",
       "lenskit_UserUser",
@@ -260,248 +110,113 @@
       "lenskit_BPR",
       "lenskit_TFBiasedMF"
     ],
-    "all_benchmarks_done_at_least_once": false
+    "all_benchmarks_done_at_least_once": true
   },
   "autosurprise": {
     "yelp": [],
-    "foodCom": [
-      "AutoSurprise"
-    ],
+    "foodCom": [],
     "amazon-toys-and-games": [],
     "amazon-digital-music": [],
-    "amazon-fashion": [
-      "AutoSurprise"
-    ],
+    "amazon-fashion": [],
     "amazon-electronics": [],
     "movielens-100K": [],
     "amazon-movies-and-tv": [],
     "movielens-1M": [],
-    "amazon-appliances": [
-      "AutoSurprise"
-    ],
+    "amazon-appliances": [],
     "movielens-latest-small": [],
-    "amazon-software": [
-      "AutoSurprise"
-    ],
-    "netflix": [
-      "AutoSurprise"
-    ],
-    "amazon-industrial-and-scientific": [
-      "AutoSurprise"
-    ],
+    "amazon-software": [],
+    "netflix": [],
+    "amazon-industrial-and-scientific": [],
     "model_names": [
       "AutoSurprise"
     ],
-    "all_benchmarks_done_at_least_once": false
+    "all_benchmarks_done_at_least_once": true
   },
   "autorec": {
     "yelp": [],
-    "foodCom": [
-      "AutoRec"
-    ],
+    "foodCom": [],
     "amazon-toys-and-games": [],
     "amazon-digital-music": [],
-    "amazon-fashion": [
-      "AutoRec"
-    ],
+    "amazon-fashion": [],
     "amazon-electronics": [],
     "movielens-100K": [],
     "amazon-movies-and-tv": [],
     "movielens-1M": [],
-    "amazon-appliances": [
-      "AutoRec"
-    ],
+    "amazon-appliances": [],
     "movielens-latest-small": [],
-    "amazon-software": [
-      "AutoRec"
-    ],
-    "netflix": [
-      "AutoRec"
-    ],
-    "amazon-industrial-and-scientific": [
-      "AutoRec"
-    ],
+    "amazon-software": [],
+    "netflix": [],
+    "amazon-industrial-and-scientific": [],
     "model_names": [
       "AutoRec"
     ],
-    "all_benchmarks_done_at_least_once": false
+    "all_benchmarks_done_at_least_once": true
   },
   "sklearn": {
     "yelp": [],
-    "foodCom": [
-      "SciKit_AdaBoostRegressor",
-      "SciKit_HuberRegressor",
-      "SciKit_LinearRegressor",
-      "SciKit_PoissonRegressor",
-      "SciKit_DecisionTreeRegressor",
-      "SciKit_OrthogonalMatchingPursuit",
-      "SciKit_TweedieRegressor",
-      "SciKit_Lars",
-      "SciKit_GradientBoostingRegressor",
-      "SciKit_RandomForestRegressor",
-      "SciKit_SupportVectorRegression",
-      "SciKit_LassoLars",
-      "SciKit_GammaRegressor",
-      "SciKit_Lasso",
-      "SciKit_BaggingRegressor",
-      "SciKit_KNeighborsRegressor",
-      "SciKit_ElasticNet",
-      "SciKit_ExtraTreesRegressor",
-      "SciKit_Ridge",
-      "SciKit_MLPRegressor",
-      "SciKit_ARDRegression",
-      "SciKit_BayesianRidge",
-      "SciKit_KernelRidgeRegressor",
-      "SciKit_StochasticGradientDescentRegressor",
-      "SciKit_RANSACRegressor",
-      "SciKit_TheilSenRegressor"
-    ],
+    "foodCom": [],
     "amazon-toys-and-games": [],
     "amazon-digital-music": [],
-    "amazon-fashion": [
-      "SciKit_AdaBoostRegressor",
-      "SciKit_HuberRegressor",
-      "SciKit_LinearRegressor",
-      "SciKit_PoissonRegressor",
-      "SciKit_DecisionTreeRegressor",
-      "SciKit_OrthogonalMatchingPursuit",
-      "SciKit_TweedieRegressor",
-      "SciKit_Lars",
-      "SciKit_GradientBoostingRegressor",
-      "SciKit_RandomForestRegressor",
-      "SciKit_SupportVectorRegression",
-      "SciKit_LassoLars",
-      "SciKit_GammaRegressor",
-      "SciKit_Lasso",
-      "SciKit_BaggingRegressor",
-      "SciKit_KNeighborsRegressor",
-      "SciKit_ElasticNet",
-      "SciKit_ExtraTreesRegressor",
-      "SciKit_Ridge",
-      "SciKit_MLPRegressor",
-      "SciKit_ARDRegression",
-      "SciKit_BayesianRidge",
-      "SciKit_KernelRidgeRegressor",
-      "SciKit_StochasticGradientDescentRegressor",
-      "SciKit_RANSACRegressor",
-      "SciKit_TheilSenRegressor"
-    ],
+    "amazon-fashion": [],
     "amazon-electronics": [],
     "movielens-100K": [],
     "amazon-movies-and-tv": [],
     "movielens-1M": [],
-    "amazon-appliances": [
-      "SciKit_AdaBoostRegressor",
-      "SciKit_HuberRegressor",
-      "SciKit_LinearRegressor",
-      "SciKit_PoissonRegressor",
-      "SciKit_DecisionTreeRegressor",
-      "SciKit_OrthogonalMatchingPursuit",
-      "SciKit_TweedieRegressor",
-      "SciKit_Lars",
-      "SciKit_GradientBoostingRegressor",
-      "SciKit_RandomForestRegressor",
-      "SciKit_SupportVectorRegression",
-      "SciKit_LassoLars",
-      "SciKit_GammaRegressor",
-      "SciKit_Lasso",
-      "SciKit_BaggingRegressor",
-      "SciKit_KNeighborsRegressor",
-      "SciKit_ElasticNet",
-      "SciKit_ExtraTreesRegressor",
-      "SciKit_Ridge",
-      "SciKit_MLPRegressor",
-      "SciKit_ARDRegression",
-      "SciKit_BayesianRidge",
-      "SciKit_KernelRidgeRegressor",
-      "SciKit_StochasticGradientDescentRegressor",
-      "SciKit_RANSACRegressor",
-      "SciKit_TheilSenRegressor"
-    ],
+    "amazon-appliances": [],
     "movielens-latest-small": [],
-    "amazon-software": [
-      "SciKit_AdaBoostRegressor",
-      "SciKit_HuberRegressor",
-      "SciKit_LinearRegressor",
-      "SciKit_PoissonRegressor",
-      "SciKit_DecisionTreeRegressor",
-      "SciKit_OrthogonalMatchingPursuit",
-      "SciKit_TweedieRegressor",
-      "SciKit_Lars",
-      "SciKit_GradientBoostingRegressor",
-      "SciKit_RandomForestRegressor",
-      "SciKit_SupportVectorRegression",
-      "SciKit_LassoLars",
-      "SciKit_GammaRegressor",
-      "SciKit_Lasso",
-      "SciKit_BaggingRegressor",
-      "SciKit_KNeighborsRegressor",
-      "SciKit_ElasticNet",
-      "SciKit_ExtraTreesRegressor",
-      "SciKit_Ridge",
-      "SciKit_MLPRegressor",
-      "SciKit_ARDRegression",
-      "SciKit_BayesianRidge",
-      "SciKit_KernelRidgeRegressor",
-      "SciKit_StochasticGradientDescentRegressor",
-      "SciKit_RANSACRegressor",
-      "SciKit_TheilSenRegressor"
-    ],
+    "amazon-software": [],
     "netflix": [
+      "SciKit_Lars",
+      "SciKit_KernelRidgeRegressor",
+      "SciKit_GradientBoostingRegressor",
       "SciKit_AdaBoostRegressor",
+      "SciKit_ExtraTreesRegressor",
+      "SciKit_TheilSenRegressor",
+      "SciKit_SupportVectorRegression",
       "SciKit_HuberRegressor",
-      "SciKit_LinearRegressor",
+      "SciKit_BaggingRegressor",
+      "SciKit_Lasso",
+      "SciKit_BayesianRidge",
       "SciKit_PoissonRegressor",
-      "SciKit_DecisionTreeRegressor",
+      "SciKit_StochasticGradientDescentRegressor",
+      "SciKit_GammaRegressor",
+      "SciKit_LassoLars",
       "SciKit_OrthogonalMatchingPursuit",
       "SciKit_TweedieRegressor",
-      "SciKit_Lars",
-      "SciKit_GradientBoostingRegressor",
-      "SciKit_RandomForestRegressor",
-      "SciKit_SupportVectorRegression",
-      "SciKit_LassoLars",
-      "SciKit_GammaRegressor",
-      "SciKit_Lasso",
-      "SciKit_BaggingRegressor",
-      "SciKit_KNeighborsRegressor",
-      "SciKit_ElasticNet",
-      "SciKit_ExtraTreesRegressor",
+      "SciKit_LinearRegressor",
       "SciKit_Ridge",
-      "SciKit_MLPRegressor",
-      "SciKit_ARDRegression",
-      "SciKit_BayesianRidge",
-      "SciKit_KernelRidgeRegressor",
-      "SciKit_StochasticGradientDescentRegressor",
+      "SciKit_RandomForestRegressor",
       "SciKit_RANSACRegressor",
-      "SciKit_TheilSenRegressor"
+      "SciKit_ARDRegression",
+      "SciKit_ElasticNet"
     ],
     "amazon-industrial-and-scientific": [
+      "SciKit_Lars",
+      "SciKit_KernelRidgeRegressor",
+      "SciKit_GradientBoostingRegressor",
       "SciKit_AdaBoostRegressor",
+      "SciKit_ExtraTreesRegressor",
+      "SciKit_MLPRegressor",
+      "SciKit_TheilSenRegressor",
+      "SciKit_SupportVectorRegression",
       "SciKit_HuberRegressor",
-      "SciKit_LinearRegressor",
-      "SciKit_PoissonRegressor",
+      "SciKit_BaggingRegressor",
+      "SciKit_Lasso",
       "SciKit_DecisionTreeRegressor",
+      "SciKit_KNeighborsRegressor",
+      "SciKit_BayesianRidge",
+      "SciKit_PoissonRegressor",
+      "SciKit_StochasticGradientDescentRegressor",
+      "SciKit_GammaRegressor",
+      "SciKit_LassoLars",
       "SciKit_OrthogonalMatchingPursuit",
       "SciKit_TweedieRegressor",
-      "SciKit_Lars",
-      "SciKit_GradientBoostingRegressor",
-      "SciKit_RandomForestRegressor",
-      "SciKit_SupportVectorRegression",
-      "SciKit_LassoLars",
-      "SciKit_GammaRegressor",
-      "SciKit_Lasso",
-      "SciKit_BaggingRegressor",
-      "SciKit_KNeighborsRegressor",
-      "SciKit_ElasticNet",
-      "SciKit_ExtraTreesRegressor",
+      "SciKit_LinearRegressor",
       "SciKit_Ridge",
-      "SciKit_MLPRegressor",
-      "SciKit_ARDRegression",
-      "SciKit_BayesianRidge",
-      "SciKit_KernelRidgeRegressor",
-      "SciKit_StochasticGradientDescentRegressor",
+      "SciKit_RandomForestRegressor",
       "SciKit_RANSACRegressor",
-      "SciKit_TheilSenRegressor"
+      "SciKit_ARDRegression",
+      "SciKit_ElasticNet"
     ],
     "model_names": [
       "SciKit_KNeighborsRegressor",
@@ -823,34 +538,22 @@
   },
   "spotlight": {
     "yelp": [],
-    "foodCom": [
-      "Spotlight"
-    ],
+    "foodCom": [],
     "amazon-toys-and-games": [],
     "amazon-digital-music": [],
-    "amazon-fashion": [
-      "Spotlight"
-    ],
+    "amazon-fashion": [],
     "amazon-electronics": [],
     "movielens-100K": [],
     "amazon-movies-and-tv": [],
     "movielens-1M": [],
-    "amazon-appliances": [
-      "Spotlight"
-    ],
+    "amazon-appliances": [],
     "movielens-latest-small": [],
-    "amazon-software": [
-      "Spotlight"
-    ],
-    "netflix": [
-      "Spotlight"
-    ],
-    "amazon-industrial-and-scientific": [
-      "Spotlight"
-    ],
+    "amazon-software": [],
+    "netflix": [],
+    "amazon-industrial-and-scientific": [],
     "model_names": [
       "Spotlight"
     ],
-    "all_benchmarks_done_at_least_once": false
+    "all_benchmarks_done_at_least_once": true
   }
 }
