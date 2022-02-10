@@ -36,8 +36,8 @@ for model in loaded_models_to_test:
     print("Predict")
     y_pred = model.predict(dataset)
     # Score
-    rsme_score = metrics.RSME().evaluate(dataset, y_pred)
-    print("RSME: {}".format(rsme_score))
+    rmse_score = metrics.RMSE().evaluate(dataset, y_pred)
+    print("RMSE: {}".format(rmse_score))
 
     print("Done \n")
 

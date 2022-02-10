@@ -1,4 +1,4 @@
-Dataset,Model,LibraryCategory,RSME,TimeInSeconds,timestamp,failed,fail_reason
+Dataset,Model,LibraryCategory,RMSE,TimeInSeconds,timestamp,failed,fail_reason
 yelp,ConstantPredictor_Mean,Baseline,1.4573098198327943,6.547550201416016,1641907366.9620264,False,
 amazon-toys-and-games,ConstantPredictor_Mean,Baseline,1.0025480659073835,1.4456260204315186,1641907369.1422803,False,
 amazon-digital-music,ConstantPredictor_Mean,Baseline,0.9664144682831819,0.11731886863708496,1641907369.2653255,False,

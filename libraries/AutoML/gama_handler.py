@@ -13,7 +13,7 @@ def load_gama_and_all_models():
                                                              store="nothing",  # nothing to reduce logs
                                                              n_jobs=multiprocessing.cpu_count(),
                                                              max_memory_mb=None,
-                                                             scoring="neg_mean_squared_error"  # does not support rsme
+                                                             scoring="neg_mean_squared_error"  # does not support rmse
                                                              ),
                              "AutoML")
 
