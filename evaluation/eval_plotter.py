@@ -23,9 +23,9 @@ def normalized_and_aggregated_distribution_plots(data: pd.DataFrame, save_images
     # Normalize by the baseline such that baseline is 0
     for dataset_name in data["Dataset"].unique().tolist():
         tmp_df = data[data["Dataset"] == dataset_name]
-        baseline_val = tmp_df[tmp_df["Model"] == relative_baseline]["RSME"].tolist()[0]
+        baseline_val = tmp_df[tmp_df["Model"] == relative_baseline]["RMSE"].tolist()[0]
 
-        tmp_normalized = tmp_df["RSME"].apply(lambda x: x - baseline_val)
+        tmp_normalized = tmp_df["RMSE"].apply(lambda x: x - baseline_val)
         data.loc[data["Dataset"] == dataset_name, "N_RMSE"] = tmp_normalized
 
     data.drop(data[data["Model"] == relative_baseline].index, inplace=True)
@@ -39,7 +39,7 @@ def normalized_and_aggregated_distribution_plots(data: pd.DataFrame, save_images
 
 def boxplots_per_datasets(data: pd.DataFrame, save_images, prefix=""):
     # OLD: sns.catplot(x="LibraryCategory", y="RMSE", col="Dataset", data=data, kind="box")
-    ax = sns.boxplot(x="RSME", y="Dataset", hue="LibraryCategory", data=data, dodge=True,
+    ax = sns.boxplot(x="RMSE", y="Dataset", hue="LibraryCategory", data=data, dodge=True,
                      linewidth=1)
     [ax.axhline(y + .5, color='k') for y in ax.get_yticks()]
     plt.xlabel("RMSE")
@@ -99,7 +99,7 @@ def ranking_eval(data: pd.DataFrame, save_images, prefix=""):
     # Per Model
     print("######### Models Ranked - Top 10  (Average values for: Rank, RMSE - over datasets) #########")
     rank_per_model = data.groupby(by="Model").mean()
-    res_table_top_10_models = rank_per_model[["RMSE_RANK", "RSME"]].sort_values(by="RMSE_RANK").head(10)
+    res_table_top_10_models = rank_per_model[["RMSE_RANK", "RMSE"]].sort_values(by="RMSE_RANK").head(10)
     print(res_table_top_10_models)
 
     # Per Category
@@ -132,7 +132,7 @@ def ranking_eval(data: pd.DataFrame, save_images, prefix=""):
         libcat_ranking_per_dataset[dataset_name] = sorted(set(x), key=x.index)
 
         # Get Stats for annotation for Top 5 algorithms and top 5 categories
-        top_5_stats_per_dataset[dataset_name] = tmp_df[["Model", "RSME"]].iloc[0:5].values.tolist()
+        top_5_stats_per_dataset[dataset_name] = tmp_df[["Model", "RMSE"]].iloc[0:5].values.tolist()
 
         # Get index for sorted set of categories to find correct values
         top_5_cats = set()
@@ -141,7 +141,7 @@ def ranking_eval(data: pd.DataFrame, save_images, prefix=""):
             if cat not in top_5_cats:
                 top_5_cats.add(cat)
                 top_5_cat_index.append(i)
-        top_5_stats_per_cat_per_dataset[dataset_name] = [tmp_df[["Model", "RSME"]].iloc[i].values.tolist()
+        top_5_stats_per_cat_per_dataset[dataset_name] = [tmp_df[["Model", "RMSE"]].iloc[i].values.tolist()
                                                          for i in top_5_cat_index]
 
     # Build heatmap colors for category rankings

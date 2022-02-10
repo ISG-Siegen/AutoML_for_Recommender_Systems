@@ -1,4 +1,4 @@
-Dataset,Model,LibraryCategory,RSME,TimeInSeconds,timestamp
+Dataset,Model,LibraryCategory,RMSE,TimeInSeconds,timestamp
 movielens-100K-all-features,SciKit_RadiusNeighborsRegressor,ML,8.921246706550509e+18,17.140971660614014,1636980679.7189283
 movielens-100K-all-features,SciKit_KNeighborsRegressor,ML,1.0317852489738355,30.335171937942505,1636980679.7189283
 movielens-100K-all-features,SciKit_KNeighborsRegressor,ML,1.0317852489738355,30.08839154243469,1636980679.7189283

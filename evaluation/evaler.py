@@ -28,12 +28,12 @@ def filter_too_large_errors(df):
     #     IQR = Q3 - Q1
     #
     #     # Set all values lower than the upper whisker to nan and then drop them
-    #     df.loc[(df["Dataset"] == dataset) & (df["RSME"] > Q3 + 1.5 * IQR), "RSME"] = np.nan
+    #     df.loc[(df["Dataset"] == dataset) & (df["RMSE"] > Q3 + 1.5 * IQR), "RMSE"] = np.nan
 
     # Filter based on a static value
     pre_length = len(df)
     df.loc[df["RMSE"] > 2, "RMSE"] = np.nan
-    df = df[df["RSME"].notna()]
+    df = df[df["RMSE"].notna()]
     print("We removed {} ({:.2%}) of {} RMSE values because of a too large error for boxplots.".format(
         pre_length - len(df), (pre_length - len(df)) / pre_length, pre_length))
 
@@ -101,7 +101,7 @@ def eval_overall_results():
     eval_plotter.cd_plot_and_stats_tests(overall_data.copy(), True)
 
     # ---- Remove failed datasets
-    boxplot_data = overall_data.copy()[overall_data["RSME"].notna()]
+    boxplot_data = overall_data.copy()[overall_data["RMSE"].notna()]
 
     print("We removed {} ({:.2%}) of {} RMSE values because of failure.".format(len(overall_data) - len(boxplot_data),
                                                                                 (len(overall_data) - len(
@@ -112,7 +112,7 @@ def eval_overall_results():
     # Boxplots
     eval_plotter.boxplots_per_datasets(boxplot_data_filtered[["Dataset", "LibraryCategory", "RMSE"]], True)
     # eval_plotter.normalized_and_aggregated_distribution_plots(boxplot_data_filtered[["Dataset", "Model",
-    #                                                                               "LibraryCategory", "RSME"]], True)
+    #                                                                               "LibraryCategory", "RMSE"]], True)
 
 
 if __name__ == "__main__":
