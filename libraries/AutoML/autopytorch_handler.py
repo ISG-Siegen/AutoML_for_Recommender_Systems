@@ -4,17 +4,7 @@ from general_utils.lcer import get_timeout_in_min
 
 def load_auto_pytorch_and_all_models():
     from autoPyTorch.api.tabular_regression import TabularRegressionTask
-    import math
     import multiprocessing
-    import psutil
-
-    # To set memory limit for autopytorch we use autosklearn code (as it has the same memory limit description/api)
-    # we follow the automl benchmark code https://github.com/automl/auto-sklearn/blob/master/autosklearn/estimators.py
-    vm = psutil.virtual_memory()
-    total_memory_mb = vm.total / (1 << 20)
-    max_mem_size_mb = vm.available / (1 << 20)
-    n_jobs = multiprocessing.cpu_count()
-    ml_memory_limit = max(min(max_mem_size_mb / n_jobs, math.ceil(total_memory_mb / n_jobs)), 3072)
 
     class AutoPyTorch(Model):
 
@@ -35,7 +25,7 @@ def load_auto_pytorch_and_all_models():
 
             self.model_object.search(X_train=x_train, y_train=y_train,
                                      total_walltime_limit=get_timeout_in_min() * 60,
-                                     memory_limit=ml_memory_limit,
+                                     memory_limit=None,
                                      optimize_metric="root_mean_squared_error",
                                      budget_type="runtime",
                                      )
