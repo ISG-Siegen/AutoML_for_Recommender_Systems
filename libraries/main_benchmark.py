@@ -8,7 +8,7 @@ sys.path.insert(1, os.path.join(sys.path[0], '..'))
 # Rest of imports
 from benchmark_framework import benchmarker, dataset_base
 from general_utils.lcer import get_logger, get_output_result_data, get_base_path, get_default_metric, \
-    get_hard_timeout_in_min
+    get_hard_timeout_in_min, get_timeout_in_min
 from general_utils import filer
 from libraries.name_lib_mapping import NAME_LIB_MAP
 from data_processing.preprocessing.data_handler import load_datasets_information, load_from_files
@@ -80,6 +80,11 @@ if __name__ == '__main__':
             # Run benchmark
             if with_limits:
                 # Execute benchmark with limits
+
+                # if automated library, hard limit is extended by search time
+                if benchmark.model.library_category in ["AutoML", "AutoRecSys"]:
+                    hard_timeout = hard_timeout + get_timeout_in_min()
+
                 metric_val, time_taken, failed, fail_reason = benchmark.run_with_limits(hard_timeout)
             else:
                 metric_val = benchmark.run()
