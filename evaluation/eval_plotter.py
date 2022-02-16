@@ -66,9 +66,13 @@ def row_to_col_data_format(data):
 def cd_plot_and_stats_tests(data: pd.DataFrame, save_images, prefix=""):
     experiment_results = row_to_col_data_format(data)
 
+    # Check if requirements for CD plot exist
     if len(experiment_results) < 5:
         print("SKIPPED AUTORANK EVAL DUE TO NOT ENOUGH (5) ESTIMATIONS PER MODEL")
         return
+
+    if experiment_results.isnull().values.any():
+        print("SKIPPED AUTORANK EVAL DUE TO NAN VALUES IN DATA")  # Fill na values
 
     # Do tests and get plot as well as report
     res = autorank(experiment_results, order="ascending")
@@ -261,3 +265,13 @@ def failure_eval(data: pd.DataFrame, save_images, prefix=""):
     # -- Save Table
     failure_table.to_csv(os.path.join(get_base_path(), get_output_result_tables(),
                                       "failure_table_per_dataset_per_cat.csv"), index=False)
+
+    # -- Get number of times algorithms are worse than the baseline
+    worse_than_baseline_count = 0
+    for dataset_name in data["Dataset"].unique().tolist():
+        tmp_df = data[data["Dataset"] == dataset_name]
+        baseline_value = tmp_df[tmp_df["Model"] == "ConstantPredictor_Mean"]["RMSE"].values[0]
+        worse_than_baseline_count += len(tmp_df[tmp_df["RMSE"] > baseline_value])
+    print(("{} form {} ({:.2%}) algorithms have a RMSE worse than the baseline. " +
+           "(Does not contain nan, aka. failed algorithm's, values)").format(worse_than_baseline_count, len(data),
+                                                                             worse_than_baseline_count / len(data)))
