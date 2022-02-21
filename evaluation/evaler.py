@@ -97,9 +97,6 @@ def eval_overall_results():
     # Ranking Eval
     eval_plotter.ranking_eval(overall_data.copy(), True)
 
-    # CD and statistical evaluation
-    eval_plotter.cd_plot_and_stats_tests(overall_data.copy(), True)
-
     # ---- Remove failed datasets
     boxplot_data = overall_data.copy()[overall_data["RMSE"].notna()]
 
@@ -111,8 +108,6 @@ def eval_overall_results():
     boxplot_data_filtered = filter_too_large_errors(boxplot_data)
     # Boxplots
     eval_plotter.boxplots_per_datasets(boxplot_data_filtered[["Dataset", "LibraryCategory", "RMSE"]], True)
-    # eval_plotter.normalized_and_aggregated_distribution_plots(boxplot_data_filtered[["Dataset", "Model",
-    #                                                                               "LibraryCategory", "RMSE"]], True)
 
 
 if __name__ == "__main__":
