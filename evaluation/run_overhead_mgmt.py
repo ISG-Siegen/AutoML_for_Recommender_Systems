@@ -16,6 +16,7 @@ import pandas as pd
 lib_name = str(sys.argv[1])
 algo_names_list = []
 fresh_start = False
+print_versions = False
 logger = get_logger("OverheadMgmt")
 DATASET_NAMES = get_all_dataset_names()
 
@@ -46,6 +47,15 @@ if not os.path.isfile(output_filepath) or fresh_start:
 
 # Build a dict containing info on run statistics
 stats_dict_for_lib = {}
+
+# ------------- Print Used Library Version (if enabled)
+if print_versions:
+    # print idea from https://stackoverflow.com/a/51056435 (works since we use python3.9 for our docker containers)
+    print("#### Version of all used libraries for this framework ####")
+    from pip._internal.operations.freeze import freeze
+
+    for requirement in freeze(local_only=True):
+        print(requirement)
 
 # ------------- Get all names of algorithms for this library
 for algorithm in NAME_LIB_MAP[lib_name]():
