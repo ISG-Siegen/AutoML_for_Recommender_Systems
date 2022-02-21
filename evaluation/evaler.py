@@ -106,6 +106,10 @@ def eval_overall_results():
                                                                                 len(overall_data)))
     # ----- Filter too large errors for model that did not converge with default values
     boxplot_data_filtered = filter_too_large_errors(boxplot_data)
+    print("In total, removed {} ({:.2%}) of {} RMSE values".format(len(overall_data) - len(boxplot_data_filtered),
+                                                                   (len(overall_data) - len(
+                                                                       boxplot_data_filtered)) / len(overall_data),
+                                                                   len(overall_data)))
     # Boxplots
     eval_plotter.boxplots_per_datasets(boxplot_data_filtered[["Dataset", "LibraryCategory", "RMSE"]], True)
 
