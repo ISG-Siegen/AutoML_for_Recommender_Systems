@@ -3,12 +3,12 @@ import sys
 import time
 import pandas as pd
 
-# ------------- Ensure that base path is found
+# ------------- Ensure that base path is found (in the container)
 sys.path.insert(1, os.path.join(sys.path[0], '..'))
 # Rest of imports
 from benchmark_framework import benchmarker, dataset_base
 from general_utils.lcer import get_logger, get_output_result_data, get_base_path, get_default_metric, \
-    get_hard_timeout_in_min, get_timeout_in_min
+    get_hard_timeout_in_min, get_timeout_in_min, get_limits_bool, get_new_runs_bool
 from general_utils import filer
 from libraries.name_lib_mapping import NAME_LIB_MAP
 from data_processing.preprocessing.data_handler import load_datasets_information, load_from_files
@@ -20,10 +20,12 @@ if __name__ == '__main__':
     result_data = []
     logger = get_logger("BenchmarkExe")
 
-    # Read Input (the lib name to run)
+    # Read Input and Config file (the lib name to run)
     lib_name = str(sys.argv[1])
-    only_new_benchmarks = True
-    with_limits = True
+    only_new_benchmarks = get_new_runs_bool()
+    with_limits = get_limits_bool()
+    metric = get_default_metric()()
+    hard_timeout = get_hard_timeout_in_min()
 
     # Load algos from lib name
     lib_algos = NAME_LIB_MAP[lib_name]()
@@ -31,10 +33,6 @@ if __name__ == '__main__':
     #  Collect dataset loaders
     data_for_load_datasets = load_datasets_information()
     nr_datasets = len(data_for_load_datasets)
-
-    # Default values
-    metric = get_default_metric()()
-    hard_timeout = get_hard_timeout_in_min()
 
     # ------------- File management
     output_filepath = os.path.join(get_base_path(), get_output_result_data(), "overall_benchmark_results.csv")

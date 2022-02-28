@@ -1,5 +1,5 @@
-# !Make sure you have select the correct environment with appropriate packages that need to be loaded !
-# !Make sure you have the dataset that is used here on your system (a .csv and .json file) - ask lennart or tobias
+# !Make sure you have select the correct environment with appropriate packages that need to be loaded!
+# !Make sure you have the dataset that is used here on your system (a .csv and .json file)
 # [Ignore This] ------------- Ensure that base path is found
 import os
 import sys

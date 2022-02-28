@@ -19,16 +19,6 @@ pd.set_option("display.max_rows", None, "display.max_columns", None)
 
 def filter_too_large_errors(df):
     df = df.copy()
-    # dataset_names = df["Dataset"].unique().tolist()
-    # for dataset in dataset_names:
-    #     tmp_df = df[df["Dataset"] == dataset]["RMSE"]
-    #     # Code adapted from https://datascience.stackexchange.com/a/57199
-    #     Q1 = tmp_df.quantile(0.25)
-    #     Q3 = tmp_df.quantile(0.75)
-    #     IQR = Q3 - Q1
-    #
-    #     # Set all values lower than the upper whisker to nan and then drop them
-    #     df.loc[(df["Dataset"] == dataset) & (df["RMSE"] > Q3 + 1.5 * IQR), "RMSE"] = np.nan
 
     # Filter based on a static value
     pre_length = len(df)

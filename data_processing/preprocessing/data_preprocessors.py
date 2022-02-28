@@ -4,16 +4,31 @@ from benchmark_framework.dataset_base import RecSysProperties
 from general_utils.amazon_dataset_utils import getDF
 from general_utils.yelp_dataset_utils import get_superset_of_column_names_from_file, read_and_write_file
 from general_utils.netflix_dataset_utils import read_netflix_data
+from general_utils.lcer import get_preprocess_data
 import math
 
 
 def get_all_preprocess_functions():
-    single_dataset_preprocessors = [
-        preprocess_ml_100k, preprocess_ml_1m, preprocess_ml_latest_small, preprocess_yelp, preprocess_netflix,
-        preprocess_food
-    ]
+    # Maps names of datasets to preprocess function for dataset
+    name_to_function_map = {
+        "ml100k": preprocess_ml_100k,
+        "ml1m": preprocess_ml_1m,
+        "ml-latest-small": preprocess_ml_latest_small,
+        "yelp": preprocess_yelp,
+        "netflix": preprocess_netflix,
+        "food": preprocess_food
+    }
+    # Add amazon functions (which are dynamic objects)
+    for amazon_function in build_amazon_load_functions():
+        name_to_function_map[amazon_function.__name__[11:]] = amazon_function
 
-    return single_dataset_preprocessors + build_amazon_load_functions()
+    # Filter which preprocess functions to use
+    to_preprocess_list = []
+    for dataset_name, to_preprocess in get_preprocess_data().items():
+        if to_preprocess:
+            to_preprocess_list.append(name_to_function_map[dataset_name])
+
+    return to_preprocess_list
 
 
 # ---- Utils
