@@ -836,6 +836,6 @@ amazon-movies-and-tv,FLAML_Regressor,AutoML,1.0168372935591556,17318.33702564239
 yelp,AutoGluon_Regressor,AutoML,,30600.206553459167,1644689661.2329664,True,timeout
 amazon-toys-and-games,GAMA_Regressor,AutoML,,30600.394354581833,1644720272.9023364,True,timeout
 movielens-1M,GAMA_Regressor,AutoML,0.9739971661419097,13052.359846830368,1644733326.7568843,False,
-yelp,TPOT_Regressor,AutoML,,,,True,memout
+yelp,TPOT_Regressor,AutoML,,,-1,True,memout
 amazon-appliances,TPOT_Regressor,AutoML,0.7717504333141683,14694.777645349503,1644849201.3001506,False,
 netflix,TPOT_Regressor,AutoML,,45000.11381316185,1644894205.287953,True,timeout
