@@ -77,15 +77,17 @@ def select_newest_subset(data):
 
 
 def eval_overall_results():
+    save_images = False
+
     overall_data = filer.read_data(os.path.join(get_base_path(), get_output_result_data(),
                                                 "overall_benchmark_results.csv"))
     overall_data = select_newest_subset(overall_data)
 
     # Failure Eval
-    eval_plotter.failure_eval(overall_data.copy(), True)
+    eval_plotter.failure_eval(overall_data.copy(), save_images)
 
     # Ranking Eval
-    eval_plotter.ranking_eval(overall_data.copy(), True)
+    eval_plotter.ranking_eval(overall_data.copy(), save_images)
 
     # ---- Remove failed datasets
     boxplot_data = overall_data.copy()[overall_data["RMSE"].notna()]
@@ -101,7 +103,7 @@ def eval_overall_results():
                                                                        boxplot_data_filtered)) / len(overall_data),
                                                                    len(overall_data)))
     # Boxplots
-    eval_plotter.boxplots_per_datasets(boxplot_data_filtered[["Dataset", "LibraryCategory", "RMSE"]], True)
+    eval_plotter.boxplots_per_datasets(boxplot_data_filtered[["Dataset", "LibraryCategory", "RMSE"]], save_images)
 
 
 if __name__ == "__main__":
