@@ -3,42 +3,14 @@ import pandas as pd
 import os
 from general_utils.lcer import get_output_images, get_base_path, get_output_result_tables
 import seaborn as sns
-from autorank import autorank, create_report, plot_stats
 from general_utils.catheat import heatmap
-import numpy as np
-
-YMIN = 0
-YMAX = None
 
 
 def get_correct_path(file_name):
     return os.path.join(get_base_path(), get_output_images(), "{}.pdf".format(file_name))
 
 
-def normalized_and_aggregated_distribution_plots(data: pd.DataFrame, save_images, prefix=""):
-    raise NotImplementedError("This function shall not be used for our current evaluation as a result of" +
-                              " our discussion!")
-    relative_baseline = "ConstantPredictor_Mean"
-
-    # Normalize by the baseline such that baseline is 0
-    for dataset_name in data["Dataset"].unique().tolist():
-        tmp_df = data[data["Dataset"] == dataset_name]
-        baseline_val = tmp_df[tmp_df["Model"] == relative_baseline]["RMSE"].tolist()[0]
-
-        tmp_normalized = tmp_df["RMSE"].apply(lambda x: x - baseline_val)
-        data.loc[data["Dataset"] == dataset_name, "N_RMSE"] = tmp_normalized
-
-    data.drop(data[data["Model"] == relative_baseline].index, inplace=True)
-    ax = sns.boxplot(x="N_RMSE", y="Dataset", hue="LibraryCategory", data=data, dodge=True,
-                     linewidth=1)
-    # plt.vlines(0)
-    plt.gca().invert_xaxis()
-    plt.xlabel("Difference to Baseline (Negative is better)")
-    plt.show()
-
-
 def boxplots_per_datasets(data: pd.DataFrame, save_images, prefix=""):
-    # OLD: sns.catplot(x="LibraryCategory", y="RMSE", col="Dataset", data=data, kind="box")
     ax = sns.boxplot(x="RMSE", y="Dataset", hue="LibraryCategory", data=data, dodge=True,
                      linewidth=1)
     [ax.axhline(y + .5, color='k') for y in ax.get_yticks()]
@@ -46,47 +18,8 @@ def boxplots_per_datasets(data: pd.DataFrame, save_images, prefix=""):
     if save_images:
         name = prefix
         name += "boxplots_per_datasets"
-        # plt.savefig(get_correct_path(name))
+        plt.savefig(get_correct_path(name))
     plt.show()
-
-
-def row_to_col_data_format(data):
-    dataset_names = data["Dataset"].unique().tolist()
-    clf_names = data["Model"].unique().tolist()
-    experiment_results = pd.DataFrame(index=dataset_names, columns=clf_names)
-
-    # Fill results df
-    for index, row in data.iterrows():
-        experiment_results.at[row["Dataset"], row["Model"]] = float(row["RMSE"])
-    experiment_results = experiment_results.apply(pd.to_numeric)
-
-    return experiment_results
-
-
-def cd_plot_and_stats_tests(data: pd.DataFrame, save_images, prefix=""):
-    experiment_results = row_to_col_data_format(data)
-
-    # Check if requirements for CD plot exist
-    if len(experiment_results) < 5:
-        print("SKIPPED AUTORANK EVAL DUE TO NOT ENOUGH (5) ESTIMATIONS PER MODEL")
-        return
-
-    if experiment_results.isnull().values.any():
-        print("SKIPPED AUTORANK EVAL DUE TO NAN VALUES IN DATA")  # Fill na values
-
-    # Do tests and get plot as well as report
-    res = autorank(experiment_results, order="ascending")
-    create_report(res)
-    plot_stats(res)
-    if save_images:
-        name = prefix
-        name += "autorank_plot_all_data"
-        # plt.savefig(get_correct_path(name))
-    plt.show()
-
-    # For more see: https://github.com/sherbold/autorank
-    # Other nice-to-have features
-    # latex_table(res)
 
 
 def ranking_eval(data: pd.DataFrame, save_images, prefix=""):
@@ -198,7 +131,7 @@ def ranking_eval(data: pd.DataFrame, save_images, prefix=""):
     if save_images:
         name = prefix
         name += "ranking_models_per_dataset_with_categories"
-        # plt.savefig(get_correct_path(name))
+        plt.savefig(get_correct_path(name))
     plt.show()
 
     # LibraryCategory Ranking per Dataset - includes all categories
@@ -212,7 +145,7 @@ def ranking_eval(data: pd.DataFrame, save_images, prefix=""):
     if save_images:
         name = prefix
         name += "ranking_categories_per_dataset"
-        # plt.savefig(get_correct_path(name))
+        plt.savefig(get_correct_path(name))
     plt.show()
 
 

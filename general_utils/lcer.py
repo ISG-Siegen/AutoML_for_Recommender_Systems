@@ -64,3 +64,15 @@ def get_timeout_in_min():
 
 def get_hard_timeout_in_min():
     return int(get_config("limits", "hard_timeout_in_min"))
+
+
+def get_preprocess_data():
+    return {k: v.lower() in ['true', '1', 'yes'] for k, v in local_config.items('to_preprocess')}
+
+
+def get_limits_bool():
+    return local_config.getboolean("defaults", "use_limits")
+
+
+def get_new_runs_bool():
+    return local_config.getboolean("defaults", "only_new_evaluations")

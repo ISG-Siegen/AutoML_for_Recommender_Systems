@@ -91,7 +91,6 @@ if __name__ == "__main__":
     logger.info("Finished preprocessing of libraries")
 
     # Do benchmarks
-    # only runs code for dataset-algorithm combinations that have not been collected so far (change in benchmark main)
     for lib_name in get_all_lib_names():
         start_code_in_container_handler(lib_name, script_to_run="libraries/main_benchmark.py")
 

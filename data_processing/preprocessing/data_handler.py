@@ -1,11 +1,7 @@
 import os
-import sys
 import json
 import glob
 import pandas as pd
-
-# ------------- Ensure that base path is found
-sys.path.insert(1, os.path.join(sys.path[0], '../..'))
 from general_utils.lcer import get_dataset_container_path, get_dataset_local_path
 from benchmark_framework.dataset_base import RecSysProperties
 from general_utils.lcer import get_logger
@@ -124,7 +120,3 @@ def preprocess_all_datasets(local_execution=True):
         logger.info("Start Preprocessing: {} [{}/{}]".format(fn.__name__, idx, n_preprocessors))
         # Preprocess and save results to csv
         save_to_files(base_path, *fn(base_path))
-
-
-if __name__ == "__main__":
-    preprocess_all_datasets(local_execution=True)
