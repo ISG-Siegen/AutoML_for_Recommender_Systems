@@ -110,12 +110,12 @@ Details on the Docker Setup can be found in `docker_env/README.md`. The followin
    are part of this comparison. The docker-compose.yml manages these install commands and creates an image for each
    library. If you want to use only a subset of these libraries, you will need to remove the corresponding entries form
    the dockerfile and docker-compose.yml. Please be aware, that the build process may take some time.
-
-* In the `docker_env` directory use the following command (in a terminal)
-  . **_[[[[[[UNSURE IF WE NEED TO ADD A TAG HERE]]]]]]**_
-  * Windows: `docker compose build`
-  * Linux: `docker-compose build`
-
+    * By default, the dockerfile will try to install the versions we have used. If you want to use another version, you
+      will have to adapt the dockerfiles accordingly. See `libraries/README.md` for more details.
+    * In the `docker_env` directory use the following command (in a terminal)
+      . **_[[[[[[UNSURE IF WE NEED TO ADD A TAG HERE]]]]]]**_
+        * Windows: `docker compose build`
+        * Linux: `docker-compose build`
 3. Once the build process finished successfully, you are done. An image for each library should have been created.
 
 ## Run the Comparison
