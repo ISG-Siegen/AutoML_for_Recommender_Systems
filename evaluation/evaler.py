@@ -30,7 +30,7 @@ def filter_too_large_errors(df):
     return df
 
 
-def select_newest_subset(data):
+def select_newest_subset(data, only_use_data_from_run_overhead):
     # Filter all older runs of models on datasets
     check_dict = defaultdict(lambda: [0, None])
     index_to_drop = []
@@ -38,9 +38,14 @@ def select_newest_subset(data):
     # Get list of model and dataset names that are valid (depending on our current run overhead data)
     run_overhead_data = filer.read_data_json(os.path.join(get_base_path(), get_output_result_data(),
                                                           "run_overhead_data.json"))
-    valid_datasets = set(run_overhead_data["used_dataset_names"])
-    valid_models = set([model_name for lib in run_overhead_data["used_libraries_names"]
-                        for model_name in run_overhead_data[lib]["model_names"]])
+
+    if only_use_data_from_run_overhead:
+        valid_datasets = set(run_overhead_data["used_dataset_names"])
+        valid_models = set([model_name for lib in run_overhead_data["used_libraries_names"]
+                            for model_name in run_overhead_data[lib]["model_names"]])
+    else:
+        valid_datasets = set(data["Dataset"].unique().tolist())
+        valid_models = set(data["Model"].unique().tolist())
 
     for index, row in data.iterrows():
         # Check if the loop already iterated over a newer model+dataset result
@@ -78,10 +83,12 @@ def select_newest_subset(data):
 
 def eval_overall_results():
     save_images = False
+    # Set to False to use all data in the overall_benchmark_results.csv instead of only valid models from the latest run
+    only_use_data_from_run_overhead = True
 
     overall_data = filer.read_data(os.path.join(get_base_path(), get_output_result_data(),
                                                 "overall_benchmark_results.csv"))
-    overall_data = select_newest_subset(overall_data)
+    overall_data = select_newest_subset(overall_data, only_use_data_from_run_overhead)
 
     # Failure Eval
     eval_plotter.failure_eval(overall_data.copy(), save_images)

@@ -72,7 +72,7 @@ RUN pip install --no-cache-dir autoPyTorch==0.1.1
 # ---- RecSys ----
 # -- surprise --
 FROM base_python as surprise
-RUN pip install --no-cache-dir surprise==1.1.1
+RUN pip install --no-cache-dir scikit-surprise==1.1.1
 
 # -- lenskit --
 FROM base as lenskit
@@ -81,7 +81,7 @@ RUN pip install --no-cache-dir lenskit[sklearn,hpf,implicit,tf]==0.13.1
 
 # -- spotlight --
 FROM base_python as spotlight
-RUN pip install torch && pip install -e git+https://github.com/maciejkula/spotlight.git#egg=spotlight@v0.1.6
+RUN pip install torch && pip install -e git+https://github.com/maciejkula/spotlight.git@v0.1.6#egg=spotlight
 
 # -- AutoRec --
 FROM python:3.8 as autorec
