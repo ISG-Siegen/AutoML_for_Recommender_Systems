@@ -2,22 +2,21 @@
 A Comparison of AutoML, ML, AutoRecSys and RecSys algorithms on RecSys datasets to determine the potential of AutoML.
 
 ## Abstract of Related Paper
-Automated Machine Learning (AutoML) has successfully made applications in the field of Machine Learning (ML), like image
-analysis or machine translation, more accessible. Recommender Systems (RecSys) can be seen as an application of ML, yet
-AutoML has found little attention in the RecSys community; nor has RecSys found notable attention in the AutoML
-community. Only basic Automated Recommender Systems (AutoRecSys) libraries exist to make RecSys more accessible. The few
-existing AutoRecSys libraries are based on student projects, and do not offer the features and thorough development of
-current AutoML libraries. We set out to determine how AutoML libraries perform in the scenario of an inexperienced user
-who wants to implement a recommender system. We compared the predictive performance of AutoML, ML, RecSys, and
-AutoRecSys algorithms by evaluating $60$ algorithms, including a simple baseline, on 14 explicit feedback RecSys
-datasets. To simulate the perspective of an inexperienced user, the algorithms were evaluated with default
-hyperparameters. We found that AutoML and AutoRecSys perform almost equally well. AutoML libraries performed best for
-six of the 14 datasets (43%). However, there was not ‘the one’ AutoML library. The single-best library was the
+Automated Machine Learning (AutoML) has greatly advanced applications of Machine Learning (ML) including model
+compression, machine translation, and computer vision. Recommender Systems (RecSys) can be seen as an application of ML.
+Yet, AutoML has found little attention in the RecSys community; nor has RecSys found notable attention in the AutoML
+community. Only few and relatively simple Automated Recommender Systems (AutoRecSys) libraries exist that adopt AutoML
+techniques. However, these libraries are based on student projects and do not offer the features and thorough
+development of AutoML libraries. We set out to determine how AutoML libraries perform in the scenario of an
+inexperienced user who wants to implement a recommender system. We compared the predictive performance of 60 AutoML,
+AutoRecSys, ML, and RecSys algorithms from 15 libraries, including a mean predictor baseline, on 14 explicit feedback
+RecSys datasets. To simulate the perspective of an inexperienced user, the algorithms were evaluated with default
+hyperparameters. We found that AutoML and AutoRecSys libraries performed best. AutoML libraries performed best for six
+of the 14 datasets (43%), but it was not always the same AutoML library performing best. The single-best library was the
 AutoRecSys library Auto-Surprise, which performed best on five datasets (36%). On three datasets (21%), AutoML libraries
-performed poorly, and standard RecSys libraries with default parameters performed best. Though, while obtaining 50% of
-all placements in the top five per dataset, RecSys algorithms fall behind AutoML on average. ML algorithms are generally
-the worst alternative. Surprisingly, the evaluated algorithms perform worse than the baseline in 26.90% of all
-evaluations.
+performed poorly, and RecSys libraries with default parameters performed best. Although, while obtaining 50% of all
+placements in the top five per dataset, RecSys algorithms fall behind AutoML on average. ML algorithms generally
+performed the worst.
 
 ## Project Structure
 
