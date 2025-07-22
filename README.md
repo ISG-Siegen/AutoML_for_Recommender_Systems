@@ -166,3 +166,40 @@ To produce the plots and tables which we have used in our paper, you can run our
         * If you want to use all data in a results file, toggle the option for it in the evaluation script. Please be
           aware that this can cause crashes or non-representative plots if not all datasets for a library have been
           evaluated, i.e., run by `run_comparison.py`, or the result file contains faulty entries.   
+
+## Datasets, Algorithms and Library Versions
+
+| Dataset                                   | URLs                                                           | Licenses                                 |
+|-------------------------------------------|----------------------------------------------------------------|------------------------------------------|
+| MovieLens 100k                            | grouplens.org/datasets/movielens/100k/                         | Custom                                   |
+| MovieLens 1M                              | grouplens.org/datasets/movielens/1m/                           | Custom                                   |
+| MovieLens Latest 100k (9/2018)            | grouplens.org/datasets/movielens/latest/                       | Custom                                   |
+| Amazon Review Data                        | nijianmo.github.io/amazon/index.html                           | N/A                                      |
+| Yelp Open Dataset                         | yelp.com/dataset                                               | Custom                                   |
+| Netflix Prize Dataset                     | kaggle.com/netflix-inc/netflix-prize-data                      | Custom                                   |
+| Food.com Recipes and Interactions Dataset | kaggle.com/shuyangli94/food-com-recipes-and-user-interactions} | Data files © Original Authors (ODC-ODbL) |
+
+| Library       | URLs                               | Versions  | Licenses     |
+|---------------|------------------------------------|-----------|--------------|
+| Surprise      | github.com/NicolasHug/Surprise     | 1.1.1     | BSD 3-Clause | 
+| LensKit       | lenskit.org                        | 0.13.1    | Custom       | 
+| Spotlight     | github.com/maciejkula/spotlight    | 0.1.6     | MIT          | 
+| AutoRec       | github.com/datamllab/AutoRec       | 0.0.2     | None         | 
+| Auto-Surprise | github.com/BeelGroup/Auto-Surprise | 0.1.7     | MIT          | 
+| scikit-learn  | scikit-learn.org                   | 1.0.1     | BSD 3-Clause | 
+| XGBoost       | github.com/dmlc/xgboost            | 1.5.1     | Apache-2.0   | 
+| ktrain        | github.com/amaiya/ktrain           | 0.28.3    | Apache-2.0   | 
+| Auto-sklearn  | automl.github.io/auto-sklearn      | 0.14.2    | BSD 3-Clause | 
+| FLAML         | github.com/microsoft/FLAML         | 0.9.1     | MIT          | 
+| GAMA          | github.com/openml-labs/gama        | 21.0.1    | Apache-2.0   | 
+| H2O           | h2o.ai/products/h2o-automl         | 3.34.0.3  | Apache-2.0   | 
+| TPOT          | github.com/EpistasisLab/tpot       | 0.11.7    | LGPL-3.0     | 
+| AutoGluon     | auto.gluon.ai/stable/index.html    | 0.3.1     | Apache-2.0   | 
+| Auto-PyTorch  | github.com/automl/Auto-PyTorch     | 0.1.1     | Apache-2.0   | 
+
+| Libraries: | Algorithms                                                                                                                                                                                                                                                                                                                                                                                                                         |
+|------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Surprise   | SVD, KNNBasic, KNNBaseline, KNNWithZScore, KNNWithMeans, CoClustering, BaselineOnly, SlopeOne, SVDpp, NMF, NormalPredictor                                                                                                                                                                                                                                                                                                         | 
+| LensKit    | ItemItem, UserUser, Bias, ALSBiasedMF, FunkSVD, BiasedSVD, TFBiasedMF, BPR, IntegratedBiasMF, HPF                                                                                                                                                                                                                                                                                                                                  |
+| Sklearn    | LinearRegression, Ridge, SGDRegressor, ElasticNet, LassoLars, OrthogonalMatchingPursuit, ARDRegression, BayesianRidge, Lars, Lasso, HuberRegressor, TheilSenRegressor, PoissonRegressor, GammaRegressor, TweedieRegressor, RANSACRegressor, RandomForestRegressor, AdaBoostRegressor, BaggingRegressor, ExtraTreesRegressor, GradientBoostingRegressor, SVR, KNeighborsRegressor, MLPRegressor, KernelRidge, DecisionTreeRegressor |
+| Other      | We used the automated regression model of the libraries Auto-sklearn, FLAML, GAMA, H2O, TPOT, AutoGluon, Auto-PyTorch, XGBoost, and ktrain.                                                                                                                                                                                                                                                                                        |                                                             |
